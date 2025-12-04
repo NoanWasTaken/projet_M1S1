@@ -168,7 +168,19 @@ jobs:
                   tools: composer:v2
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+            - name: Verify WebpackEncoreBundle registration
+              run: |
+                  # Check if WebpackEncoreBundle is in bundles.php
+                  if ! grep -q "WebpackEncoreBundle" config/bundles.php; then
+                    echo "Adding WebpackEncoreBundle to bundles.php"
+                    # Backup the file
+                    cp config/bundles.php config/bundles.php.bak
+                    # Add the bundle before the closing bracket
+                    sed -i "s/];/    Symfony\\\\WebpackEncoreBundle\\\\WebpackEncoreBundle::class => ['all' => true],\n];/" config/bundles.php
+                  fi
+                  cat config/bundles.php
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
