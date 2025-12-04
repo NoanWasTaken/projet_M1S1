@@ -1,4 +1,4 @@
 // Import Tailwind CSS
-import './app.css';
+import "./app.css";
 
-console.log('Vite + Tailwind CSS loaded!');
+console.log("Vite + Tailwind CSS loaded!");
