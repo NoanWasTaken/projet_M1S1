@@ -56,7 +56,13 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+            - name: Warmup cache
+              run: |
+                  php bin/console cache:clear --env=test --no-interaction
+              env:
+                  APP_ENV: test
 
             - name: Check Symfony requirements
               run: vendor/bin/requirements-checker || true
@@ -108,7 +114,13 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+            - name: Warmup cache
+              run: |
+                  php bin/console cache:clear --env=test --no-interaction
+              env:
+                  APP_ENV: test
 
             - name: Check PHP syntax
               run: |
@@ -150,7 +162,14 @@ jobs:
                   tools: composer:v2
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+            - name: Warmup cache
+              run: |
+                  php bin/console cache:clear --env=test --no-interaction
+                  php bin/console assets:install public --env=test --no-interaction
+              env:
+                  APP_ENV: test
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -222,7 +241,14 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+            - name: Warmup cache
+              run: |
+                  php bin/console cache:clear --env=test --no-interaction
+              env:
+                  APP_ENV: test
+                  DATABASE_URL: postgresql://symfony:symfony@localhost:5432/symfony_test?serverVersion=16&charset=utf8
 
             - name: Wait for PostgreSQL
               run: |
