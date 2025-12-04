@@ -231,6 +231,13 @@ jobs:
                     sleep 2
                   done
 
+            - name: Create database
+              run: |
+                  php bin/console doctrine:database:create --env=test --if-not-exists
+              env:
+                  APP_ENV: test
+                  DATABASE_URL: postgresql://symfony:symfony@localhost:5432/symfony_test?serverVersion=16&charset=utf8
+
             - name: Run migrations
               run: |
                   php bin/console doctrine:migrations:migrate --no-interaction --env=test
