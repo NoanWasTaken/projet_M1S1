@@ -58,9 +58,12 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
-            - name: Warmup cache
+            - name: Setup environment
               run: |
+                  # Temporarily remove webpack_encore config to avoid missing bundle error
+                  mv config/packages/webpack_encore.yaml config/packages/webpack_encore.yaml.bak || true
                   php bin/console cache:clear --env=test --no-interaction
+                  mv config/packages/webpack_encore.yaml.bak config/packages/webpack_encore.yaml || true
               env:
                   APP_ENV: test
 
@@ -116,9 +119,12 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
-            - name: Warmup cache
+            - name: Setup environment
               run: |
+                  # Temporarily remove webpack_encore config to avoid missing bundle error
+                  mv config/packages/webpack_encore.yaml config/packages/webpack_encore.yaml.bak || true
                   php bin/console cache:clear --env=test --no-interaction
+                  mv config/packages/webpack_encore.yaml.bak config/packages/webpack_encore.yaml || true
               env:
                   APP_ENV: test
 
@@ -162,14 +168,7 @@ jobs:
                   tools: composer:v2
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
-
-            - name: Warmup cache
-              run: |
-                  php bin/console cache:clear --env=test --no-interaction
-                  php bin/console assets:install public --env=test --no-interaction
-              env:
-                  APP_ENV: test
+              run: composer install --prefer-dist --no-progress --no-interaction
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -243,9 +242,12 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
-            - name: Warmup cache
+            - name: Setup environment
               run: |
+                  # Temporarily remove webpack_encore config to avoid missing bundle error
+                  mv config/packages/webpack_encore.yaml config/packages/webpack_encore.yaml.bak || true
                   php bin/console cache:clear --env=test --no-interaction
+                  mv config/packages/webpack_encore.yaml.bak config/packages/webpack_encore.yaml || true
               env:
                   APP_ENV: test
                   DATABASE_URL: postgresql://symfony:symfony@localhost:5432/symfony_test?serverVersion=16&charset=utf8
