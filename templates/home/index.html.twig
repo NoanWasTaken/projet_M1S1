@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Bienvenue sur GearForge</h1>
+            
+            {% if app.user %}
+                <div class="alert alert-success text-center mt-4">
+                    <h4>Connecté en tant que : {{ app.user.email }}</h4>
+                    <a href="{{ path('app_logout') }}" class="btn btn-danger mt-2">Se déconnecter</a>
+                </div>
+            {% else %}
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_login') }}" class="btn btn-primary me-2">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-success">S'inscrire</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
