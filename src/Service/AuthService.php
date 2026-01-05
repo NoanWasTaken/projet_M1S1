@@ -17,32 +17,6 @@ class AuthService
     ) {
     }
 
-    /**
-     * Register a new user
-     */
-    public function register(string $email, string $plainPassword): User
-    {
-        // Check if user already exists
-        if ($this->userRepository->findOneBy(['email' => $email])) {
-            throw new \RuntimeException('Un utilisateur avec cet email existe déjà.');
-        }
-
-        $user = new User();
-        $user->setEmail($email);
-        
-        // Hash the password
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
-        $user->setPassword($hashedPassword);
-        
-        // Set default role
-        $user->setRoles(['ROLE_USER']);
-
-        // Persist the user
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        return $user;
-    }
 
     /**
      * Verify user credentials

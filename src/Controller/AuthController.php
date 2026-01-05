@@ -16,56 +16,6 @@ class AuthController extends AbstractController
     ) {
     }
 
-    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
-    public function register(Request $request): Response
-    {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $password = $request->request->get('password');
-            $confirmPassword = $request->request->get('confirm_password');
-
-            try {
-                // Validation
-                if (empty($email) || empty($password)) {
-                    $this->addFlash('error', 'Tous les champs sont requis.');
-                    return $this->render('auth/register.html.twig');
-                }
-
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $this->addFlash('error', 'Email invalide.');
-                    return $this->render('auth/register.html.twig');
-                }
-
-                if ($password !== $confirmPassword) {
-                    $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
-                    return $this->render('auth/register.html.twig');
-                }
-
-                if (strlen($password) < 6) {
-                    $this->addFlash('error', 'Le mot de passe doit contenir au moins 6 caractères.');
-                    return $this->render('auth/register.html.twig');
-                }
-
-                // Register the user
-                $this->authService->register($email, $password);
-
-                $this->addFlash('success', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
-                return $this->redirectToRoute('app_login');
-
-            } catch (\RuntimeException $e) {
-                $this->addFlash('error', $e->getMessage());
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Une erreur est survenue lors de l\'inscription.');
-            }
-        }
-
-        return $this->render('auth/register.html.twig');
-    }
-
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
