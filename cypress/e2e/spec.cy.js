@@ -22,4 +22,5 @@ describe("Application Tests", () => {
         cy.contains("Se connecter").should("be.visible");
         cy.contains("S'inscrire").should("be.visible");
     });
+    
 });
