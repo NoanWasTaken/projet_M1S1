@@ -1,16 +1,18 @@
 {
-  "name": "projet_m1s1",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.1.17",
-    "tailwindcss": "^4.1.17",
-    "vite": "^7.2.2"
-  }
+    "name": "projet_m1s1",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "cypress:open": "export HTTP_PROXY=http://127.0.0.1:7080/proxy.pac && cypress open"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.1.17",
+        "cypress": "^15.8.1",
+        "tailwindcss": "^4.1.17",
+        "vite": "^7.2.2"
+    }
 }
