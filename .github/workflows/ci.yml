@@ -61,6 +61,7 @@ jobs:
                   echo "APP_SECRET=ci_secret" >> .env
                   echo "DATABASE_URL=postgresql://symfony:symfony@127.0.0.1:5432/symfony_test?serverVersion=16&charset=utf8" >> .env
                   echo "DEFAULT_URI=http://localhost" >> .env
+                  echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -120,6 +121,7 @@ jobs:
                   echo "APP_SECRET=ci_secret" >> .env
                   echo "DATABASE_URL=postgresql://symfony:symfony@127.0.0.1:5432/symfony_test?serverVersion=16&charset=utf8" >> .env
                   echo "DEFAULT_URI=http://localhost" >> .env
+                  echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -169,6 +171,7 @@ jobs:
                   echo "APP_SECRET=ci_secret" >> .env
                   echo "DATABASE_URL=postgresql://symfony:symfony@127.0.0.1:5432/symfony_test?serverVersion=16&charset=utf8" >> .env
                   echo "DEFAULT_URI=http://localhost" >> .env
+                  echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -244,6 +247,7 @@ jobs:
                   echo "APP_SECRET=ci_secret" >> .env
                   echo "DATABASE_URL=postgresql://symfony:symfony@127.0.0.1:5432/symfony_test?serverVersion=16&charset=utf8" >> .env
                   echo "DEFAULT_URI=http://localhost" >> .env
+                  echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
