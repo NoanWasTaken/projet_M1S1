@@ -6,7 +6,13 @@
 /public/bundles/
 /var/
 /vendor/
+/.env
+/.env.prod
+/.env.test
+/.env.dev
 .env
+.env.prod
+.env.test
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
