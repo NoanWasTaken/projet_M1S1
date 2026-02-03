@@ -1,0 +1,10 @@
+pentatrion_vite:
+    # Public directory where Vite builds assets
+    public_directory: public
+    
+    # Build directory inside public (where manifest.json is)
+    build_directory: build
+    
+    # Dev server origin for HMR
+    proxy_origin: 'http://localhost:5173'
+
