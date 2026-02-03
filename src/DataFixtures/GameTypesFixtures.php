@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Fixtures;
+namespace App\DataFixtures;
 
 use App\Entity\GameTypes;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 
-class GameTypesFixtures
+class GameTypesFixtures extends Fixture
 {
     private const GAME_TYPES = [
         'RPG',
@@ -25,21 +26,20 @@ class GameTypesFixtures
         'Roguelike',
     ];
 
-    public static function load(EntityManagerInterface $entityManager): void
+    public function load(ObjectManager $manager): void
     {
         foreach (self::GAME_TYPES as $typeName) {
-            // Check if game type already exists
-            $existingType = $entityManager->getRepository(GameTypes::class)->findOneBy([
+            $existingType = $manager->getRepository(GameTypes::class)->findOneBy([
                 'type' => $typeName,
             ]);
 
             if (!$existingType) {
                 $gameType = new GameTypes();
                 $gameType->setType($typeName);
-                $entityManager->persist($gameType);
+                $manager->persist($gameType);
             }
         }
 
-        $entityManager->flush();
+        $manager->flush();
     }
 }
