@@ -9,6 +9,10 @@
 /.env
 /.env.prod
 /.env.test
+
+.env
+.env.prod
+.env.test
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
