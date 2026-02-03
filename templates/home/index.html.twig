@@ -13,7 +13,7 @@
                     <h4>Connecté en tant que : {{ app.user.email }}</h4>
                     <a href="{{ path('app_logout') }}" class="btn btn-danger mt-2">Se déconnecter</a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_admin_index') }}" class="btn btn-warning mt-2">Admin</a>
+                        <a href="{{ path('admin') }}" class="btn btn-warning mt-2">Admin</a>
                     {% endif %}
                 </div>
             {% else %}
