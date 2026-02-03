@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductsRepository::class)]
-class Products
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,17 +17,17 @@ class Products
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $photos = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $price = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100)]
     private ?string $category = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     #[ORM\Column]
     private ?int $stock = null;
@@ -49,17 +47,9 @@ class Products
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1, nullable: true)]
     private ?string $rating = null;
 
-    /**
-     * @var Collection<int, GameTypes>
-     */
-    #[ORM\ManyToMany(targetEntity: GameTypes::class, inversedBy: 'products')]
-    private Collection $game_types;
-
     public function __construct()
     {
-        $this->game_types = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
-        $this->isAvailable = true;
     }
 
     public function getId(): ?int
@@ -84,21 +74,21 @@ class Products
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getPhotos(): ?array
+    public function getPrice(): ?string
     {
-        return $this->photos;
+        return $this->price;
     }
 
-    public function setPhotos(?array $photos): static
+    public function setPrice(string $price): static
     {
-        $this->photos = $photos;
+        $this->price = $price;
 
         return $this;
     }
@@ -108,9 +98,21 @@ class Products
         return $this->category;
     }
 
-    public function setCategory(?string $category): static
+    public function setCategory(string $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
@@ -163,7 +165,7 @@ class Products
         return $this;
     }
 
-    public function isAvailable(): ?bool
+    public function isAvailable(): bool
     {
         return $this->isAvailable;
     }
@@ -183,42 +185,6 @@ class Products
     public function setRating(?string $rating): static
     {
         $this->rating = $rating;
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, GameTypes>
-     */
-    public function getGameTypes(): Collection
-    {
-        return $this->game_types;
-    }
-
-    public function addGameType(GameTypes $gameType): static
-    {
-        if (!$this->game_types->contains($gameType)) {
-            $this->game_types->add($gameType);
-        }
-
-        return $this;
-    }
-
-    public function removeGameType(GameTypes $gameType): static
-    {
-        $this->game_types->removeElement($gameType);
 
         return $this;
     }

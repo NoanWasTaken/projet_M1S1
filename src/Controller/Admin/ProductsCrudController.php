@@ -23,7 +23,7 @@ class ProductsCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name');
         yield TextEditorField::new('description');
-        yield MoneyField::new('price')->setCurrency('EUR');
+        yield MoneyField::new('price')->setCurrency('EUR')->setStoredAsCents(false);
         yield ArrayField::new('photos')->setHelp('Add image URLs');
         yield AssociationField::new('game_types');
     }

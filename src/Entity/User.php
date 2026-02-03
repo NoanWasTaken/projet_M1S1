@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->game_types = new ArrayCollection();
     }
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Cart $cart = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -193,6 +196,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeGameType(GameTypes $gameType): static
     {
         $this->game_types->removeElement($gameType);
+        return $this;
+    }
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(Cart $cart): static
+    {
+        // set the owning side of the relation if necessary
+        if ($cart->getUser() !== $this) {
+            $cart->setUser($this);
+        }
+
+        $this->cart = $cart;
 
         return $this;
     }
