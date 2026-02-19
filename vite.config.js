@@ -15,6 +15,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 app: resolve(__dirname, "assets/app.js"),
+                chatbot: resolve(__dirname, "assets/chatbot.js"),
             },
         },
     },
