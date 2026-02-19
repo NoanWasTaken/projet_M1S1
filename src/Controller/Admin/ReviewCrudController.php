@@ -67,16 +67,16 @@ class ReviewCrudController extends AbstractCrudController
 
     public function deleteEntity(EntityManagerInterface $entityManager, mixed $entityInstance): void
     {
-        $product = null;
-        if ($entityInstance instanceof Review) {
-            $product = $entityInstance->getProduct();
-        }
-
         parent::deleteEntity($entityManager, $entityInstance);
 
-        if ($product) {
-            $product->computeAverageRating();
-            $entityManager->flush();
+        if ($entityInstance instanceof Review) {
+            $product = $entityInstance->getProduct();
+
+            if ($product) {
+                $product->computeAverageRating();
+                $entityManager->flush();
+            }
         }
     }
+}
 }
