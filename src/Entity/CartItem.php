@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Products;
 use App\Repository\CartItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CartItemRepository::class)]
 class CartItem
@@ -23,6 +24,8 @@ class CartItem
     private ?Products $product = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     private ?int $quantity = null;
 
     #[ORM\Column]
