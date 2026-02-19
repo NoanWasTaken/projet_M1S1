@@ -64,11 +64,24 @@ class Products
     #[ORM\ManyToMany(targetEntity: GameTypes::class, inversedBy: 'products')]
     private Collection $game_types;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Review::class, cascade: ['remove'])]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->game_types = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->isAvailable = true;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?int
@@ -230,5 +243,46 @@ class Products
         $this->game_types->removeElement($gameType);
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        $this->reviews->removeElement($review);
+
+        return $this;
+    }
+
+    public function computeAverageRating(): void
+    {
+        if ($this->reviews->isEmpty()) {
+            $this->rating = null;
+            return;
+        }
+
+        $total = 0;
+        foreach ($this->reviews as $review) {
+            $total += $review->getRating();
+        }
+
+        $avg = round($total / $this->reviews->count(), 1);
+        $this->rating = (string) $avg;
     }
 }
