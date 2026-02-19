@@ -67,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
 
+    public function __toString(): string
+    {
+        return trim(($this->name ?? '') . ' ' . ($this->surname ?? '')) ?: ($this->email ?? '');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
