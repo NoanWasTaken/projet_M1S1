@@ -17,7 +17,7 @@
                         <span class="text-gray-400">{{ app.user.email }}</span>
                         <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white transition">Déconnexion</a>
                         {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin') }}" class="btn btn-warning mt-2">Admin</a>
+                        <a href="{{ path('admin') }}" class="text-gray-300 hover:text-white transition">Admin</a>
                     {% endif %}
                     {% else %}
                         <a href="{{ path('app_login') }}" class="text-gray-300 hover:text-white transition">Connexion</a>
