@@ -67,8 +67,7 @@ class ProductsController extends AbstractController
             $this->entityManager->persist($review);
             $this->entityManager->flush();
 
-            //calcul moyenne
-            $product->computeAverageRating();
+            $this->productRepository->updateAverageRating($product);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Votre avis a été publié !');

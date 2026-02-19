@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Review;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -17,7 +18,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ReviewCrudController extends AbstractCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private ProductsRepository $productsRepository,
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -60,7 +64,7 @@ class ReviewCrudController extends AbstractCrudController
         parent::persistEntity($entityManager, $entityInstance);
 
         if ($entityInstance instanceof Review && $entityInstance->getProduct()) {
-            $entityInstance->getProduct()->computeAverageRating();
+            $this->productsRepository->updateAverageRating($entityInstance->getProduct());
             $entityManager->flush();
         }
     }
@@ -73,10 +77,9 @@ class ReviewCrudController extends AbstractCrudController
             $product = $entityInstance->getProduct();
 
             if ($product) {
-                $product->computeAverageRating();
+                $this->productsRepository->updateAverageRating($product);
                 $entityManager->flush();
             }
         }
     }
-}
 }

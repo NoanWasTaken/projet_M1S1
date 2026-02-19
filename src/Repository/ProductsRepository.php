@@ -120,6 +120,16 @@ class ProductsRepository extends ServiceEntityRepository
         return array_values($bestByCategory);
     }
 
+    public function updateAverageRating(Products $product): void
+    {
+        $avg = $this->getEntityManager()
+            ->createQuery('SELECT AVG(r.rating) FROM App\Entity\Review r WHERE r.product = :product')
+            ->setParameter('product', $product)
+            ->getSingleScalarResult();
+
+        $product->setRating($avg !== null ? number_format(round((float) $avg, 1), 1, '.', '') : null);
+    }
+
     // Correspondance partielle de noms — pour compare_products
     public function findByNames(array $names): array
     {
