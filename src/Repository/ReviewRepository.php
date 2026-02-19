@@ -13,12 +13,8 @@ class ReviewRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Review::class);
     }
-
-    /**
-     * Returns all reviews for the given product, ordered by creation date descending.
-     *
-     * @return Review[]
-     */
+    
+    // returns all reviews for product, ordered DESC creation date
     public function findByProduct(Products $product): array
     {
         return $this->createQueryBuilder('r')
