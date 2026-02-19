@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
@@ -17,21 +18,29 @@ class Products
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $photos = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     private ?float $price = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $category = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\PositiveOrZero]
     private ?int $stock = null;
 
     #[ORM\Column(length: 100, nullable: true)]
