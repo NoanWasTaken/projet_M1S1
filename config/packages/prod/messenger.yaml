@@ -1,0 +1,5 @@
+# En production, garder l'envoi asynchrone avec rate limiting
+framework:
+    messenger:
+        routing:
+            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
