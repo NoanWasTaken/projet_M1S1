@@ -13,6 +13,18 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function findByProductAndAuthor(int $productId, int $authorId): ?Review
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.product = :productId')
+            ->andWhere('r.author = :authorId')
+            ->setParameter('productId', $productId)
+            ->setParameter('authorId', $authorId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findByProduct(int $productId): array
     {
         return $this->createQueryBuilder('r')

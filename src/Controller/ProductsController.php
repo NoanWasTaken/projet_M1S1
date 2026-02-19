@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Repository\ProductsRepository;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ class ProductsController extends AbstractController
     public function __construct(
         private ProductsRepository $productRepository,
         private EntityManagerInterface $entityManager,
+        private ReviewRepository $reviewRepository,
     ) {
     }
 
@@ -60,6 +62,12 @@ class ProductsController extends AbstractController
             if (!$this->getUser()) {
                 $this->addFlash('error', 'Vous devez être connecté pour laisser un avis.');
                 return $this->redirectToRoute('app_login');
+            }
+
+            $existingReview = $this->reviewRepository->findByProductAndAuthor($id, $this->getUser()->getId());
+            if ($existingReview) {
+                $this->addFlash('error', 'Vous avez déjà laissé un avis pour ce produit.');
+                return $this->redirectToRoute('app_product_detail', ['id' => $id]);
             }
 
             $review->setProduct($product);
