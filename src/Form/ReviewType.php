@@ -16,11 +16,11 @@ class ReviewType extends AbstractType
         $builder
             ->add('rating', ChoiceType::class, [
                 'choices' => [
-                    '⭐ 1 — Mauvais'          => 1,
-                    '⭐⭐ 2 — Passable'        => 2,
-                    '⭐⭐⭐ 3 — Correct'       => 3,
-                    '⭐⭐⭐⭐ 4 — Bien'        => 4,
-                    '⭐⭐⭐⭐⭐ 5 — Excellent' => 5,
+                    '1 — Mauvais'          => 1,
+                    '2 — Passable'        => 2,
+                    '3 — Correct'         => 3,
+                    '4 — Bien'            => 4,
+                    '5 — Excellent'       => 5,
                 ],
                 'label' => 'Note',
                 'placeholder' => 'Choisissez une note',
