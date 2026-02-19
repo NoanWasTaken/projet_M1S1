@@ -13,7 +13,7 @@ class ProductsRepository extends ServiceEntityRepository
         parent::__construct($registry, Products::class);
     }
 
-    // Tous les produits disponibles
+
     public function findAvailableProducts(): array
     {
         return $this->createQueryBuilder('p')
@@ -25,7 +25,7 @@ class ProductsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Par catégorie
+
     public function findByCategory(string $category): array
     {
         return $this->createQueryBuilder('p')
@@ -39,11 +39,11 @@ class ProductsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Recherche texte nom/description
+
     public function searchProducts(string $query): array
     {
         return $this->createQueryBuilder('p')
-            ->where('p.name LIKE :query OR p.description LIKE :query')
+            ->where('LOWER(p.name) LIKE LOWER(:query) OR LOWER(p.description) LIKE LOWER(:query) OR LOWER(p.brand) LIKE LOWER(:query)')
             ->andWhere('p.isAvailable = :available')
             ->andWhere('p.stock > 0')
             ->setParameter('query', '%' . $query . '%')
@@ -53,7 +53,7 @@ class ProductsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Catégories disponibles
+
     public function getAvailableCategories(): array
     {
         $result = $this->createQueryBuilder('p')
