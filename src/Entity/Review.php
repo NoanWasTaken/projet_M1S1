@@ -74,8 +74,7 @@ class Review
     public function getAuthorName(): string
     {
         if ($this->author) {
-            $fullName = trim($this->author->getName() . ' ' . $this->author->getSurname());
-            return $fullName ?: $this->author->getEmail();
+            return (string) $this->author;
         }
 
         return $this->authorName ?? 'Anonyme';
