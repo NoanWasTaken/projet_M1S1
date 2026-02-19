@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_user_product_review', columns: ['product_id', 'author_id'])]
 class Review
 {
     #[ORM\Id]
@@ -73,8 +74,7 @@ class Review
     public function getAuthorName(): string
     {
         if ($this->author) {
-            $fullName = trim($this->author->getName() . ' ' . $this->author->getSurname());
-            return $fullName ?: $this->author->getEmail();
+            return (string) $this->author;
         }
 
         return $this->authorName ?? 'Anonyme';
