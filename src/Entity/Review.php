@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_user_product_review', columns: ['product_id', 'author_id'])]
 class Review
 {
     #[ORM\Id]
