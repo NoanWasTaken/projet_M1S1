@@ -272,17 +272,35 @@ class Products
 
     public function computeAverageRating(): void
     {
-        if ($this->reviews->isEmpty()) {
+        if ($this->reviews === null || $this->reviews->isEmpty()) {
             $this->rating = null;
             return;
         }
 
-        $total = 0;
-        foreach ($this->reviews as $review) {
-            $total += $review->getRating();
+        // Take a snapshot of the collection to avoid issues if it is modified during iteration.
+        $reviews = $this->reviews->toArray();
+        $count = \count($reviews);
+
+        if ($count === 0) {
+            $this->rating = null;
+            return;
         }
 
-        $avg = round($total / $this->reviews->count(), 1);
-        $this->rating = (string) $avg;
+        $total = 0.0;
+        foreach ($reviews as $review) {
+            $reviewRating = $review->getRating();
+            if ($reviewRating === null) {
+                continue;
+            }
+            $total += (float) $reviewRating;
+        }
+
+        $avg = 0.0;
+        if ($count > 0) {
+            $avg = round($total / $count, 1);
+        }
+
+        // Store rating as a string matching DECIMAL(3,1) precision.
+        $this->rating = number_format($avg, 1, '.', '');
     }
 }
