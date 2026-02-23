@@ -33,8 +33,10 @@ COPY --from=node-builder /app/public/build ./public/build
 
 RUN composer dump-env prod --empty
 
-ENV DATABASE_URL="postgresql://fake:fake@fake:5432/fake"
-ENV APP_SECRET="fake-secret-for-build-because-symfony-cannot-live-without-it-apparently"
+ARG APP_SECRET="fake-secret-for-build"
+ENV APP_SECRET=${APP_SECRET}
+
+ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
 RUN composer run-script post-install-cmd
 
