@@ -33,10 +33,9 @@ COPY --from=node-builder /app/public/build ./public/build
 
 RUN composer dump-env prod --empty
 
-ARG APP_SECRET="fake-secret-for-build"
-ENV APP_SECRET=${APP_SECRET}
-
+ENV APP_SECRET="fake-secret-for-build"
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+ENV DEFAULT_URI="http://localhost"
 
 RUN composer run-script post-install-cmd
 
