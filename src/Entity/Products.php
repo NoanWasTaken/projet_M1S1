@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
@@ -17,21 +18,29 @@ class Products
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $photos = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     private ?float $price = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $category = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\PositiveOrZero]
     private ?int $stock = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -55,11 +64,24 @@ class Products
     #[ORM\ManyToMany(targetEntity: GameTypes::class, inversedBy: 'products')]
     private Collection $game_types;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Review::class, cascade: ['remove'])]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->game_types = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->isAvailable = true;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?int
@@ -221,5 +243,64 @@ class Products
         $this->game_types->removeElement($gameType);
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        $this->reviews->removeElement($review);
+
+        return $this;
+    }
+
+    public function computeAverageRating(): void
+    {
+        if ($this->reviews === null || $this->reviews->isEmpty()) {
+            $this->rating = null;
+            return;
+        }
+
+        // Take a snapshot of the collection to avoid issues if it is modified during iteration.
+        $reviews = $this->reviews->toArray();
+        $count = \count($reviews);
+
+        if ($count === 0) {
+            $this->rating = null;
+            return;
+        }
+
+        $total = 0.0;
+        foreach ($reviews as $review) {
+            $reviewRating = $review->getRating();
+            if ($reviewRating === null) {
+                continue;
+            }
+            $total += (float) $reviewRating;
+        }
+
+        $avg = 0.0;
+        if ($count > 0) {
+            $avg = round($total / $count, 1);
+        }
+
+        // Store rating as a string matching DECIMAL(3,1) precision.
+        $this->rating = number_format($avg, 1, '.', '');
     }
 }

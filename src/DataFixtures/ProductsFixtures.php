@@ -199,6 +199,7 @@ class ProductsFixtures extends Fixture
             ],
         ];
 
+        $i = 0;
         foreach ($products as $productData) {
             $product = new Products();
             $product->setName($productData['name'])
@@ -213,6 +214,8 @@ class ProductsFixtures extends Fixture
                 ->setIsAvailable(true);
 
             $manager->persist($product);
+            $this->addReference('product_' . $i, $product);
+            $i++;
         }
 
         $manager->flush();
