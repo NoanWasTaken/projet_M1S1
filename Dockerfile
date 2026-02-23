@@ -29,7 +29,7 @@ RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --opti
 COPY . .
 COPY --from=node-builder /app/public/build ./public/build
 
-RUN composer dump-env prod
+RUN composer dump-env prod --empty
 RUN composer run-script post-install-cmd
 
 RUN chown -R www-data:www-data var/ public/
