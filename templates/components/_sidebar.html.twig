@@ -1,0 +1,55 @@
+{% set current = app.request.attributes.get('_route') %}
+
+{% set items = [
+  { label: 'ACCUEIL',   icon: '🏠', href: path('app_home'),      activeOn: ['app_home'] },
+  { label: 'CATALOGUE', icon: '🛒', href: path('app_catalogue'), activeOn: ['app_catalogue'] },
+  { label: 'CONFIG IA', icon: '🧠', href: '#',                  activeOn: [] },
+  { label: 'PANIER',    icon: '🧾', href: '#',                  activeOn: [] },
+  { label: 'SUPPORT',   icon: '💬', href: '#',                  activeOn: [] },
+] %}
+
+<aside
+  data-sidebar-target="sidebar"
+  class="
+    shrink-0 overflow-hidden
+    fixed inset-y-0 left-0 z-50 w-72
+    -translate-x-full transform transition-transform duration-300
+    lg:static lg:translate-x-0
+    lg:w-0 lg:transition-[width] lg:duration-300 lg:ease-in-out
+
+    pixel-sidebar
+  "
+>
+  <div class="h-full overflow-y-auto p-6 pixel-ui">
+
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <div class="pixel-title">GEARFORGE</div>
+        <span class="pixel-brand__sub">Phrase d'accroche</span>
+      </div>
+
+      <button type="button"
+              data-action="click->sidebar#close"
+              class="lg:hidden pixel-icon-btn"
+              aria-label="Fermer">
+        ✕
+      </button>
+    </div>
+
+    <div class="pixel-rule my-6"></div>
+
+    <div class="pixel-label">NAVIGATION</div>
+
+    <nav class="mt-5 space-y-4" style="font-family: 'Press Start 2P', sans-serif;">
+      {% for it in items %}
+        {% set isActive = it.activeOn is defined and current in it.activeOn %}
+        <a href="{{ it.href }}" class="pixel-btn {{ isActive ? 'is-active' : '' }}">
+          <span class="pixel-btn__ico">{{ it.icon }}</span>
+          <span class="pixel-btn__text">{{ it.label }}</span>
+          <span class="pixel-btn__arrow">▶</span>
+        </a>
+      {% endfor %}
+    </nav>
+
+  </div>
+</aside>

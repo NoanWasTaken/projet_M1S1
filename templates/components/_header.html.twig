@@ -1,0 +1,65 @@
+<header class="pixel-header fixed top-0 left-0 right-0 z-40 lg:static">
+  <section class="container mx-auto px-4 py-4 pixel-ui">
+    <section class="relative flex items-center justify-between">
+
+      {# LEFT #}
+      <div class="flex items-center">
+        <button
+          type="button"
+          data-sidebar-toggle
+          data-action="click->sidebar#toggle"
+          aria-expanded="false"
+          class="pixel-icon-btn"
+          aria-label="Ouvrir le menu"
+        >
+          ☰
+        </button>
+      </div>
+
+      {# CENTER (true center) #}
+      <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <a href="{{ path('app_home') }}" class="pixel-brand pointer-events-auto">
+          <span class="pixel-brand__main">GEARFORGE</span>
+        </a>
+      </div>
+
+      {# RIGHT #}
+      <nav class="hidden md:flex items-center gap-3">
+        <a href="{{ path('app_catalogue') }}"
+           class="pixel-icon-link"
+           data-tip="Catalogue"
+           aria-label="Catalogue">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </a>
+
+        <a href="{{ path('app_cart') }}"
+           class="pixel-icon-link pixel-icon-link--cta"
+           data-tip="Panier"
+           aria-label="Panier">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+        </a>
+
+        {% if app.user %}
+          <span class="pixel-icon-chip" data-tip="{{ app.user.email }}" aria-label="Compte">
+            <i data-lucide="user" class="w-5 h-5"></i>
+          </span>
+
+          <a href="{{ path('app_logout') }}"
+             class="pixel-icon-link"
+             data-tip="Déconnexion"
+             aria-label="Déconnexion">
+            <i data-lucide="log-out" class="w-5 h-5"></i>
+          </a>
+        {% else %}
+          <a href="{{ path('app_login') }}"
+             class="pixel-icon-link"
+             data-tip="Connexion"
+             aria-label="Connexion">
+            <i data-lucide="log-in" class="w-5 h-5"></i>
+          </a>
+        {% endif %}
+      </nav>
+
+    </section>
+  </section>
+</header>
