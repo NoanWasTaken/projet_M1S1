@@ -10,9 +10,11 @@ WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    libicu-dev \
     unzip \
     git \
- && docker-php-ext-install pdo pdo_pgsql \
+ && docker-php-ext-configure intl \
+ && docker-php-ext-install pdo pdo_pgsql intl \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV APACHE_DOCUMENT_ROOT="/var/www/html/public"
@@ -30,6 +32,10 @@ COPY . .
 COPY --from=node-builder /app/public/build ./public/build
 
 RUN composer dump-env prod --empty
+
+ENV DATABASE_URL="postgresql://fake:fake@fake:5432/fake"
+ENV APP_SECRET="fake-secret-for-build-because-symfony-cannot-live-without-it-apparently"
+
 RUN composer run-script post-install-cmd
 
 RUN chown -R www-data:www-data var/ public/
