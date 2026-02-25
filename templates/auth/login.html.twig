@@ -1,97 +1,110 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}Connexion - GearForge{% endblock %}
 
 {% block body %}
-<div class="min-h-[calc(100vh-72px)] flex items-center justify-center px-4 py-12">
+<div class="min-h-screen flex flex-col items-center justify-center px-4">
+  <div class="pixel-dots w-full mb-10">
+    <img src="{{ asset('pacman.webp') }}" alt="" class="pacman pacman--top" />
+  </div>
+
   <div class="w-full max-w-md pixel-ui">
 
-    <div class="pixel-card">
-      <div class="flex items-center justify-between gap-3">
-        <div>
-          <div class="pixel-title">CONNEXION</div>
-          <div class="pixel-subtitle">Accède à ton espace GearForge</div>
-        </div>
-        <div class="pixel-icon-btn" aria-hidden="true">
-          <i data-lucide="log-in" class="w-5 h-5"></i>
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <div class="pixel-title">CONNEXION</div>
+        <div class="pixel-subtitle">Accède à ton espace GearForge</div>
+      </div>
+      <div class="pixel-icon-btn" aria-hidden="true">
+        <i data-lucide="log-in" class="w-5 h-5"></i>
+      </div>
+    </div>
+
+    <div class="pixel-rule my-6"></div>
+
+    {# === Erreur Symfony === #}
+    {% if error %}
+      <div class="pixel-alert pixel-alert--error mb-4">
+        <i data-lucide="triangle-alert" class="w-4 h-4"></i>
+        <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+      </div>
+    {% endif %}
+
+    {# === Flashes === #}
+    {% for message in app.flashes('error') %}
+      <div class="pixel-alert pixel-alert--error mb-4">
+        <i data-lucide="triangle-alert" class="w-4 h-4"></i>
+        <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+      <div class="pixel-alert pixel-alert--success mb-4">
+        <i data-lucide="badge-check" class="w-4 h-4"></i>
+        <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+
+    <form method="post" class="space-y-4">
+
+      <div>
+        <label for="username" class="pixel-label block mb-2">EMAIL</label>
+        <div class="pixel-input">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          <input
+            type="email"
+            id="username"
+            name="_username"
+            value="{{ last_username }}"
+            required
+            autofocus
+            autocomplete="email"
+            placeholder="ton@email.com"
+            class="pixel-input__field"
+          />
         </div>
       </div>
 
-      <div class="pixel-rule my-6"></div>
-
-      {# Errors Symfony Security #}
-      {% if error %}
-        <div class="pixel-alert pixel-alert--error mb-4">
-          <i data-lucide="triangle-alert" class="w-4 h-4"></i>
-          <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+      <div>
+        <label for="password" class="pixel-label block mb-2">MOT DE PASSE</label>
+        <div class="pixel-input">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <input
+            type="password"
+            id="password"
+            name="_password"
+            required
+            autocomplete="current-password"
+            placeholder="••••••••"
+            class="pixel-input__field"
+          />
         </div>
-      {% endif %}
+      </div>
 
-      {# Flashes #}
-      {% for message in app.flashes('error') %}
-        <div class="pixel-alert pixel-alert--error mb-4">
-          <i data-lucide="triangle-alert" class="w-4 h-4"></i>
-          <span>{{ message }}</span>
-        </div>
-      {% endfor %}
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-      {% for message in app.flashes('success') %}
-        <div class="pixel-alert pixel-alert--success mb-4">
-          <i data-lucide="badge-check" class="w-4 h-4"></i>
-          <span>{{ message }}</span>
-        </div>
-      {% endfor %}
+      <button type="submit" class="pixel-btn is-cta">
+        <span class="pixel-btn__ico">
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </span>
+        <span class="pixel-btn__text">SE CONNECTER</span>
+        <span class="pixel-btn__arrow">▶</span>
+      </button>
 
-      <form method="post" class="space-y-4">
-        <div>
-          <label for="username" class="pixel-label block mb-2">EMAIL</label>
-          <div class="pixel-input">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-            <input
-              type="email"
-              id="username"
-              name="_username"
-              value="{{ last_username }}"
-              required
-              autofocus
-              autocomplete="email"
-              placeholder="ton@email.com"
-              class="pixel-input__field"
-            />
-          </div>
-        </div>
+      <div class="pixel-muted text-center pt-2">
+        Pas encore de compte ?
+        <a href="{{ path('app_register') }}" class="pixel-link-inline">
+          S’inscrire
+        </a>
+      </div>
 
-        <div>
-          <label for="password" class="pixel-label block mb-2">MOT DE PASSE</label>
-          <div class="pixel-input">
-            <i data-lucide="lock" class="w-4 h-4"></i>
-            <input
-              type="password"
-              id="password"
-              name="_password"
-              required
-              autocomplete="current-password"
-              placeholder="••••••••"
-              class="pixel-input__field"
-            />
-          </div>
-        </div>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        <button type="submit" class="pixel-btn is-cta">
-          <span class="pixel-btn__ico"><i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-          <span class="pixel-btn__text">SE CONNECTER</span>
-          <span class="pixel-btn__arrow">▶</span>
-        </button>
-
-        <div class="pixel-muted text-center pt-2">
-          Pas encore de compte ?
-          <a href="{{ path('app_register') }}" class="pixel-link-inline">S’inscrire</a>
-        </div>
-      </form>
-    </div>
+    </form>
 
   </div>
+
+  <div class="pixel-dots w-full mt-10">
+    <img src="{{ asset('pacman_left.webp') }}" alt="" class="pacman pacman--bottom" />
+  </div>
+
 </div>
 {% endblock %}

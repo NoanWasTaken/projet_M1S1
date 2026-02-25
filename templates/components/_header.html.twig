@@ -2,28 +2,25 @@
   <section class="container mx-auto px-4 py-4 pixel-ui">
     <section class="relative flex items-center justify-between">
 
-      {# LEFT #}
       <div class="flex items-center">
         <button
           type="button"
           data-sidebar-toggle
           data-action="click->sidebar#toggle"
           aria-expanded="false"
-          class="pixel-icon-btn"
+          class="pixel-icon-btn color: var(--pixel-head)"
           aria-label="Ouvrir le menu"
         >
           ☰
         </button>
       </div>
 
-      {# CENTER (true center) #}
       <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <a href="{{ path('app_home') }}" class="pixel-brand pointer-events-auto">
           <span class="pixel-brand__main">GEARFORGE</span>
         </a>
       </div>
 
-      {# RIGHT #}
       <nav class="hidden md:flex items-center gap-3">
         <a href="{{ path('app_catalogue') }}"
            class="pixel-icon-link"
@@ -32,7 +29,7 @@
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
         </a>
 
-        <a href="{{ path('app_cart') }}"
+        <a href="" {#à rediriger vers le panier#}
            class="pixel-icon-link pixel-icon-link--cta"
            data-tip="Panier"
            aria-label="Panier">

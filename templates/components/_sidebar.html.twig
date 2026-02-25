@@ -1,11 +1,10 @@
 {% set current = app.request.attributes.get('_route') %}
 
 {% set items = [
-  { label: 'ACCUEIL',   icon: '🏠', href: path('app_home'),      activeOn: ['app_home'] },
-  { label: 'CATALOGUE', icon: '🛒', href: path('app_catalogue'), activeOn: ['app_catalogue'] },
-  { label: 'CONFIG IA', icon: '🧠', href: '#',                  activeOn: [] },
-  { label: 'PANIER',    icon: '🧾', href: '#',                  activeOn: [] },
-  { label: 'SUPPORT',   icon: '💬', href: '#',                  activeOn: [] },
+  { label: 'SOURIS', icon: '⌨️', href: '#',      activeOn: [], hover: 'blue'    },
+  { label: 'CHAISE',  icon: '🖱️', href: '#', activeOn: [], hover: 'green'   },
+  { label: 'CLAVIER',  icon: '🎧', href: '#', activeOn: [], hover: 'red' },
+  { label: 'CASQUE',  icon: '🪑', href: '#', activeOn: [], hover: 'yellow'  },
 ] %}
 
 <aside
@@ -16,7 +15,6 @@
     -translate-x-full transform transition-transform duration-300
     lg:static lg:translate-x-0
     lg:w-0 lg:transition-[width] lg:duration-300 lg:ease-in-out
-
     pixel-sidebar
   "
 >
@@ -43,7 +41,8 @@
     <nav class="mt-5 space-y-4" style="font-family: 'Press Start 2P', sans-serif;">
       {% for it in items %}
         {% set isActive = it.activeOn is defined and current in it.activeOn %}
-        <a href="{{ it.href }}" class="pixel-btn {{ isActive ? 'is-active' : '' }}">
+        <a href="{{ it.href }}"
+          class="pixel-btn pixel-btn--maurice pixel-btn--{{ it.hover }} {{ isActive ? 'is-active' : '' }}">
           <span class="pixel-btn__ico">{{ it.icon }}</span>
           <span class="pixel-btn__text">{{ it.label }}</span>
           <span class="pixel-btn__arrow">▶</span>
