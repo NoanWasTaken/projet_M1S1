@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\GameTypes;
 use App\Entity\Products;
+use App\Entity\Review;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -34,5 +35,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Products', 'fas fa-box', Products::class);
         yield MenuItem::linkToCrud('Game Types', 'fas fa-gamepad', GameTypes::class);
+        yield MenuItem::linkToCrud('Avis', 'fas fa-star', Review::class);
     }
 }

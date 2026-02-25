@@ -21,6 +21,8 @@ class UserFixtures extends Fixture
         $user->setPassword($this->passwordHasher->hashPassword($user, 'gearforge2025!'));
         $user->setIsVerified(true);
         $manager->persist($user);
+        $this->addReference('user_admin', $user);
+
         $manager->flush();
     }
 }
