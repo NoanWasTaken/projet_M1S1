@@ -13,12 +13,14 @@
                 </a>
                 <nav class="hidden md:flex items-center space-x-6">
                     <a href="{{ path('app_catalogue') }}" class="text-gray-300 hover:text-white transition">Catalogue</a>
+                    <a href="{{ path('app_cart') }}" class="relative text-gray-300 hover:text-white transition">
+                        <span>Panier</span>
+                    </a>
                     {% if app.user %}
-                        <a href="{{ path('app_cart') }}" class="relative text-gray-300 hover:text-white transition">
-                            <span>Panier</span>
-                        </a>
                         <span class="text-gray-400">{{ app.user.email }}</span>
                         <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white transition">Déconnexion</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="text-gray-300 hover:text-white transition">Connexion</a>
                     {% endif %}
                 </nav>
             </div>
