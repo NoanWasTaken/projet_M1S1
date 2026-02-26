@@ -19,6 +19,10 @@ class CartController extends AbstractController
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
+        if ($cart->getItems()->count() === 0) {
+            $this->addFlash('error', 'Impossible de partager un panier vide.');
+            return $this->redirectToRoute('app_cart');
+        }
         $this->cartService->ensureShareToken($cart);
         $shareUrl = $this->generateUrl('app_cart_shared_view', [
             'token' => $cart->getShareToken()
