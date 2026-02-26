@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Repository\ProductsRepository;
@@ -14,6 +13,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class CartController extends AbstractController
 {
+    #[Route('/import/{token}', name: 'app_cart_import_shared', methods: ['POST'])]
+    public function importShared(string $token): Response
+    {
+        $user = $this->getUser();
+        $sharedCart = $this->cartService->getCartByShareToken($token);
+        if (!$sharedCart || $sharedCart->getItems()->count() === 0) {
+            $this->addFlash('error', 'Impossible d\'importer ce panier.');
+            return $this->redirectToRoute('app_cart');
+        }
+        $userCart = $this->cartService->getOrCreateCart($user);
+        $this->cartService->importCartItems($sharedCart, $userCart);
+        $this->addFlash('success', 'Panier importé avec succès !');
+        return $this->redirectToRoute('app_cart');
+    }
     #[Route('/share', name: 'app_cart_share', methods: ['GET'])]
     public function share(): Response
     {

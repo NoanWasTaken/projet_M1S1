@@ -15,7 +15,60 @@
             <h1 class="text-5xl font-bold text-white mb-4">
                 Mon <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Panier</span>
             </h1>
-            <a href="{{ path('app_cart_share') }}" class="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Partager mon panier</a>
+            <div class="flex flex-col items-center gap-2">
+                {% if cart.items|length == 0 %}
+                    <a href="{{ path('app_cart_share') }}" class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Partager mon panier</a>
+                {% endif %}
+                <button onclick="document.getElementById('import-modal').showModal()" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Importer un panier</button>
+            </div>
+            <dialog id="import-modal" class="rounded-xl p-6 bg-gray-900 text-white shadow-xl">
+                <style>
+                    #import-modal[open] {
+                        position: fixed ;
+                        top: 50% ;
+                        left: 50% ;
+                        transform: translate(-50%, -50%) ;
+                        margin: 0 ;
+                        padding: 0;
+                        border: none;
+                        background: none;
+                        z-index: 1000;
+                    }
+                    #import-modal > form {
+                        box-shadow: 0 8px 40px 0 #000a, 0 0 0 4px #a855f7;
+                    }
+                    #import-modal::backdrop {
+                        background: rgba(20, 20, 30, 0.7);
+                    }
+                </style>
+                <form method="post" action="" id="import-form" class="flex flex-col items-center gap-6 w-[90vw] max-w-xl min-w-[340px] p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-purple-900 rounded-2xl shadow-2xl border-4 border-purple-700">
+                    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-2 tracking-wider uppercase">Importer un panier</h2>
+                    <label for="import-token" class="block mb-2 text-lg font-semibold text-pink-400">Token de partage</label>
+                    <input type="text" id="import-token" name="token" class="w-full p-4 mb-2 rounded-lg bg-gray-800 border-2 border-pink-500 focus:border-pink-400 focus:ring-2 focus:ring-pink-500 text-pink-200 font-mono text-center text-xl transition-all outline-none shadow-lg" placeholder="Colle ici le token..." autocomplete="off" required>
+                    <div class="flex gap-6 mt-2 w-full justify-center">
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:scale-105 hover:from-pink-600 hover:to-purple-600 transition-all duration-150 flex items-center gap-2 text-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Importer
+                        </button>
+                        <button type="button" onclick="document.getElementById('import-modal').close()" class="px-8 py-3 bg-gray-800 text-gray-300 font-bold rounded-xl border border-gray-600 hover:bg-gray-700 hover:text-white transition-all duration-150 text-lg">Annuler</button>
+                    </div>
+                </form>
+            </dialog>
+            <script>
+                document.getElementById('import-form').onsubmit = function(e) {
+                    e.preventDefault();
+                    let token = document.getElementById('import-token').value.trim();
+                    const match = token.match(/([a-f0-9]{64})$/);
+                    if (match) {
+                        token = match[1];
+                    }
+                    if (token.length === 64) {
+                        const form = e.target;
+                        form.action = '/cart/import/' + token;
+                        form.submit();
+                    }
+                };
+            </script>
         </div>
 
         {% for message in app.flashes('success') %}

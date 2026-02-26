@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Service;
 
 use App\Entity\Cart;
@@ -11,6 +10,29 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CartService
 {
+        public function importCartItems(Cart $from, Cart $to): void
+        {
+            foreach ($from->getItems() as $item) {
+                $found = false;
+                foreach ($to->getItems() as $toItem) {
+                    if ($toItem->getProduct()->getId() === $item->getProduct()->getId()) {
+                        $toItem->setQuantity($toItem->getQuantity() + $item->getQuantity());
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+                    $newItem = new CartItem();
+                    $newItem->setCart($to);
+                    $newItem->setProduct($item->getProduct());
+                    $newItem->setQuantity($item->getQuantity());
+                    $to->addItem($newItem);
+                    $this->entityManager->persist($newItem);
+                }
+            }
+            $to->setUpdatedAt(new \DateTimeImmutable());
+            $this->entityManager->flush();
+        }
     public function getCartByShareToken(string $token): ?Cart
     {
         return $this->cartRepository->findOneBy(['shareToken' => $token]);
