@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier partagé{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">Panier partagé</h1>
+    {% if cart.items|length > 0 %}
+        <ul class="mb-6">
+            {% for item in cart.items %}
+                <li class="mb-2">
+                    {{ item.product.name }} x {{ item.quantity }} ({{ item.getSubtotal()|number_format(2, '.', ' ') }} €)
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="font-bold">Total : {{ cart.getTotal()|number_format(2, '.', ' ') }} €</div>
+    {% else %}
+        <div class="text-gray-500">Ce panier est vide.</div>
+    {% endif %}
+    <a href="/" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Retour à l'accueil</a>
+</div>
+{% endblock %}
