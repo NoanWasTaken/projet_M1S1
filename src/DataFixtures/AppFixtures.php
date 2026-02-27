@@ -19,7 +19,6 @@ final class AppFixtures extends Fixture
     {
         $now = new \DateTimeImmutable();
 
-        // --- Reward nécessaire pour ton mini-jeu ---
         $reward = new Reward();
         $reward->setCode('NAVBAR_ORDER_1');
         $reward->setName('Combo Navbar: ordre secret');
@@ -30,11 +29,21 @@ final class AppFixtures extends Fixture
         $reward->setUnlocks(['navbarCombo' => true]);
         $reward->setIsActive(true);
 
-        // ✅ important : created_at est NOT NULL en DB
+        $reward2 = new Reward();
+        $reward2->setCode('FOOTER_WORD_ENFANT');
+        $reward2->setName('Footer Quest: ENFANT');
+        $reward2->setType('COUPON');
+        $reward2->setRuleType('WORD_GAME');
+        $reward2->setRuleValue('ENFANT');
+        $reward2->setDescription('Former le mot ENFANT avec les lettres du footer.');
+        $reward2->setUnlocks(['coupon' => true]);
+        $reward2->setIsActive(true);
+        $reward2->setCreatedAt(new \DateTimeImmutable());
+        $manager->persist($reward2);
+
         if (method_exists($reward, 'setCreatedAt')) {
             $reward->setCreatedAt($now);
         } elseif (method_exists($reward, 'setCretedAt')) {
-            // compat si l'entité a encore l'ancien setter (typo)
             $reward->setCretedAt($now);
         }
 
@@ -44,7 +53,6 @@ final class AppFixtures extends Fixture
 
         $manager->persist($reward);
 
-        // --- Users de test ---
         $this->createUserWithProfile(
             $manager,
             email: 'admin@gearforge.test',

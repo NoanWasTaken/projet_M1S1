@@ -4,12 +4,12 @@
   --pixel-bg: #0b0720;     /* fond violet très sombre */
   --pixel-panel: #120a2e;  /* panneau */
   --pixel-border: #e9ddff; /* bordure claire */
-  --pixel-secondary: #97dffc;  /* texte secondaire */
-  --pixel-accent: #7c3aed; 
+  --secondary: #97dffc;  /* texte secondaire */
+  --pixel-accent: #7c3aed;    /* bouton*/
   --pixel-accent-2: #a78bfa;
   --pixel-shadow: #000000;
   --pixel-head: #e9aaf6;
-  --pixel-anchor: #858ae3;
+  --tertiary: #858ae3;
   --color-mauve-50: #fdf5fe;
 --color-mauve-100: #f9eafd;
 --color-mauve-200: #f2d3fb;
@@ -94,7 +94,7 @@
 .pixel-subtitle{
   margin-top: 6px;
   font-size: 10px;
-  color: var(--pixel-secondary);
+  color: var(--secondary);
 }
 
 .pixel-rule{
@@ -105,7 +105,7 @@
 
 .pixel-label{
   font-size: 10px;
-  color: var(--pixel-secondary);
+  color: var(--secondary);
 }
 
 .pixel-card{
@@ -117,7 +117,7 @@
 
 .pixel-muted{
   font-size: 10px;
-  color: var(--pixel-secondary);
+  color: var(--secondary);
 }
 
 /* Boutons pixel */
@@ -242,7 +242,7 @@
 .pixel-brand__sub{
   margin-top: 4px;
   font-size: 9px;
-  color: var(--pixel-secondary);
+  color: var(--secondary);
 }
 
 .pixel-icon-link,
@@ -360,7 +360,7 @@
 .pixel-input svg{
   width: 18px;
   height: 18px;
-  color: var(--pixel-secondary);
+  color: var(--secondary);
   shape-rendering: crispEdges;
   stroke-width: 2.25;
 }
@@ -414,7 +414,7 @@
 }
 
 .pixel-link-inline{
-  color: var(--pixel-anchor);
+  color: var(--tertiary);
   text-decoration: none;
 
 }
