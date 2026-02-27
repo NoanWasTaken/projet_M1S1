@@ -1,10 +1,10 @@
 {% set current = app.request.attributes.get('_route') %}
 
 {% set items = [
-  { label: 'SOURIS', icon: '⌨️', href: '#',      activeOn: [], hover: 'blue'    },
-  { label: 'CHAISE',  icon: '🖱️', href: '#', activeOn: [], hover: 'green'   },
-  { label: 'CLAVIER',  icon: '🎧', href: '#', activeOn: [], hover: 'red' },
-  { label: 'CASQUE',  icon: '🪑', href: '#', activeOn: [], hover: 'yellow'  },
+  { key: 'souris',label: 'SOURIS', icon: '⌨️', href: '#',      activeOn: [], hover: 'blue'    },
+  { key: 'chaise', label: 'CHAISE',  icon: '🖱️', href: '#', activeOn: [], hover: 'green'   },
+  { key: 'clavier', label: 'CLAVIER',  icon: '🎧', href: '#', activeOn: [], hover: 'red' },
+  { key: 'casque', label: 'CASQUE',  icon: '🪑', href: '#', activeOn: [], hover: 'yellow'  },
 ] %}
 
 <aside
@@ -38,10 +38,15 @@
 
     <div class="pixel-label">NAVIGATION</div>
 
-    <nav class="mt-5 space-y-4" style="font-family: 'Press Start 2P', sans-serif;">
+    <nav class="mt-5 space-y-4" style="font-family: 'Press Start 2P', sans-serif;"
+      data-controller="nav-game"
+      data-nav-game-claim-url-value="{{ app.user ? path('app_game_navbar_claim') : '' }}"
+      data-nav-game-is-auth-value="{{ app.user ? '1' : '0' }}"
+    >
       {% for it in items %}
         {% set isActive = it.activeOn is defined and current in it.activeOn %}
-        <a href="{{ it.href }}"
+        <a href="{{ it.href }}" draggable="false" data-key="{{ it.key }}"
+          data-nav-game-target="item" data-action="click->nav-game#preventClick"
           class="pixel-btn pixel-btn--maurice pixel-btn--{{ it.hover }} {{ isActive ? 'is-active' : '' }}">
           <span class="pixel-btn__ico">{{ it.icon }}</span>
           <span class="pixel-btn__text">{{ it.label }}</span>
@@ -49,6 +54,20 @@
         </a>
       {% endfor %}
     </nav>
+
+    <div class="pixel-rule mt-25 my-6"></div>
+
+    <div
+      data-nav-game-target="status"
+      class="text-[10px] leading-5 tracking-widest text-white/70"
+      style="font-family: 'Press Start 2P', sans-serif;"
+    >
+      {% if app.user %}
+        trouvez la bonne combinaison
+      {% else %}
+        Connectez - vous pour accéder à nos différents mini-jeux !!!
+      {% endif %}
+    </div>
 
   </div>
 </aside>
