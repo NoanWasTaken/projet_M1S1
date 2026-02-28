@@ -37,9 +37,12 @@
         </a>
 
         {% if app.user %}
-          <span class="pixel-icon-chip" data-tip="{{ app.user.email }}" aria-label="Compte">
+          <a href="{{ path('app_client_profile') }}"
+            class="pixel-icon-chip"
+            data-tip="Profil ({{ app.user.email }})"
+            aria-label="Profil">
             <i data-lucide="user" class="w-5 h-5"></i>
-          </span>
+          </a>
 
           <a href="{{ path('app_logout') }}"
              class="pixel-icon-link"
