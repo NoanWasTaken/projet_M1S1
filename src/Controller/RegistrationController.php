@@ -41,6 +41,11 @@ class RegistrationController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_USER']);
             
+            $profile = new PlayerProfile();
+            $profile->setOwner($user);
+            $profile->setCreatedAt(new \DateTimeImmutable());
+            $profile->setUpdatedAt(new \DateTimeImmutable());
+            
             $entityManager->persist($user);
             $entityManager->persist($profile);
             $entityManager->flush();

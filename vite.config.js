@@ -20,6 +20,6 @@ export default defineConfig({
         },
     },
     server: {
-        origin: "http://localhost:5174",
+        origin: "http://localhost:5173",
     },
 });
