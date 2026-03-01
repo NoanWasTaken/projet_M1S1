@@ -79,20 +79,9 @@
         <a href="{{ path('app_catalogue') }}" class="inline-block px-12 py-5 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xl font-bold rounded-xl hover:opacity-90 transition transform hover:scale-105">
             Explorer le catalogue
         </a>
-
-        {% if not app.user %}
-          <a href="{{ path('app_register') }}"
-             class="px-8 py-4 bg-gray-800 text-white text-lg font-bold rounded-xl hover:bg-gray-700 transition border border-gray-700">
-            Créer un compte
-          </a>
-        {% endif %}
-      </div>
-    </div>
-  </section>
-
-  {{ include('components/_banner.html.twig') }}
-
-  {# Footer #}
-  {{ include('components/_footer.html.twig') }}
-
+    </section>
+    {{ include('components/_banner.html.twig') }}
+    {{ include('components/_footer.html.twig') }}
+</div>
 {% endblock %}
+

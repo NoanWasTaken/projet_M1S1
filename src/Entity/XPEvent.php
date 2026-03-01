@@ -93,4 +93,9 @@ class XPEvent
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return '+' . ($this->amount ?? 0) . ' XP — ' . ($this->reason ?? 'sans raison');
+    }
 }

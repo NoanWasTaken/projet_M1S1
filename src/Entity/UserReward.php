@@ -96,4 +96,9 @@ class UserReward
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return ($this->reward ? (string) $this->reward : 'Récompense') . ' — ' . ($this->profile ? (string) $this->profile : 'Profil inconnu');
+    }
 }

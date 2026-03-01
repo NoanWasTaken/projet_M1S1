@@ -48,6 +48,11 @@ class Cart
         $this->updatedAt = new \DateTimeImmutable();
     }
 
+    public function __toString(): string
+    {
+        return 'Panier #' . $this->id . ($this->user ? ' (' . $this->user . ')' : '');
+    }
+
     public function getId(): ?int
     {
         return $this->id;

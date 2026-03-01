@@ -55,6 +55,11 @@ class Reward
         $this->createdAt = new \DateTimeImmutable();
     }
 
+    public function __toString(): string
+    {
+        return $this->name ?? $this->code ?? 'Récompense #' . $this->id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

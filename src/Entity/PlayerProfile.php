@@ -55,6 +55,11 @@ class PlayerProfile
         $this->userRewards = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return 'Profil #' . $this->id . ($this->owner ? ' (' . $this->owner . ')' : '');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
