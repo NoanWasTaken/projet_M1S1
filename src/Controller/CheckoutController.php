@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Enum\OrderStatus;
 use App\Service\CartService;
 use App\Service\StripeService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +20,8 @@ class CheckoutController extends AbstractController
 {
     public function __construct(
         private CartService $cartService,
-        private StripeService $stripeService
+        private StripeService $stripeService,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -75,8 +80,31 @@ class CheckoutController extends AbstractController
     #[Route('/success', name: 'app_checkout_success')]
     public function success(): Response
     {
-        $this->cartService->clearCart($this->getUser());
-        
+        $user = $this->getUser();
+        $cart = $this->cartService->getOrCreateCart($user);
+
+        if (!$cart->getItems()->isEmpty()) {
+            $order = new Order();
+            $order->setUser($user);
+            $order->setStatus(OrderStatus::VALIDATED);
+
+            $total = 0.0;
+            foreach ($cart->getItems() as $cartItem) {
+                $orderItem = new OrderItem();
+                $orderItem->setProduct($cartItem->getProduct());
+                $orderItem->setQuantity($cartItem->getQuantity());
+                $orderItem->setUnitPrice((float) $cartItem->getProduct()->getPrice());
+                $order->addItem($orderItem);
+                $total += $orderItem->getSubtotal();
+            }
+
+            $order->setTotal($total);
+            $this->entityManager->persist($order);
+            $this->entityManager->flush();
+        }
+
+        $this->cartService->clearCart($user);
+
         return $this->render('checkout/success.html.twig');
     }
 

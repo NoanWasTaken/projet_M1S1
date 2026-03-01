@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Cart;
 use App\Entity\CartItem;
 use App\Entity\GameTypes;
+use App\Entity\Order;
 use App\Entity\PlayerProfile;
 use App\Entity\ProPlayer;
 use App\Entity\Products;
@@ -50,6 +51,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Avis', 'fas fa-star', Review::class);
         yield MenuItem::linkToCrud('Paniers', 'fas fa-shopping-cart', Cart::class);
         yield MenuItem::linkToCrud('Articles de panier', 'fas fa-list', CartItem::class);
+        yield MenuItem::linkToCrud('Commandes', 'fas fa-receipt', Order::class);
 
         yield MenuItem::section('Pro Players');
         yield MenuItem::linkToCrud('Pro Players', 'fas fa-trophy', ProPlayer::class);
