@@ -27,6 +27,12 @@ class PlayerProfile
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(length: 255)]
+    private string $hairSkin = 'bald_head.webp';
+
+    #[ORM\Column(length: 255)]
+    private string $bodySkin = 'normal_body.webp';
+
     #[ORM\OneToOne(inversedBy: 'playerProfile', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
@@ -171,6 +177,28 @@ class PlayerProfile
             }
         }
 
+        return $this;
+    }
+
+    public function getHairSkin(): string
+    {
+        return $this->hairSkin;
+    }
+
+    public function setHairSkin(string $hairSkin): static
+    {
+        $this->hairSkin = $hairSkin;
+        return $this;
+    }
+
+    public function getBodySkin(): string
+    {
+        return $this->bodySkin;
+    }
+
+    public function setBodySkin(string $bodySkin): static
+    {
+        $this->bodySkin = $bodySkin;
         return $this;
     }
 }

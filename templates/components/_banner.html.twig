@@ -28,7 +28,7 @@
         data-footer-word-game-claim-url-value="{{ app.user ? path('app_game_footer_word_claim') : '' }}"
         data-footer-word-game-is-auth-value="{{ app.user ? '1' : '0' }}"
       >
-        {# Les 3 lignes : lettres draggable DIRECTEMENT ici #}
+
         <div class="text-center leading-none">
           {{ _self.word_tiles('GEARFORGE', 'text-[var(--color-mauve-500)]') }}
           <div class="mt-2"></div>
@@ -71,7 +71,7 @@
                 class="rounded-md border border-white/15 bg-white/5 px-3 py-2 text-[10px] tracking-widest text-white/70 hover:bg-white/10"
                 style="font-family: 'Press Start 2P', sans-serif;"
                 >
-                RESET
+                ANNULER
                 </button>
 
                 <button
@@ -81,7 +81,7 @@
                 class="rounded-md border border-white/20 bg-white/10 px-3 py-2 text-[10px] tracking-widest text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/20"
                 style="font-family: 'Press Start 2P', sans-serif;"
                 >
-                ENTRY
+                VALIDER
                 </button>
             </div>
 

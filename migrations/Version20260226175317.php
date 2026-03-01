@@ -19,7 +19,6 @@ final class Version20260226175317 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE player_profile (id SERIAL NOT NULL, owner_id INT NOT NULL, xp_total INT NOT NULL, level INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E0A3554A7E3C61F9 ON player_profile (owner_id)');
         $this->addSql('COMMENT ON COLUMN player_profile.created_at IS \'(DC2Type:datetime_immutable)\'');
@@ -43,7 +42,6 @@ final class Version20260226175317 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE player_profile DROP CONSTRAINT FK_E0A3554A7E3C61F9');
         $this->addSql('ALTER TABLE user_reward DROP CONSTRAINT FK_2B83696ECCFA12B8');

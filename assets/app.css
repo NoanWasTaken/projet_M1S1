@@ -529,13 +529,29 @@
 
 .ds-tab:hover { transform: translateY(-1px); }
 
+.ds-tab-mini{
+  width: 100%;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 10px;
+  letter-spacing: .20em;
+  border-radius: 0;          
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.25);
+  color: rgba(255,255,255,.92);
+  box-shadow: 0 0 0 2px rgba(0,0,0,.18) inset;
+  transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+}
+
+.ds-tab-mini:hover { transform: translateY(-1px); }
+
 .ds-panelWrap{
   position: relative;
   border: 1px solid rgba(255,255,255,.18);
   border-top: 0;                        
   border-radius: 0 0 14px 14px;
   overflow: hidden;
-  min-height: 220px;                     
+  min-height: 410px;                     
 }
 
 .ds-panel{

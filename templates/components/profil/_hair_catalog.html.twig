@@ -1,0 +1,48 @@
+<div class="ds-panel__body">
+    {% set hairs = [
+        { file: 'bald_head.webp',   label: 'Chauve' },
+        { file: 'dark_hair_head.webp', label: 'Noirs' },
+        { file: 'brown_hair_head.webp', label: 'Bruns' },
+        { file: 'blond_hair_head.webp', label: 'Blonds' },
+        { file: 'ginger_hair_head.webp', label: 'Roux' },
+    ] %}
+
+    <div class="grid grid-cols-5 gap-2 sm:gap-3">
+        {% for h in hairs %}
+        <button
+        type="button"
+        class="skin-tile group relative
+                rounded-md sm:rounded-lg
+                border border-white/20 bg-black/25
+                p-1.5 sm:p-2
+                hover:bg-white/10
+                focus:outline-none focus:ring-2 focus:ring-white/20"
+        data-action="click->skin-picker#selectHair"
+        data-hair="{{ h.file }}"
+        aria-label="Cheveux : {{ h.label }}"
+        >
+        <div class="aspect-square
+                    rounded-md
+                    bg-black/30 border border-white/10
+                    grid place-items-center overflow-hidden">
+            <img
+            src="{{ asset(h.file) }}"
+            alt="{{ h.label }}"
+            class="h-[72%] sm:h-[80%] w-auto object-contain pixelated"
+            draggable="false"
+            />
+        </div>
+
+        <span
+            class="skin-selected absolute -top-1 -right-1 sm:-top-2 sm:-right-2
+                rounded-md border border-white/25 bg-black/70 ml-1
+                px-1.5 py-0.5 sm:px-2 sm:py-1
+                text-[8px] sm:text-[9px]
+                tracking-widest text-white hidden"
+        >
+            SELECT
+        </span>
+        </button>
+        {% endfor %}
+    </div>
+</div>

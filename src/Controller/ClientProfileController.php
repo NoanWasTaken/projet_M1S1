@@ -20,6 +20,9 @@ final class ClientProfileController extends AbstractController
         $xpTotal = $profile?->getXpTotal() ?? 0;
         $level   = $profile?->getLevel() ?? 1;
 
+        $bodySkin = $profile?->getBodySkin() ?? 'normal_body.webp';
+        $hairSkin = $profile?->getHairSkin() ?? 'bald_head.webp';
+
         $xpInLevel = $xpTotal % 1000;
         $xpPercent = (int) round(($xpInLevel / 1000) * 100);
 
@@ -29,6 +32,8 @@ final class ClientProfileController extends AbstractController
             'xpTotal'   => $xpTotal,
             'xpInLevel' => $xpInLevel,
             'xpPercent' => $xpPercent,
+            'hairSkin' => $hairSkin,
+            'bodySkin' => $bodySkin,
         ]);
     }
 }
