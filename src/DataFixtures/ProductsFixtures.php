@@ -10,197 +10,143 @@ class ProductsFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Souris Gaming
         $products = [
-            // SOURIS
+            // Souris
+            [
+                'name' => 'Finalmouse Starlight-12',
+                'description' => "La Finalmouse Starlight-12 est une souris gaming ultra-légère en alliage de magnésium, conçue pour une précision extrême et une rapidité inégalée. Son capteur haute performance et sa forme ergonomique offrent un confort optimal pour les longues sessions de jeu.",
+                'price' => 189.99,
+                'category' => 'souris',
+                'brand' => 'Finalmouse',
+                'stock' => 10,
+                'rating' => '4.9',
+                'photos' => ['https://prosettings.net/wp-content/uploads/finalmouse-starlight-12.jpg'],
+            ],
             [
                 'name' => 'Logitech G Pro X Superlight',
-                'description' => 'Souris gaming sans fil ultra-légère, capteur HERO 25K, 25 600 DPI, autonomie de 70 heures. Parfaite pour les joueurs FPS professionnels.',
-                'price' => '149.99',
+                'description' => "La Logitech G Pro X Superlight est une souris sans fil ultra-légère dotée d'un capteur HERO 25K, offrant une précision et une réactivité exceptionnelles. Sa conception minimaliste et sa autonomie longue durée en font le choix idéal des joueurs professionnels.",
+                'price' => 149.99,
                 'category' => 'souris',
                 'brand' => 'Logitech',
                 'stock' => 15,
                 'rating' => '4.8',
-                'image' => 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800',
-                'specifications' => [
-                    'type' => 'Sans fil',
-                    'capteur' => 'HERO 25K',
-                    'dpi' => '25 600',
-                    'poids' => '63g',
-                    'autonomie' => '70 heures',
-                    'connectivite' => 'Lightspeed USB',
-                ]
+                'photos' => ['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800'],
+            ],
+            [
+                'name' => 'VAXEE OUTSET AX',
+                'description' => "La VAXEE OUTSET AX est une souris filaire conçue pour l'e-sport, avec une prise en main confortable et un capteur optique de haute précision. Sa robustesse et sa simplicité séduisent les joueurs exigeants.",
+                'price' => 79.99,
+                'category' => 'souris',
+                'brand' => 'VAXEE',
+                'stock' => 8,
+                'rating' => '4.7',
+                'photos' => ['https://prosettings.net/wp-content/uploads/vaxee-outset-ax.png'],
             ],
             [
                 'name' => 'Razer DeathAdder V3 Pro',
-                'description' => 'Souris gaming sans fil ergonomique, capteur Focus Pro 30K, jusqu\'à 30 000 DPI. Design ergonomique pour droitier.',
-                'price' => '139.99',
+                'description' => "La Razer DeathAdder V3 Pro est une souris ergonomique sans fil, dotée d'un capteur Focus Pro 30K et d'une autonomie impressionnante. Sa forme iconique assure une prise en main naturelle et confortable.",
+                'price' => 139.99,
                 'category' => 'souris',
                 'brand' => 'Razer',
                 'stock' => 22,
                 'rating' => '4.7',
-                'image' => 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800',
-                'specifications' => [
-                    'type' => 'Sans fil',
-                    'capteur' => 'Focus Pro 30K',
-                    'dpi' => '30 000',
-                    'poids' => '64g',
-                    'autonomie' => '90 heures',
-                    'connectivite' => 'Razer HyperSpeed Wireless',
-                ]
+                'photos' => ['https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800'],
             ],
             [
-                'name' => 'SteelSeries Rival 3',
-                'description' => 'Souris gaming filaire abordable avec capteur TrueMove Core, jusqu\'à 8 500 CPI. Excellent rapport qualité-prix.',
-                'price' => '39.99',
+                'name' => 'Logitech G Pro Wireless',
+                'description' => "La Logitech G Pro Wireless combine légèreté, capteur HERO et technologie sans fil Lightspeed pour une expérience de jeu fluide et sans latence. Sa conception ambidextre convient à tous les styles de prise en main.",
+                'price' => 129.99,
                 'category' => 'souris',
-                'brand' => 'SteelSeries',
-                'stock' => 30,
-                'rating' => '4.5',
-                'image' => 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=800',
-                'specifications' => [
-                    'type' => 'Filaire',
-                    'capteur' => 'TrueMove Core',
-                    'dpi' => '8 500',
-                    'poids' => '77g',
-                    'cable' => '2 mètres',
-                    'boutons' => '6 boutons programmables',
-                ]
+                'brand' => 'Logitech',
+                'stock' => 12,
+                'rating' => '4.6',
+                'photos' => ['https://prosettings.net/wp-content/uploads/logitech-g-pro-wireless.png'],
             ],
-
-            // CLAVIERS
+            // Claviers
             [
-                'name' => 'Corsair K70 RGB PRO',
-                'description' => 'Clavier mécanique gaming full-size avec switches Cherry MX, rétroéclairage RGB personnalisable. Construction en aluminium.',
-                'price' => '179.99',
+                'name' => 'Wooting 60HE',
+                'description' => "Le Wooting 60HE est un clavier analogique révolutionnaire, offrant une détection de pression sur chaque touche pour un contrôle précis en jeu. Compact et personnalisable, il s'adresse aux gamers à la recherche d'innovation.",
+                'price' => 179.99,
+                'category' => 'clavier',
+                'brand' => 'Wooting',
+                'stock' => 10,
+                'rating' => '4.9',
+                'photos' => ['https://i.ebayimg.com/images/g/31gAAOSwBmZlqK-1/s-l1200.jpg'],
+            ],
+            [
+                'name' => 'SteelSeries Apex Pro',
+                'description' => "Le SteelSeries Apex Pro est un clavier mécanique RGB doté de switches OmniPoint ajustables, permettant de personnaliser la sensibilité de chaque touche. Son châssis en aluminium et son éclairage dynamique en font un choix haut de gamme.",
+                'price' => 199.99,
+                'category' => 'clavier',
+                'brand' => 'SteelSeries',
+                'stock' => 20,
+                'rating' => '4.8',
+                'photos' => ['https://prosettings.net/wp-content/uploads/steelseries-apex-pro.png'],
+            ],
+            [
+                'name' => 'Corsair K70 RGB',
+                'description' => "Le Corsair K70 RGB est un clavier mécanique robuste avec switches Cherry MX, rétroéclairage RGB personnalisable et repose-poignets confortable. Idéal pour les gamers exigeants et les longues sessions.",
+                'price' => 149.99,
                 'category' => 'clavier',
                 'brand' => 'Corsair',
-                'stock' => 18,
-                'rating' => '4.9',
-                'image' => 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800',
-                'specifications' => [
-                    'type' => 'Mécanique',
-                    'switches' => 'Cherry MX Red/Brown/Blue',
-                    'format' => 'Full-size (100%)',
-                    'retroeclairage' => 'RGB per-key',
-                    'connectivite' => 'USB-C détachable',
-                    'materiau' => 'Aluminium brossé',
-                ]
-            ],
-            [
-                'name' => 'Razer BlackWidow V4 Pro',
-                'description' => 'Clavier mécanique premium avec switches Razer Green, molette multifonction, repose-poignet magnétique. Le summum du gaming.',
-                'price' => '229.99',
-                'category' => 'clavier',
-                'brand' => 'Razer',
-                'stock' => 12,
-                'rating' => '4.8',
-                'image' => 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800',
-                'specifications' => [
-                    'type' => 'Mécanique',
-                    'switches' => 'Razer Green Mechanical',
-                    'format' => 'Full-size avec molette',
-                    'retroeclairage' => 'Razer Chroma RGB',
-                    'connectivite' => 'USB-C + Sans fil',
-                    'autonomie' => '200 heures',
-                ]
-            ],
-            [
-                'name' => 'Logitech G Pro X TKL',
-                'description' => 'Clavier mécanique compact TKL (sans pavé numérique) avec switches GX interchangeables. Idéal pour le gaming compétitif.',
-                'price' => '159.99',
-                'category' => 'clavier',
-                'brand' => 'Logitech',
-                'stock' => 25,
+                'stock' => 14,
                 'rating' => '4.7',
-                'image' => 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=800',
-                'specifications' => [
-                    'type' => 'Mécanique',
-                    'switches' => 'GX Blue/Brown/Red (hot-swap)',
-                    'format' => 'TKL (80%)',
-                    'retroeclairage' => 'RGB Lightsync',
-                    'connectivite' => 'USB détachable',
-                    'poids' => '980g',
-                ]
+                'photos' => ['https://prosettings.net/wp-content/uploads/corsair-k70-rgb.png'],
             ],
-
-            // CASQUES
+            // Casques
             [
-                'name' => 'HyperX Cloud Alpha',
-                'description' => 'Casque gaming stéréo avec double chambre acoustique pour un son distinctif. Confortable pour de longues sessions.',
-                'price' => '99.99',
+                'name' => 'Sennheiser HD 700',
+                'description' => "Le Sennheiser HD 700 est un casque audio haut de gamme offrant une restitution sonore exceptionnelle, des basses profondes et un confort optimal grâce à ses coussinets en velours. Parfait pour l'écoute et le gaming immersif.",
+                'price' => 399.99,
+                'category' => 'casque',
+                'brand' => 'Sennheiser',
+                'stock' => 5,
+                'rating' => '4.9',
+                'photos' => ['https://prosettings.net/wp-content/uploads/sennheiser-hd-700.png'],
+            ],
+            [
+                'name' => 'Beyerdynamic DT 770 Pro',
+                'description' => "Le Beyerdynamic DT 770 Pro est un casque studio fermé réputé pour sa clarté sonore et son isolation. Idéal pour le monitoring, le streaming et le gaming professionnel.",
+                'price' => 139.99,
+                'category' => 'casque',
+                'brand' => 'Beyerdynamic',
+                'stock' => 18,
+                'rating' => '4.8',
+                'photos' => ['https://prosettings.net/wp-content/uploads/beyerdynamic-dt-770-pro.png'],
+            ],
+            [
+                'name' => 'Sennheiser HD 599',
+                'description' => "Le Sennheiser HD 599 est un casque audio ouvert offrant une scène sonore large et naturelle, un confort supérieur et une qualité de fabrication premium. Parfait pour les audiophiles et les gamers.",
+                'price' => 199.99,
+                'category' => 'casque',
+                'brand' => 'Sennheiser',
+                'stock' => 7,
+                'rating' => '4.7',
+                'photos' => ['https://prosettings.net/wp-content/uploads/sennheiser-hd-599.png'],
+            ],
+            [
+                'name' => 'HyperX Cloud II',
+                'description' => "Le HyperX Cloud II est un casque gaming polyvalent, doté d'un son surround virtuel 7.1, d'un micro détachable et d'un confort exceptionnel. Un incontournable pour les joueurs compétitifs.",
+                'price' => 99.99,
                 'category' => 'casque',
                 'brand' => 'HyperX',
-                'stock' => 28,
-                'rating' => '4.6',
-                'image' => 'https://images.unsplash.com/photo-1599669454699-248893623440?w=800',
-                'specifications' => [
-                    'type' => 'Filaire',
-                    'audio' => 'Stéréo 2.0',
-                    'drivers' => '50mm',
-                    'micro' => 'Détachable antibruit',
-                    'connectique' => 'Jack 3.5mm + adaptateur PC',
-                    'poids' => '298g',
-                ]
+                'stock' => 25,
+                'rating' => '4.7',
+                'photos' => ['https://prosettings.net/wp-content/uploads/hyperx-cloud-ii.png'],
             ],
             [
-                'name' => 'SteelSeries Arctis Nova Pro',
-                'description' => 'Casque gaming premium avec DAC haute fidélité, son spatial 360°, micro ClearCast Gen 2. Audio immersif haute résolution.',
-                'price' => '349.99',
+                'name' => 'Beyerdynamic DT 990 Pro',
+                'description' => "Le Beyerdynamic DT 990 Pro est un casque studio ouvert reconnu pour sa restitution sonore détaillée et son confort longue durée. Idéal pour le mixage, le streaming et le jeu immersif.",
+                'price' => 159.99,
                 'category' => 'casque',
-                'brand' => 'SteelSeries',
-                'stock' => 8,
-                'rating' => '4.9',
-                'image' => 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800',
-                'specifications' => [
-                    'type' => 'Filaire avec DAC',
-                    'audio' => '360° Spatial Audio',
-                    'drivers' => '40mm Premium',
-                    'micro' => 'ClearCast Gen 2 bidirectionnel',
-                    'connectique' => 'USB + Jack 3.5mm',
-                    'compatibilite' => 'PC, PS5, Xbox, Switch',
-                ]
-            ],
-            [
-                'name' => 'Logitech G735 Wireless',
-                'description' => 'Casque sans fil léger avec design blanc/lavande, son surround LIGHTSYNC RGB, micro Blue VO!CE. 56 heures d\'autonomie.',
-                'price' => '229.99',
-                'category' => 'casque',
-                'brand' => 'Logitech',
-                'stock' => 14,
-                'rating' => '4.5',
-                'image' => 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800',
-                'specifications' => [
-                    'type' => 'Sans fil',
-                    'audio' => 'DTS Headphone:X 2.0',
-                    'drivers' => '40mm',
-                    'micro' => 'Blue VO!CE détachable',
-                    'autonomie' => '56 heures',
-                    'connectivite' => 'Lightspeed USB + Bluetooth',
-                ]
-            ],
-            [
-                'name' => 'Razer Kraken V3 HyperSense',
-                'description' => 'Casque gaming avec retour haptique, THX Spatial Audio, éclairage RGB Chroma. Immersion totale avec vibrations intelligentes.',
-                'price' => '129.99',
-                'category' => 'casque',
-                'brand' => 'Razer',
-                'stock' => 20,
-                'rating' => '4.6',
-                'image' => 'https://images.unsplash.com/photo-1545127398-14699f92334b?w=800',
-                'specifications' => [
-                    'type' => 'Filaire USB',
-                    'audio' => 'THX Spatial Audio',
-                    'drivers' => 'TriForce 50mm',
-                    'micro' => 'HyperClear Cardioid',
-                    'haptic' => 'HyperSense Technology',
-                    'rgb' => 'Razer Chroma RGB',
-                ]
+                'brand' => 'Beyerdynamic',
+                'stock' => 10,
+                'rating' => '4.7',
+                'photos' => ['https://prosettings.net/wp-content/uploads/beyerdynamic-dt-990-pro.png'],
             ],
         ];
 
-        $i = 0;
-        foreach ($products as $productData) {
+        foreach ($products as $i => $productData) {
             $product = new Products();
             $product->setName($productData['name'])
                 ->setDescription($productData['description'])
@@ -209,15 +155,16 @@ class ProductsFixtures extends Fixture
                 ->setBrand($productData['brand'])
                 ->setStock($productData['stock'])
                 ->setRating($productData['rating'])
-                ->setPhotos([$productData['image']])
-                ->setSpecifications($productData['specifications'])
-                ->setIsAvailable(true);
-
+                ->setPhotos(isset($productData['photos']) ? $productData['photos'] : [$productData['image'] ?? null])
+                ->setSpecifications($productData['specifications'] ?? null)
+                ->setIsAvailable(true)
+                ->setCreatedAt(new \DateTimeImmutable());
             $manager->persist($product);
-            $this->addReference('product_' . $i, $product);
-            $i++;
+            // Ajoute la référence pour les 10 premiers produits (utilisés dans ReviewFixtures)
+            if ($i < 10) {
+                $this->addReference('product_' . $i, $product);
+            }
         }
-
         $manager->flush();
     }
 }
