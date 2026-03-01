@@ -1,0 +1,9 @@
+{
+  "controllers": {
+    "skin-picker": {
+      "enabled": true,
+      "fetch": "eager"
+    }
+  },
+    "entrypoints": []
+}

@@ -43,6 +43,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?PlayerProfile $playerProfile = null;
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
@@ -224,6 +226,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->cart = $cart;
+
+        return $this;
+    }
+
+    public function getPlayerProfile(): ?PlayerProfile
+    {
+        return $this->playerProfile;
+    }
+
+    public function setPlayerProfile(PlayerProfile $playerProfile): static
+    {
+        // set the owning side of the relation if necessary
+        if ($playerProfile->getOwner() !== $this) {
+            $playerProfile->setOwner($this);
+        }
+
+        $this->playerProfile = $playerProfile;
 
         return $this;
     }

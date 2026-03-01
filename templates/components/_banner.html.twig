@@ -1,0 +1,105 @@
+{# Déclare le macro au TOP du fichier (ou au moins avant utilisation) #}
+{% macro word_tiles(word, colorClass) %}
+  <div class="text-2xl {{ colorClass }} flex flex-wrap justify-center gap-1"
+       style="font-family: 'Press Start 2P', sans-serif;">
+    {% for ch in word|upper|split('') %}
+      <button
+        type="button"
+        draggable="false"
+        data-footer-word-game-target="tile"
+        data-letter="{{ ch }}"
+        class="select-none rounded-md border border-white/15 bg-black/40 px-2 py-2 text-[18px] leading-none tracking-widest hover:bg-white/10"
+        aria-label="Lettre {{ ch }}"
+      >
+        {{ ch }}
+      </button>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
+<footer class="mt-16 w-full border-t border-white/10 bg-black/30 backdrop-blur-sm">
+  <div class="px-6 py-10">
+    <div class="flex flex-col items-center justify-center gap-6">
+
+      {# Le controller englobe les 3 mots + la zone slots #}
+      <section
+        class="w-full max-w-4xl"
+        data-controller="footer-word-game"
+        data-footer-word-game-claim-url-value="{{ app.user ? path('app_game_footer_word_claim') : '' }}"
+        data-footer-word-game-is-auth-value="{{ app.user ? '1' : '0' }}"
+      >
+
+        <div class="text-center leading-none">
+          {{ _self.word_tiles('GEARFORGE', 'text-[var(--color-mauve-500)]') }}
+          <div class="mt-2"></div>
+          {{ _self.word_tiles('GAMING', 'text-[var(--color-mauve-600)]') }}
+          <div class="mt-2"></div>
+          {{ _self.word_tiles('EQUIPMENT', 'text-[var(--color-mauve-700)]') }}
+        </div>
+
+        <div class="mt-6 w-full max-w-3xl mx-auto rounded-xl border border-white/10 bg-black/35 p-6">
+          <div class="flex items-start justify-between gap-4">
+            <div class="text-[11px] tracking-widest text-[var(--secondary)]"
+                 style="font-family: 'Press Start 2P', sans-serif;">
+              MINI JEU
+            </div>
+
+            <div data-footer-word-game-target="status"
+                 class="text-ml tracking-widest text-white/60 text-right"
+            >
+              {% if app.user %}
+                Déposez des lettres ici pour écrire le mot clé.
+              {% else %}
+                Connectez-vous pour tester le jeu !
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mt-4">
+
+            <div
+              data-footer-word-game-target="slots"
+              class="min-h-[72px] rounded-lg border border-dashed border-white/20 bg-white/5 p-3 flex flex-wrap justify-center gap-2"
+            ></div>
+
+            <div class="mt-3 flex items-center justify-between gap-3">
+
+            <div class="flex items-center gap-2">
+                <button
+                type="button"
+                data-action="footer-word-game#reset"
+                class="rounded-md border border-white/15 bg-white/5 px-3 py-2 text-[10px] tracking-widest text-white/70 hover:bg-white/10"
+                style="font-family: 'Press Start 2P', sans-serif;"
+                >
+                ANNULER
+                </button>
+
+                <button
+                type="button"
+                data-action="footer-word-game#submit"
+                data-footer-word-game-target="submit"
+                class="rounded-md border border-white/20 bg-white/10 px-3 py-2 text-[10px] tracking-widest text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/20"
+                style="font-family: 'Press Start 2P', sans-serif;"
+                >
+                VALIDER
+                </button>
+            </div>
+
+                <div data-footer-word-game-target="tries"
+                    class="text-[10px] tracking-widest text-[var(--tertiary)]"
+                    style="font-family: 'Press Start 2P', sans-serif;">
+                    {% if app.user %}
+                    essais restants : 5
+                    {% else %}
+                    essais restants : —
+                    {% endif %}
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</footer>
