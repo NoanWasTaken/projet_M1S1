@@ -3,13 +3,17 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -20,8 +24,10 @@ use Symfony\Component\Form\FormEvents;
 
 class UserCrudController extends AbstractCrudController
 {
-    public function __construct(public UserPasswordHasherInterface $userPasswordHasher)
-    {
+    public function __construct(
+        public UserPasswordHasherInterface $userPasswordHasher,
+        private AdminUrlGenerator $adminUrlGenerator,
+    ) {
     }
 
     public static function getEntityFqcn(): string
@@ -29,10 +35,35 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        $viewConversations = Action::new('viewConversations', 'Voir les conversations', 'fa fa-comments')
+            ->linkToRoute('admin_user_conversations', fn (User $user) => ['userId' => $user->getId()])
+            ->addCssClass('btn btn-sm btn-secondary');
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $viewConversations)
+            ->add(Crud::PAGE_DETAIL, $viewConversations);
+    }
+
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield EmailField::new('email');
+        yield TextField::new('email')
+            ->formatValue(function ($value, $entity) {
+                $url = $this->adminUrlGenerator
+                    ->setController(self::class)
+                    ->setAction(Action::DETAIL)
+                    ->setEntityId($entity->getId())
+                    ->generateUrl();
+                return sprintf('<a href="%s">%s</a>', htmlspecialchars($url), htmlspecialchars($value ?? ''));
+            })
+            ->renderAsHtml()
+            ->hideOnForm();
+        yield TextField::new('email')
+            ->setFormType(EmailType::class)
+            ->onlyOnForms();
         yield TextField::new('name');
         yield TextField::new('surname');
         

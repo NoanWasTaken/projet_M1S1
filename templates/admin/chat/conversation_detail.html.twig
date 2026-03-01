@@ -1,0 +1,65 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}
+    Conversation #{{ conversation.id }}
+    {% if conversation.user %}– {{ conversation.user.name }} {{ conversation.user.surname }}{% endif %}
+{% endblock %}
+
+{% block main %}
+<div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+    <a href="{{ backUrl }}" class="btn btn-secondary btn-sm">
+        <i class="fa fa-arrow-left me-1"></i> Retour
+    </a>
+    <span class="text-muted small">
+        Créée le {{ conversation.createdAt|date('d/m/Y à H:i') }}
+        &bull; {{ conversation.messages|length }} message(s)
+    </span>
+</div>
+
+<div class="mx-auto" style="max-width: 720px;">
+    {% if conversation.messages is empty %}
+        <div class="alert alert-info">Cette conversation ne contient aucun message.</div>
+    {% else %}
+        <div class="d-flex flex-column gap-3 p-4"
+             style="background: #13151a; border-radius: 14px; border: 1px solid #2a2d37;">
+
+            {% for message in conversation.messages %}
+                {% if message.role == 'user' %}
+                    <div class="d-flex justify-content-end">
+                        <div class="d-flex flex-column align-items-end" style="max-width: 75%;">
+                            <span class="mb-1" style="font-size: .7rem; color: #7c8395;">
+                                <i class="fa fa-user me-1"></i>
+                                {{ conversation.user ? conversation.user.name : 'Utilisateur' }}
+                            </span>
+                            <div class="px-3 py-2"
+                                 style="background: #3b5bdb; color: #fff; border-radius: 18px 18px 4px 18px; word-break: break-word; line-height: 1.55; font-size: .92rem;">
+                                {{ message.content|nl2br }}
+                            </div>
+                            <span class="mt-1" style="font-size: .68rem; color: #555b6e;">
+                                {{ message.createdAt|date('H:i') }}
+                            </span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-start gap-2">
+                        <div class="flex-shrink-0 d-flex align-items-end mb-3">
+                            <div style="width:32px; height:32px; border-radius:50%; background:#2a2d37; display:flex; align-items:center; justify-content:center; font-size:.9rem;">🤖</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-start" style="max-width: 75%;">
+                            <span class="mb-1" style="font-size: .7rem; color: #7c8395;">GearForge Assistant</span>
+                            <div class="px-3 py-2"
+                                 style="background: #1e2130; color: #d8dce8; border: 1px solid #2a2d37; border-radius: 18px 18px 18px 4px; word-break: break-word; line-height: 1.55; font-size: .92rem;">
+                                {{ message.content|nl2br }}
+                            </div>
+                            <span class="mt-1" style="font-size: .68rem; color: #555b6e;">
+                                {{ message.createdAt|date('H:i') }}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

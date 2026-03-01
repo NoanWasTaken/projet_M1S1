@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\ChatConversation;
 use App\Entity\Order;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -68,10 +69,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $orders;
 
+    /**
+     * @var Collection<int, ChatConversation>
+     */
+    #[ORM\OneToMany(targetEntity: ChatConversation::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: false)]
+    private Collection $chatConversations;
+
     public function __construct()
     {
         $this->game_types = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->chatConversations = new ArrayCollection();
     }
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
@@ -281,6 +289,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChatConversation>
+     */
+    public function getChatConversations(): Collection
+    {
+        return $this->chatConversations;
+    }
+
+    public function addChatConversation(ChatConversation $conversation): static
+    {
+        if (!$this->chatConversations->contains($conversation)) {
+            $this->chatConversations->add($conversation);
+            $conversation->setUser($this);
+        }
         return $this;
     }
 }
