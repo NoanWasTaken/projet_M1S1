@@ -7,11 +7,8 @@ export default class extends Controller {
   connect() {
     if (!this.currentValue) this.currentValue = "info";
 
-    // conteneur commun des panels (leur parent direct)
     this.panelsContainer = this.infoTarget.parentElement;
     this.panelsContainer.style.position = "relative";
-
-    // superposition
     [this.infoTarget, this.skinsTarget].forEach((p) => {
       p.style.position = "absolute";
       p.style.inset = "0";

@@ -614,3 +614,37 @@
   letter-spacing: .25em;
   color: rgba(255,255,255,.92);
 }
+
+.ds-panel.is-visible{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Le contenu des skins scrolle si trop long */
+.ds-panel--skins{
+  height: 100%;
+}
+
+.ds-panel--skins > .mt-1{
+  flex: 1 1 auto;
+  min-height: 0;        
+  overflow: auto;       
+}
+
+.sticky{
+  position:sticky;
+  top: 0;
+}
+
+
+.ds-panel--skins > .mt-4{
+  flex: 0 0 auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: rgba(0,0,0,.18); 
+  border-top: 1px solid rgba(255,255,255,.18);
+}

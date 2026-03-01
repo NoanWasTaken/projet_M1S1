@@ -22,13 +22,12 @@ export default class extends Controller {
   normalize(v) {
     if (!v) return "";
     return String(v)
-      .replace(/^https?:\/\/[^/]+\/+/i, "") // si jamais
-      .replace(/^\/+/, "")                 // "/file.webp" -> "file.webp"
-      .replace(/^public\//, "")            // "public/file.webp" -> "file.webp"
+      .replace(/^https?:\/\/[^/]+\/+/i, "")
+      .replace(/^\/+/, "")
+      .replace(/^public\//, "")            
       .trim();
   }
 
-  // ---------- UI ----------
   setDirty(isDirty) {
     if (this.hasSaveBtnTarget) {
       this.saveBtnTarget.disabled = !isDirty;
@@ -69,7 +68,6 @@ export default class extends Controller {
       if (badge) badge.classList.toggle("hidden", !isSelected);
     });
 
-    // body tiles
     const bodyTiles = Array.from(this.element.querySelectorAll("[data-body]"));
     bodyTiles.forEach((tile) => {
       const body = this.normalize(tile.dataset.body);
@@ -88,7 +86,6 @@ export default class extends Controller {
     this.setDirty(dirty);
   }
 
-  // ---------- actions ----------
   selectHair(e) {
     const hair = this.normalize(e.currentTarget?.dataset?.hair);
     if (!hair) return;
@@ -137,7 +134,6 @@ export default class extends Controller {
         return;
       }
 
-      // serveur peut renvoyer hairSkin/bodySkin
       this.currentHair = this.normalize(data.hairSkin || this.selectedHair);
       this.currentBody = this.normalize(data.bodySkin || this.selectedBody);
 
@@ -146,7 +142,7 @@ export default class extends Controller {
 
       this.applySelectionUI();
 
-      if (this.hasHintTarget) this.hintTarget.textContent = "✅ Sauvegardé.";
+      if (this.hasHintTarget) this.hintTarget.textContent = "Sauvegardé.";
       window.setTimeout(() => {
         if (this.hasHintTarget) this.hintTarget.textContent = "Choisis un style puis enregistre.";
       }, 1200);

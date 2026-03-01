@@ -1,21 +1,15 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = [
-    "hair", "skin", "body", "outfit",
-    "btnHair", "btnSkin", "btnBody", "btnOutfit",
-  ];
+  static targets = ["hair", "skin", "body", "outfit","btnHair", "btnSkin", "btnBody", "btnOutfit"];
 
   static values = { current: String };
 
   connect() {
     if (!this.currentValue) this.currentValue = "hair";
 
-    // conteneur commun des panels
     this.panelsContainer = this.hairTarget.parentElement;
     this.panelsContainer.style.position = "relative";
-
-    // superposition
     [this.hairTarget, this.skinTarget, this.bodyTarget, this.outfitTarget].forEach((p) => {
       p.style.position = "absolute";
       p.style.inset = "0";

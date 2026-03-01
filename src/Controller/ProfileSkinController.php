@@ -22,7 +22,6 @@ final class ProfileSkinController extends AbstractController
         $payload = json_decode($request->getContent() ?: '[]', true);
         $hair = (string)($payload['hairSkin'] ?? '');
 
-        // whitelist stricte
         $allowed = ['bald_head.webp', 'dark_hair_head.webp', 'ginger_hair_head.webp', 'blond_hair_head.webp', 'brown_hair_head.webp' ];
         if (!in_array($hair, $allowed, true)) {
             return $this->json(['message' => 'Skin invalide.'], 400);
