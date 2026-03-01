@@ -16,9 +16,7 @@
                 Mon <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Panier</span>
             </h1>
             <div class="flex flex-col items-center gap-2">
-                {% if cart.items|length == 0 %}
-                    <a href="{{ path('app_cart_share') }}" class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Partager mon panier</a>
-                {% endif %}
+                <!-- Bouton de partage supprimé ici, il sera affiché uniquement dans le résumé -->
                 <button onclick="document.getElementById('import-modal').showModal()" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Importer un panier</button>
             </div>
             <dialog id="import-modal" class="rounded-xl p-6 bg-gray-900 text-white shadow-xl">
@@ -55,6 +53,19 @@
                 </form>
             </dialog>
             <script>
+                                document.getElementById('share-cart-btn')?.addEventListener('click', function() {
+                                    const token = '{{ cart.shareToken }}';
+                                    if (token && token.length === 64) {
+                                        const url = window.location.origin + '/cart/shared/' + token;
+                                        navigator.clipboard.writeText(url).then(() => {
+                                            const msg = document.getElementById('share-cart-msg');
+                                            msg.classList.remove('hidden');
+                                            setTimeout(() => msg.classList.add('hidden'), 2000);
+                                        });
+                                    } else {
+                                        alert('Impossible de copier le lien');
+                                    }
+                                });
                 document.getElementById('import-form').onsubmit = function(e) {
                     e.preventDefault();
                     let token = document.getElementById('import-token').value.trim();
@@ -176,9 +187,27 @@
                             </button>
                         </form>
 
-                        <a href="{{ path('app_cart_share') }}" class="block w-full py-3 bg-green-600 text-white text-center rounded-xl hover:bg-green-700 transition mb-3">Partager mon panier</a>
+                        {% if cart.items|length > 0 and cart.shareToken is defined and cart.shareToken %}
+                        <button type="button" id="share-cart-btn" class="block w-full py-3 bg-green-600 text-white text-center rounded-xl hover:bg-green-700 transition mb-3">Partager mon panier</button>
+                        <span id="share-cart-msg" class="hidden text-green-400 text-sm mb-2">Lien copié !</span>
+                        {% endif %}
 
                         <a href="{{ path('app_catalogue') }}" class="block w-full py-3 bg-gray-700 hover:bg-gray-600 text-white text-center rounded-xl transition">
+                                        <script>
+                                            document.getElementById('share-cart-btn')?.addEventListener('click', function() {
+                                                const token = '{{ cart.shareToken }}';
+                                                if (token && token.length === 64) {
+                                                    const url = window.location.origin + '/cart/shared/' + token;
+                                                    navigator.clipboard.writeText(url).then(() => {
+                                                        const msg = document.getElementById('share-cart-msg');
+                                                        msg.classList.remove('hidden');
+                                                        setTimeout(() => msg.classList.add('hidden'), 2000);
+                                                    });
+                                                } else {
+                                                    alert('Impossible de copier le lien');
+                                                }
+                                            });
+                                        </script>
                             Continuer mes achats
                         </a>
                     </div>
