@@ -1,10 +1,10 @@
 {% set current = app.request.attributes.get('_route') %}
 
 {% set items = [
-  { key: 'souris',label: 'SOURIS', icon: '⌨️', href: '#',      activeOn: [], hover: 'blue'    },
-  { key: 'chaise', label: 'CHAISE',  icon: '🖱️', href: '#', activeOn: [], hover: 'green'   },
-  { key: 'clavier', label: 'CLAVIER',  icon: '🎧', href: '#', activeOn: [], hover: 'red' },
-  { key: 'casque', label: 'CASQUE',  icon: '🪑', href: '#', activeOn: [], hover: 'yellow'  },
+  { key: 'catalogue', label: 'Catalogue', icon: '🛒', href: path('app_catalogue'), activeOn: ['app_catalogue'], hover: 'blue' },
+  { key: 'profils', label: 'Profils joueurs', icon: '👤', href: '/profiles', activeOn: [], hover: 'green' },
+  { key: 'panier', label: 'Panier', icon: '🛍️', href: path('app_cart'), activeOn: ['app_cart'], hover: 'red' },
+  { key: 'compte', label: 'Compte', icon: '⚙️', href: '/profile', activeOn: [], hover: 'yellow' },
 ] %}
 
 <aside
@@ -49,7 +49,13 @@
           data-nav-game-target="item" data-action="click->nav-game#preventClick"
           class="pixel-btn pixel-btn--maurice pixel-btn--{{ it.hover }} {{ isActive ? 'is-active' : '' }}">
           <span class="pixel-btn__ico">{{ it.icon }}</span>
-          <span class="pixel-btn__text">{{ it.label }}</span>
+          <span class="pixel-btn__text">{{ it.label }}
+            {% if it.key == 'panier' and cart is defined and cart.totalItems is defined and cart.totalItems > 0 %}
+              <span class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold leading-none text-white bg-pink-600 rounded-full">
+                {{ cart.totalItems }}
+              </span>
+            {% endif %}
+          </span>
           <span class="pixel-btn__arrow">▶</span>
         </a>
       {% endfor %}

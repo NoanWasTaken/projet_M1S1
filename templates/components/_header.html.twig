@@ -22,11 +22,18 @@
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
         </a>#}
 
-        <a href="" {#à rediriger vers le panier#}
-           class="pixel-icon-link pixel-icon-link--cta"
+        <a href="{{ path('app_cart') }}"
+           class="pixel-icon-link pixel-icon-link--cta relative"
            data-tip="Panier"
            aria-label="Panier">
-          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="relative block">
+            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+            {% if cart is defined and cart.totalItems is defined and cart.totalItems > 0 %}
+              <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold leading-none text-white bg-pink-600 rounded-full shadow-lg">
+                {{ cart.totalItems }}
+              </span>
+            {% endif %}
+          </span>
         </a>
 
         {% if app.user %}
