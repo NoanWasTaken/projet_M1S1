@@ -1,4 +1,4 @@
-<header class="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700{% if sticky is not defined or sticky %} sticky top-0 z-50{% endif %}">
+<header class="bg-gray-900 border-b border-gray-700{% if sticky is not defined or sticky %} sticky top-0 z-50{% endif %}">
     {% set current_route = app.request is defined and app.request is not null ? app.request.attributes.get('_route') : null %}
     <div class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
@@ -11,6 +11,12 @@
                     class="transition {% if current_route == 'app_catalogue' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"
                 >
                     Catalogue
+                </a>
+                <a
+                    href="{{ path('app_profiles_index') }}"
+                    class="transition {% if current_route == 'app_profiles_index' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"
+                >
+                    Profils joueurs
                 </a>
                 {% if app.user %}
                     <a

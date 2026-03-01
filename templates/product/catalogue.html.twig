@@ -4,10 +4,10 @@
 
 {% block body %}
 <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-    {{ include('components/_navbar.html.twig') }}
+    {{ include('components/_navbar.html.twig', { cart: cart|default(null) }) }}
 
     <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section -->
+
         <div class="text-center mb-12">
             <h1 class="text-5xl font-bold text-white mb-4">
                 Équipement <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Gaming</span> Premium
@@ -15,7 +15,6 @@
             <p class="text-xl text-gray-400">Découvrez notre sélection de matériel high-tech pour les gamers</p>
         </div>
 
-        <!-- Search Bar -->
         <div class="max-w-2xl mx-auto mb-8">
             <form method="get" action="{{ path('app_catalogue') }}" class="relative">
                 <input 
@@ -45,12 +44,10 @@
             {% endfor %}
         </div>
 
-        <!-- Products Grid -->
         {% if products|length > 0 %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {% for product in products %}
                     <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-purple-500 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20">
-                        <!-- Product Image -->
                         <div class="relative h-64 bg-gray-900 overflow-hidden group">
                             {% if product.photos is not empty %}
                                 <img src="{{ product.photos[0] }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
@@ -62,14 +59,12 @@
                                 </div>
                             {% endif %}
                             
-                            <!-- Badge Category -->
                             <div class="absolute top-3 left-3">
                                 <span class="px-3 py-1 bg-purple-600/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full capitalize">
                                     {{ product.category }}
                                 </span>
                             </div>
                             
-                            <!-- Stock Badge -->
                             {% if product.stock < 5 %}
                                 <div class="absolute top-3 right-3">
                                     <span class="px-3 py-1 bg-red-600/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full">
@@ -79,17 +74,13 @@
                             {% endif %}
                         </div>
 
-                        <!-- Product Info -->
                         <div class="p-6">
-                            <!-- Brand -->
                             {% if product.brand %}
                                 <p class="text-purple-400 text-sm font-semibold mb-2">{{ product.brand }}</p>
                             {% endif %}
 
-                            <!-- Product Name -->
                             <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">{{ product.name }}</h3>
 
-                            <!-- Rating -->
                             {% if product.rating %}
                                 <div class="flex items-center mb-3">
                                     <div class="flex text-yellow-400">
@@ -105,10 +96,8 @@
                                 </div>
                             {% endif %}
 
-                            <!-- Description -->
                             <p class="text-gray-400 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
 
-                            <!-- Price & Action -->
                             <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
                                 <div>
                                     <span class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
@@ -125,7 +114,6 @@
                 {% endfor %}
             </div>
         {% else %}
-            <!-- Empty State -->
             <div class="text-center py-20">
                 <svg class="w-24 h-24 mx-auto text-gray-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>

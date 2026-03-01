@@ -67,6 +67,7 @@ class CartController extends AbstractController
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
+        $this->cartService->ensureShareToken($cart);
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
         ]);
