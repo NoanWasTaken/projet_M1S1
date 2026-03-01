@@ -1,11 +1,13 @@
 import "./chatbot.css";
 
 const STORAGE_KEY = "gearforge_chat_history";
+const CONVERSATION_KEY = "gearforge_conversation_id";
 const API_URL = "/api/chatbot";
 const IS_AUTHENTICATED = window.GearForge?.isAuthenticated ?? false;
 
 // ── State
 let messages = loadMessages();
+let conversationId = loadConversationId();
 let isOpen = false;
 let isLoading = false;
 
@@ -33,9 +35,30 @@ function saveMessages() {
     }
 }
 
+function loadConversationId() {
+    try {
+        const stored = localStorage.getItem(CONVERSATION_KEY);
+        return stored ? parseInt(stored, 10) : null;
+    } catch {
+        return null;
+    }
+}
+
+function saveConversationId(id) {
+    try {
+        if (id) {
+            localStorage.setItem(CONVERSATION_KEY, String(id));
+        } else {
+            localStorage.removeItem(CONVERSATION_KEY);
+        }
+    } catch (error) {}
+}
+
 function clearMessages() {
     messages = [];
+    conversationId = null;
     saveMessages();
+    saveConversationId(null);
     renderMessages();
 }
 
@@ -214,12 +237,16 @@ async function handleSubmit(e) {
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({ messages, conversationId }),
         });
 
         const data = await response.json();
 
         removeTypingIndicator();
+        if (data.conversationId) {
+            conversationId = data.conversationId;
+            saveConversationId(conversationId);
+        }
 
         if (data.error) {
             appendMessage("assistant", `⚠️ ${data.error}`);

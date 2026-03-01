@@ -1,0 +1,58 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}
+    Conversations de {{ user.name }} {{ user.surname }}
+{% endblock %}
+
+{% block main %}
+<div class="mb-4 d-flex align-items-center gap-3">
+    <a href="{{ path('admin') }}" class="btn btn-secondary btn-sm">
+        <i class="fa fa-arrow-left me-1"></i> Retour au panel admin
+    </a>
+    <span class="text-muted">
+        <i class="fa fa-comments me-1"></i>
+        {{ conversations|length }} conversation(s) pour
+        <strong>{{ user.name }} {{ user.surname }}</strong>
+        &lt;{{ user.email }}&gt;
+    </span>
+</div>
+
+{% if conversations is empty %}
+    <div class="alert alert-info">
+        Cet utilisateur n'a aucune conversation enregistrée.
+    </div>
+{% else %}
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Aperçu du premier message</th>
+                    <th>Nb messages</th>
+                    <th>Créée le</th>
+                    <th>Dernière activité</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for conv in conversations %}
+                <tr>
+                    <td>{{ conv.id }}</td>
+                    <td>{{ conv.preview }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ conv.messages|length }}</span>
+                    </td>
+                    <td>{{ conv.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>{{ conv.updatedAt|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path('admin_chat_conversation_detail', { id: conv.id }) }}" class="btn btn-sm btn-info">
+                            <i class="fa fa-eye me-1"></i> Voir le chat
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}

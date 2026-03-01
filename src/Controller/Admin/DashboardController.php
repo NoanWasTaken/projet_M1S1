@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Cart;
 use App\Entity\CartItem;
+use App\Entity\ChatConversation;
 use App\Entity\GameTypes;
 use App\Entity\Order;
 use App\Entity\PlayerProfile;
@@ -14,9 +15,12 @@ use App\Entity\Reward;
 use App\Entity\User;
 use App\Entity\UserReward;
 use App\Entity\XPEvent;
+use App\Repository\ChatConversationRepository;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -24,10 +28,54 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private ChatConversationRepository $conversationRepository,
+        private AdminUrlGenerator $adminUrlGenerator,
+    ) {
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('@EasyAdmin/page/content.html.twig');
+    }
+
+    #[Route('/admin/user/{userId}/conversations', name: 'admin_user_conversations')]
+    public function userConversations(int $userId, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($userId);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur introuvable.');
+        }
+
+        $conversations = $this->conversationRepository->findByUser($user);
+
+        return $this->render('admin/chat/conversations.html.twig', [
+            'user' => $user,
+            'conversations' => $conversations,
+        ]);
+    }
+
+    #[Route('/admin/conversation/{id}', name: 'admin_chat_conversation_detail')]
+    public function conversationDetail(int $id): Response
+    {
+        $conversation = $this->conversationRepository->find($id);
+
+        if (!$conversation) {
+            throw $this->createNotFoundException('Conversation introuvable.');
+        }
+
+        $backUrl = $conversation->getUser()
+            ? $this->generateUrl('admin_user_conversations', ['userId' => $conversation->getUser()->getId()])
+            : $this->adminUrlGenerator
+                ->setController(ChatConversationCrudController::class)
+                ->generateUrl();
+
+        return $this->render('admin/chat/conversation_detail.html.twig', [
+            'conversation' => $conversation,
+            'backUrl' => $backUrl,
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -44,6 +92,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Profils joueur', 'fas fa-user-circle', PlayerProfile::class);
+        yield MenuItem::linkToCrud('Conversations chatbot', 'fas fa-comments', ChatConversation::class);
 
         yield MenuItem::section('Boutique');
         yield MenuItem::linkToCrud('Produits', 'fas fa-box', Products::class);
