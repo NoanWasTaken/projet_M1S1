@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil - GearForge{% endblock %}
+
+{% block body %}
+<div class="m-5 mt-7 mb-7 p-3 rounded-2xl border border-white/10 shadow-2xl" style="background:#2C0735; font-family:'Press Start 2P', sans-serif;">
+
+  <div class="flex flex-col lg:flex-col gap-4">
+    <article class="w-full flex flex-row gap-4" data-controller="skin-picker"
+      data-skin-picker-save-url-value="{{ path('app_profile_skin_hair_save') }}"
+      data-skin-picker-initial-hair-value="{{ hairSkin }}"
+      data-skin-picker-initial-body-value="{{ bodySkin }}">
+
+      <section class="flex flex-row md:flex-col lg:w-[40%] gap-2">
+        {#perso pixel#}
+        <div class="w-full  rounded-xl border border-white/10 bg-black/35 p-4">
+          <div class="text-[10px] tracking-widest text-white/70 mb-3">
+            PLAYER VIEW
+          </div>
+          
+          <div class="aspect-[16/9] rounded-lg border border-white/10 bg-black/40 grid place-items-center overflow-hidden">
+            <div class="relative h-full w-full grid place-items-center">
+              <img
+                src="{{ asset(bodySkin) }}"
+                alt="Corps du joueur"
+                class="absolute bottom-[10%] h-[55%] w-auto object-contain pixelated"
+                draggable="false"
+                data-skin-picker-target="playerBody"
+              />
+
+              <img
+                src="{{ asset(hairSkin) }}"
+                alt="Tête du joueur"
+                class="absolute bottom-[48%] h-[28%] w-auto object-contain pixelated"
+                draggable="false"
+                data-skin-picker-target="playerHead"
+              />
+            </div>
+          </div>
+        </div>
+
+        {# Niveau #}
+        <div class="w-full  rounded-xl border border-white/10 bg-black/35 p-4">
+          <div class="text-[10px] tracking-widest text-white/70">
+            LEVEL
+          </div>
+          <div class="mt-3 text-white text-xl leading-none">LVL {{ level }}.</div>
+
+          <div class="mt-5">
+            <div class="flex items-center justify-between text-[9px] tracking-widest text-white/60">
+              <span>XP</span>
+              <span>{{ xpInLevel }}/1000</span>
+            </div>
+
+            <div class="mt-2 h-3 rounded-md border border-white/15 bg-black/50 overflow-hidden">
+              <div class="h-full bg-white/60"
+                   style="width: {{ xpPercent }}%;"></div>
+            </div>
+
+            <div class="mt-2 text-[9px] tracking-widest text-white/45">
+              total: {{ xpTotal }}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {# infos générales et le custom #}
+      <section class="rounded-xl lg:w-[60%] border border-white/10 bg-black/35 p-4" data-controller="profile-tabs" data-profile-tabs-current-value="info">
+
+        <div class="flex items-start justify-between gap-4">
+          <div class="text-[10px] tracking-widest text-white/70">MENU</div>
+        </div>
+
+        {# TABS : info et skins #}
+        <div class="mt-3 grid grid-cols-2 gap-2 ds-tabs">
+          <button
+            type="button"
+            data-action="click->profile-tabs#showInfo"
+            data-profile-tabs-target="btnInfo"
+            class="ds-tab is-active"
+            aria-label="Infos générales"
+          >
+            Infos générales
+          </button>
+
+          <button
+            type="button"
+            data-action="click->profile-tabs#showSkins"
+            data-profile-tabs-target="btnSkins"
+            class="ds-tab"
+            aria-label="Skins"
+          >
+            Skins
+          </button>
+        </div>
+
+        {# panel #}
+        <div class="mt-4 ds-panelWrap">
+          <div data-profile-tabs-target="info" class="ds-panel ds-panel--info is-visible" style="background:#ce51e4;">
+            <div class="ds-panel__top">
+              <div class="ds-label">Infos client</div>
+            </div>
+
+            <div class="ds-panel__body">
+              <div class="ds-row">
+                <div class="ds-k">Email</div>
+                <div class="ds-v ds-v--email">{{ app.user ? app.user.email : '—' }}</div>
+              </div>
+              {# si on modifie l'inscription il y aura ptet d'autres champs à ajouter #}
+            </div>
+          </div>
+
+          {# skin #}
+          <div data-profile-tabs-target="skins" class="ds-panel ds-panel--skins" style="background:#858AE3;">
+            <div
+              class="mt-1"
+              data-controller="skins-tabs"
+              data-skins-tabs-current-value="hair"
+            >
+              {# TABS #}
+              <div class="sticky grid grid-cols-4 gap-1 ds-tabs">
+                <button
+                  type="button"
+                  class="ds-tab-mini is-active"
+                  data-action="click->skins-tabs#showHair"
+                  data-skins-tabs-target="btnHair"
+                >
+                  Cheveux
+                </button>
+
+                <button
+                  type="button"
+                  class="ds-tab-mini"
+                  data-action="click->skins-tabs#showSkin"
+                  data-skins-tabs-target="btnSkin"
+                >
+                  Peau
+                </button>
+
+                <button
+                  type="button"
+                  class="ds-tab-mini"
+                  data-action="click->skins-tabs#showBody"
+                  data-skins-tabs-target="btnBody"
+                >
+                  Corps
+                </button>
+
+                <button
+                  type="button"
+                  class="ds-tab-mini"
+                  data-action="click->skins-tabs#showOutfit"
+                  data-skins-tabs-target="btnOutfit"
+                >
+                  Tenue
+                </button>
+              </div>
+
+              {# PANELS (superposés + slide) #}
+              <div class="mt-3 ds-panelWrap relative ">
+                <div data-skins-tabs-target="hair" class="ds-panel is-visible">
+                  {{ include('components/profil/_hair_catalog.html.twig') }}
+                </div>
+
+                <div data-skins-tabs-target="skin" class="ds-panel">
+                  {{ include('components/profil/_skin_catalog.html.twig') }}
+                </div>
+
+                <div data-skins-tabs-target="body" class="ds-panel">
+                  {{ include('components/profil/_body_catalog.html.twig') }}
+                </div>
+
+                <div data-skins-tabs-target="outfit" class="ds-panel">
+                  {{ include('components/profil/_outfit_catalog.html.twig') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 flex items-center ">
+              <button
+                type="button"
+                class="rounded-md border border-white/20 bg-white/10 px-3 py-2 text-[10px] tracking-widest text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/20 opacity-50 cursor-not-allowed"
+                data-action="click->skin-picker#save"
+                data-skin-picker-target="saveBtn"
+                disabled
+              >
+                ENREGISTRER
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    {# à mettre les réductions, les badges, historique de commande etc #}
+    <article class="w-full rounded-xl border border-white/10 bg-black/35 p-4">
+      <div class="text-[10px] tracking-widest text-white/70 mb-3">STATS</div>
+
+      <div class="space-y-3 text-[10px] text-white/75">
+        <div class="flex justify-between border-b border-white/10 pb-2">
+          <span>Badges</span><span>—</span>
+        </div>
+        <div class="flex justify-between border-b border-white/10 pb-2">
+          <span>Récompenses</span><span>—</span>
+        </div>
+        {# historique de commande #}
+      </div>
+    </article>
+
+  </div>
+</div>
+{% endblock %}

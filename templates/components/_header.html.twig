@@ -3,14 +3,7 @@
     <section class="relative flex items-center justify-between">
 
       <div class="flex items-center">
-        <button
-          type="button"
-          data-sidebar-toggle
-          data-action="click->sidebar#toggle"
-          aria-expanded="false"
-          class="pixel-icon-btn color: var(--pixel-head)"
-          aria-label="Ouvrir le menu"
-        >
+        <button type="button" data-sidebar-toggle data-action="click->sidebar#toggle" aria-expanded="false" class="pixel-icon-btn" aria-label="Ouvrir le menu">
           ☰
         </button>
       </div>
@@ -22,12 +15,12 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-3">
-        <a href="{{ path('app_catalogue') }}"
+        {#<a href="{{ path('app_catalogue') }}" faire une barre de recherche à la place
            class="pixel-icon-link"
            data-tip="Catalogue"
            aria-label="Catalogue">
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-        </a>
+        </a>#}
 
         <a href="" {#à rediriger vers le panier#}
            class="pixel-icon-link pixel-icon-link--cta"
@@ -37,9 +30,12 @@
         </a>
 
         {% if app.user %}
-          <span class="pixel-icon-chip" data-tip="{{ app.user.email }}" aria-label="Compte">
+          <a href="{{ path('app_client_profile') }}"
+            class="pixel-icon-chip"
+            data-tip="Profil ({{ app.user.email }})"
+            aria-label="Profil">
             <i data-lucide="user" class="w-5 h-5"></i>
-          </span>
+          </a>
 
           <a href="{{ path('app_logout') }}"
              class="pixel-icon-link"

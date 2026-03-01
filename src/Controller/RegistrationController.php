@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\PlayerProfile;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +38,9 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_USER']);
+            
             $entityManager->persist($user);
+            $entityManager->persist($profile);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
