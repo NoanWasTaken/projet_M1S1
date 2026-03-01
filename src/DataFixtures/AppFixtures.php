@@ -93,6 +93,11 @@ final class AppFixtures extends Fixture
     ): void {
         $user = new User();
         $user->setEmail($email);
+        [$local] = explode('@', $email);
+        $label = ucfirst($local); 
+
+        $user->setName($label);
+        $user->setSurname('GearForge');
         $user->setRoles($roles);
         $user->setIsVerified(true);
 

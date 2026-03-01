@@ -118,9 +118,10 @@ class ReviewFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i <= 9; $i++) {
             $products[$i] = $this->getReference('product_' . $i, \App\Entity\Products::class);
         }
-
         foreach ($reviewsData as $productIndex => $reviews) {
+
             $product = $products[$productIndex];
+            $usedAuthors = []; 
 
             foreach ($reviews as [$rating, $comment, $userIndex]) {
                 $review = new Review();
@@ -128,15 +129,32 @@ class ReviewFixtures extends Fixture implements DependentFixtureInterface
                 $review->setComment($comment);
 
                 if ($userIndex === -1) {
-                    $review->setAuthor($admin);
+                    $author = $admin;
                 } elseif ($userIndex !== null) {
-                    $review->setAuthor($users[$userIndex]);
+                    $author = $users[$userIndex];
                 } else {
-                    // user random 
-                    $review->setAuthor($users[array_rand($users)]);
+                    $available = array_values(array_filter(
+                        $users,
+                        fn(User $u) => !isset($usedAuthors[$u->getEmail()])
+                    ));
+
+                    if (count($available) === 0) {
+                        continue;
+                    }
+
+                    $author = $available[array_rand($available)];
                 }
 
-                // dates sur 6 mois pour reviews
+                $authorKey = $author->getEmail();
+
+                if (isset($usedAuthors[$authorKey])) {
+                    continue;
+                }
+
+                $usedAuthors[$authorKey] = true;
+
+                $review->setAuthor($author);
+
                 $daysAgo = random_int(1, 180);
                 $review->setCreatedAt(new \DateTimeImmutable('-' . $daysAgo . ' days'));
 
