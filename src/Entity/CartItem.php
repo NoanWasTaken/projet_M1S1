@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Products;
 use App\Repository\CartItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CartItemRepository::class)]
 class CartItem
@@ -19,9 +21,11 @@ class CartItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product = null;
+    private ?Products $product = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     private ?int $quantity = null;
 
     #[ORM\Column]
@@ -50,12 +54,12 @@ class CartItem
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): ?Products
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): static
+    public function setProduct(?Products $product): static
     {
         $this->product = $product;
 

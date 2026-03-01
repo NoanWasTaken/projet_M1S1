@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -20,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    #[Assert\Length(max: 180)]
     private ?string $email = null;
 
     /**
@@ -39,9 +45,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?PlayerProfile $playerProfile = null;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
+    private ?string $surname = null;
+
+    /**
+     * @var Collection<int, GameTypes>
+     */
+    #[ORM\ManyToMany(targetEntity: GameTypes::class)]
+    private Collection $game_types;
+
+    public function __construct()
+    {
+        $this->game_types = new ArrayCollection();
+    }
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
+
+    public function __toString(): string
+    {
+        return trim(($this->name ?? '') . ' ' . ($this->surname ?? '')) ?: ($this->email ?? '');
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +167,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): static
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GameTypes>
+     */
+    public function getGameTypes(): Collection
+    {
+        return $this->game_types;
+    }
+
+    public function addGameType(GameTypes $gameType): static
+    {
+        if (!$this->game_types->contains($gameType)) {
+            $this->game_types->add($gameType);
+        }
+
+        return $this;
+    }
+
+    public function removeGameType(GameTypes $gameType): static
+    {
+        $this->game_types->removeElement($gameType);
+        return $this;
+    }
     public function getCart(): ?Cart
     {
         return $this->cart;
