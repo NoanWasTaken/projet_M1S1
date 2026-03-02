@@ -46,7 +46,8 @@ class ProfilesController extends AbstractController
         $players = $this->proPlayerRepository->findAll();
         return $this->render('profiles.html.twig', [
             'cart' => $cart,
-            'players' => $players
+            'players' => $players,
+            'showIntroDialogue' => false,
         ]);
     }
 }

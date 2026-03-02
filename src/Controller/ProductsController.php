@@ -48,6 +48,7 @@ class ProductsController extends AbstractController
             'currentCategory' => $category,
             'searchQuery' => $search,
             'cart' => $cart,
+            'showIntroDialogue' => false,
         ]);
     }
 

@@ -1,0 +1,148 @@
+<!-- Overlay RPG Maker, responsive -->
+<div id="intro-dialogue-overlay" class="fixed inset-0 z-50 flex items-end justify-center pointer-events-auto">
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-purple-900/40 to-blue-900/60 backdrop-blur-sm transition-opacity duration-300"></div>
+  <div class="relative w-full flex flex-row items-end justify-between px-4 md:px-12" style="align-items: flex-end;">
+    <div class="rpg-dialogue-window bg-gradient-to-br from-blue-800 via-purple-800 to-blue-900 border-4 border-purple-400 rounded-xl shadow-2xl mb-8 flex items-center px-4 md:px-8 py-4 md:py-6 w-full max-w-lg md:max-w-2xl" style="backdrop-filter: blur(2px);">
+      <div class="rpg-avatar flex-shrink-0 mr-4 md:mr-6">
+        <img src="/assets/avatar_rpg.png" alt="Avatar" class="w-20 h-20 md:w-36 md:h-36 rounded-lg border-2 border-purple-400 shadow-lg" />
+      </div>
+      <div class="flex-1">
+        <div class="rpg-speaker text-blue-200 font-extrabold text-lg md:text-2xl mb-2 md:mb-3 tracking-wide">Gegia</div>
+        <div class="rpg-text text-white text-base md:text-xl mb-2 md:mb-3 leading-relaxed">Bienvenue, aventurier !<br>Quel type de jeux préfères-tu pour partir à l’aventure ?</div>
+      </div>
+    </div>
+    <div class="rpg-choices-window bg-gradient-to-br from-blue-800 via-purple-800 to-blue-900 border-4 border-purple-400 rounded-xl shadow-xl flex flex-col px-4 md:px-8 py-4 md:py-6 w-full max-w-xs md:max-w-md" style="backdrop-filter: blur(2px); margin-left:-10vw; margin-bottom:4vw;">
+      <button class="rpg-choice-btn">RPG</button>
+      <button class="rpg-choice-btn">FPS</button>
+      <button class="rpg-choice-btn">MOBA</button>
+      <button class="rpg-choice-btn">Stratégie</button>
+      <button class="rpg-choice-btn">Autre</button>
+    </div>
+  </div>
+</div>
+<style>
+  #intro-dialogue-overlay {
+    animation: fadeIn 0.5s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .rpg-dialogue-window {
+    border-radius: 16px;
+    border-width: 4px;
+    box-shadow: 0 8px 32px #000a;
+    font-family: 'Press Start 2P', 'VT323', monospace, sans-serif;
+    min-width: 0;
+    width: 60%;
+    max-width: 90vw;
+    margin-right: 2vw;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  }
+  .rpg-choices-window {
+    margin-top: 0;
+    z-index: 10;
+    border-radius: 16px;
+    border-color: #a78bfa;
+    font-family: 'Press Start 2P', 'VT323', monospace, sans-serif;
+    min-width: 0;
+    width: 100%;
+    max-width: 60vw;
+    margin-right: 7rem;
+    margin-bottom: 1rem !important;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  }
+  @media (min-width: 768px) {
+    .rpg-choices-window {
+      max-width: 22rem;
+    }
+  }
+  .rpg-avatar img {
+    image-rendering: pixelated;
+    background: #222;
+    width: 5rem;
+    height: 5rem;
+  }
+  @media (min-width: 768px) {
+    .rpg-avatar img {
+      width: 9rem;
+      height: 9rem;
+    }
+  }
+  .rpg-speaker {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #0008;
+  }
+  @media (min-width: 768px) {
+    .rpg-speaker {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+  .rpg-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #0008;
+  }
+  @media (min-width: 768px) {
+    .rpg-text {
+      font-size: 1.25rem;
+      line-height: 1.7;
+    }
+  }
+  .rpg-choice-btn {
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    color: #fff;
+    font-family: inherit;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    box-shadow: 0 2px 8px #0005;
+    margin-bottom: 0.5rem;
+    transition: background 0.1s, box-shadow 0.1s, outline 0.1s;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    letter-spacing: 1px;
+  }
+  @media (min-width: 768px) {
+    .rpg-choice-btn {
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+  .rpg-choice-btn:focus, .rpg-choice-btn:hover {
+    background: linear-gradient(90deg, #8b5cf6 0%, #3b82f6 100%);
+    box-shadow: 0 4px 16px #3b82f6aa;
+    outline: 2px solid #fff;
+  }
+  @media (max-width: 767px) {
+    #intro-dialogue-overlay .relative {
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-end;
+    }
+    .rpg-dialogue-window {
+      margin-right: 0;
+      margin-bottom: 2vw;
+      max-width: 100vw;
+    }
+    .rpg-choices-window {
+      margin-left: 0;
+      margin-bottom: 2vw;
+      max-width: 100vw;
+    }
+  }
+</style>
+<script>
+  document.querySelectorAll('#intro-dialogue-overlay .rpg-choice-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+    });
+  });
+</script>

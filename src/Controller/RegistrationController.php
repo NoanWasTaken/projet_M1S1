@@ -65,13 +65,16 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
+            'showIntroDialogue' => false,
         ]);
     }
 
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
-        return $this->render('registration/check_email.html.twig');
+        return $this->render('registration/check_email.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 
     #[Route('/verify/email/{id}', name: 'app_verify_email')]

@@ -230,9 +230,18 @@
           <span>Badges</span><span>—</span>
         </div>
         <div class="flex justify-between border-b border-white/10 pb-2">
+          <span>Joueur</span>
+          <span>
+            {% if introAnswer is defined and introAnswer %}
+              {{ introAnswer.gameType }}
+            {% else %}
+              —
+            {% endif %}
+          </span>
+        </div>
+        <div class="flex justify-between border-b border-white/10 pb-2">
           <span>Récompenses</span><span>—</span>
         </div>
-        {# historique de commande #}
       </div>
     </article>
 

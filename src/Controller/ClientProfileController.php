@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\PlayerProfileRepository;
 use App\Repository\SavedCartRepository;
+use App\Repository\IntroProfileAnswerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +14,7 @@ final class ClientProfileController extends AbstractController
 {
     #[Route('/profile', name: 'app_client_profile', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function index(PlayerProfileRepository $profileRepo, SavedCartRepository $savedCartRepo): Response
+    public function index(PlayerProfileRepository $profileRepo, SavedCartRepository $savedCartRepo, IntroProfileAnswerRepository $introRepo): Response
     {
         $user = $this->getUser();
         $profile = $profileRepo->findOneBy(['owner' => $user]); 
@@ -33,6 +34,11 @@ final class ClientProfileController extends AbstractController
         if ($user && method_exists($user, 'getCart')) {
             $cart = $user->getCart();
         }
+        $showIntroDialogue = false;
+        if ($user) {
+            $introAnswer = $introRepo->findByUser($user);
+            $showIntroDialogue = !$introAnswer;
+        }
         return $this->render('profile/profileClient.html.twig', [
             'profile'   => $profile,
             'level'     => $level,
@@ -43,6 +49,8 @@ final class ClientProfileController extends AbstractController
             'bodySkin' => $bodySkin,
             'savedCarts' => $savedCarts,
             'cart' => $cart,
+            'showIntroDialogue' => $showIntroDialogue,
+            'introAnswer' => $introAnswer,
         ]);
     }
 }
