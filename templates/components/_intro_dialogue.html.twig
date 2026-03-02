@@ -143,6 +143,22 @@
 <script>
   document.querySelectorAll('#intro-dialogue-overlay .rpg-choice-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-    });
+        const gameType = btn.textContent.trim();
+        fetch('/intro-profile/answer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          body: 'gameType=' + encodeURIComponent(gameType)
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('intro-dialogue-overlay').style.display = 'none';
+            window.location.reload();
+          }
+        });
+      });
   });
 </script>
