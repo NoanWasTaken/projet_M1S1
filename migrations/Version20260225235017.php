@@ -20,9 +20,12 @@ final class Version20260225235017 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE cart ADD share_token VARCHAR(64) DEFAULT NULL');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_BA388B7D6594DD6 ON cart (share_token)');
+        $this->addSql('ALTER TABLE cart ADD COLUMN IF NOT EXISTS share_token VARCHAR(64) DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_BA388B7D6594DD6 ON cart (share_token)');
+        $this->addSql('ALTER TABLE cart_item DROP CONSTRAINT IF EXISTS FK_F0FE25274584665A');
         $this->addSql('ALTER TABLE cart_item ADD CONSTRAINT FK_F0FE25274584665A FOREIGN KEY (product_id) REFERENCES products (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('DELETE FROM review WHERE id NOT IN (SELECT MAX(id) FROM review GROUP BY product_id, author_id)');
+        $this->addSql('DROP INDEX IF EXISTS unique_user_product_review');
         $this->addSql('CREATE UNIQUE INDEX unique_user_product_review ON review (product_id, author_id)');
     }
 
