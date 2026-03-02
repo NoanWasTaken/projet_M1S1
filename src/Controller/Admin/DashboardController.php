@@ -19,6 +19,7 @@ use App\Repository\ChatConversationRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
 use App\Service\StockAlertService;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -40,6 +41,7 @@ class DashboardController extends AbstractDashboardController
         private ProductsRepository         $productsRepository,
         private StockAlertService          $stockAlert,
         private CsrfTokenManagerInterface  $csrfTokenManager,
+        private EntityManagerInterface     $em,
     ) {
     }
 
@@ -53,12 +55,40 @@ class DashboardController extends AbstractDashboardController
         $lowStock    = array_filter($allProducts, fn ($p) => $p->getStock() > 0 && $p->getStock() < $threshold);
         $okStock     = array_filter($allProducts, fn ($p) => $p->getStock() >= $threshold);
 
+        $revenue = (float) $this->em->createQuery(
+            "SELECT COALESCE(SUM(o.total), 0) FROM App\\Entity\\Order o WHERE o.status NOT IN ('pending', 'cancelled')"
+        )->getSingleScalarResult();
+
+        $ordersByStatus = [];
+        foreach ($this->em->createQuery(
+            'SELECT o.status AS status, COUNT(o.id) AS cnt FROM App\\Entity\\Order o GROUP BY o.status'
+        )->getResult() as $row) {
+            $key = $row['status'] instanceof \BackedEnum ? $row['status']->value : (string) $row['status'];
+            $ordersByStatus[$key] = (int) $row['cnt'];
+        }
+
+        $since7days = new \DateTimeImmutable('-7 days');
+        $newOrders7d = (int) $this->em->createQuery(
+            'SELECT COUNT(o.id) FROM App\\Entity\\Order o WHERE o.createdAt >= :since'
+        )->setParameter('since', $since7days)->getSingleScalarResult();
+
+        $totalOrders = array_sum($ordersByStatus);
+
+        $totalUsers = (int) $this->em->createQuery(
+            'SELECT COUNT(u.id) FROM App\\Entity\\User u'
+        )->getSingleScalarResult();
+
         return $this->render('admin/dashboard.html.twig', [
-            'threshold'    => $threshold,
-            'total'        => count($allProducts),
-            'out_of_stock' => count($outOfStock),
-            'low_stock'    => count($lowStock),
-            'ok_stock'     => count($okStock),
+            'threshold' => $threshold,
+            'total' => count($allProducts),
+            'out_of_stock'=> count($outOfStock),
+            'low_stock' => count($lowStock),
+            'ok_stock' => count($okStock),
+            'revenue'          => round($revenue, 2),
+            'orders_by_status' => $ordersByStatus,
+            'total_orders'     => $totalOrders,
+            'new_orders_7d'    => $newOrders7d,
+            'total_users'      => $totalUsers,
         ]);
     }
 
