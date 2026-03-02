@@ -2,42 +2,28 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["tile", "slots", "status", "tries", "submit"];
-  static values = { claimUrl: String, isAuth: Boolean };
+  static values = { claimUrl: String, statusUrl: String, isAuth: Boolean };
 
   connect() {
-    this.isDragging = false;
-    this.dragEl = null;
-    this.placeholder = null;
-    this.longPressTimer = null;
-
     this.hasClaimed = false;
     this.isSubmitting = false;
 
-    this.onPointerMove = this.onPointerMove.bind(this);
-    this.onPointerUp = this.onPointerUp.bind(this);
-
-    // ✅ snapshot exact pour reset parfait
     this.originMap = new Map();
     this.tileTargets.forEach((el) => {
       const parent = el.parentElement;
       const index = Array.from(parent.children).indexOf(el);
       this.originMap.set(el, { parent, index });
 
-      el.style.touchAction = "none";
       el.setAttribute("draggable", "false");
-      el.addEventListener("pointerdown", (e) => this.onPointerDown(e, el));
-      el.addEventListener("dragstart", (e) => e.preventDefault());
+      el.style.touchAction = "manipulation";
+      el.addEventListener("click", (e) => this.onTileClick(e, el));
     });
 
     this.updateStatus();
     this.updateTriesUI(null);
+    this.fetchStatus(); 
   }
 
-  disconnect() {
-    this.cleanupDrag();
-  }
-
-  // ---------- UI helpers ----------
   updateStatus(extra = "") {
     if (!this.hasStatusTarget) return;
 
@@ -45,15 +31,11 @@ export default class extends Controller {
       this.statusTarget.textContent = "Connectez-vous pour tester le jeu !";
       return;
     }
-    if (this.isAuthValue && !this.hasClaimed) {
-      this.statusTarget.textContent = "Déposez des lettres ici pour écrire le mot clé.";
-      return;
-    }
     if (this.hasClaimed) {
       this.statusTarget.textContent = "Récompense déjà obtenue";
       return;
     }
-    this.statusTarget.textContent = extra || "";
+    this.statusTarget.textContent = extra || "Cliquez sur des lettres pour composer un mot.";
   }
 
   updateTriesUI(remaining) {
@@ -67,7 +49,7 @@ export default class extends Controller {
       this.triesTarget.textContent = `essais restants : ${remaining}`;
       return;
     }
-    this.triesTarget.textContent = "essais restants : 5";
+    this.triesTarget.textContent = "essais restants : …";
   }
 
   setSubmitDisabled(disabled) {
@@ -75,6 +57,84 @@ export default class extends Controller {
     this.submitTarget.disabled = disabled;
     this.submitTarget.classList.toggle("opacity-50", disabled);
     this.submitTarget.classList.toggle("cursor-not-allowed", disabled);
+  }
+
+  async fetchStatus() {
+    if (!this.isAuthValue || !this.statusUrlValue) return;
+
+    try {
+      const res = await fetch(this.statusUrlValue, {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      if (!res.ok) return;
+
+      const data = await res.json();
+
+      if (typeof data.triesRemaining === "number") this.updateTriesUI(data.triesRemaining);
+      if (data.hasClaimed) {
+        this.hasClaimed = true;
+        this.updateStatus();
+      }
+    } catch (e) {
+      console.error("échec game status:", e);
+    }
+  }
+
+  onTileClick(_e, el) {
+    if (this.isSubmitting) return;
+
+    const isInSlots = el.parentElement === this.slotsTarget;
+
+    if (!isInSlots) {
+      this.slotsTarget.appendChild(el);
+      return;
+    }
+
+    const origin = this.originMap.get(el);
+    if (!origin) return;
+
+    const { parent, index } = origin;
+    const children = Array.from(parent.children);
+    if (index >= children.length) parent.appendChild(el);
+    else parent.insertBefore(el, children[index]);
+  }
+
+  getSlotsWord() {
+    return Array.from(this.slotsTarget.querySelectorAll("[data-letter]"))
+      .map((el) => el.dataset.letter)
+      .join("");
+  }
+
+  reset() {
+    for (const [el, { parent, index }] of this.originMap.entries()) {
+      const children = Array.from(parent.children);
+      if (index >= children.length) parent.appendChild(el);
+      else parent.insertBefore(el, children[index]);
+    }
+    this.updateStatus();
+  }
+
+  flashSlots(kind) {
+    const tiles = Array.from(this.slotsTarget.querySelectorAll("[data-letter]"));
+    if (!tiles.length) return;
+
+    const add =
+      kind === "ok"
+        ? ["ring-2", "ring-emerald-400/70", "bg-emerald-400/15", "border-emerald-300/40"]
+        : ["ring-2", "ring-rose-400/70", "bg-rose-400/15", "border-rose-300/40"];
+
+    const remove = [
+      "ring-2",
+      "ring-emerald-400/70",
+      "bg-emerald-400/15",
+      "border-emerald-300/40",
+      "ring-rose-400/70",
+      "bg-rose-400/15",
+      "border-rose-300/40",
+    ];
+
+    tiles.forEach((el) => el.classList.add(...add));
+    window.setTimeout(() => tiles.forEach((el) => el.classList.remove(...remove)), 1000);
   }
 
   getPopupHost() {
@@ -139,189 +199,19 @@ export default class extends Controller {
     host.appendChild(wrap);
   }
 
-  flashSlots(kind) {
-    // kind: "ok" | "ko"
-    const tiles = Array.from(this.slotsTarget.querySelectorAll("[data-letter]"));
-    if (!tiles.length) return;
-
-    const add = kind === "ok"
-      ? ["ring-2", "ring-emerald-400/70", "bg-emerald-400/15", "border-emerald-300/40"]
-      : ["ring-2", "ring-rose-400/70", "bg-rose-400/15", "border-rose-300/40"];
-
-    const removeOk = ["ring-2", "ring-emerald-400/70", "bg-emerald-400/15", "border-emerald-300/40"];
-    const removeKo = ["ring-2", "ring-rose-400/70", "bg-rose-400/15", "border-rose-300/40"];
-
-    tiles.forEach((el) => el.classList.add(...add));
-
-    window.setTimeout(() => {
-      tiles.forEach((el) => el.classList.remove(...removeOk, ...removeKo));
-    }, 1000);
-  }
-
-  // ---------- drag logic ----------
-  onPointerDown(e, el) {
-    if (this.isSubmitting) return;
-    if (e.button !== undefined && e.button !== 0) return;
-
-    const startX = e.clientX;
-    const startY = e.clientY;
-
-    this.longPressTimer = window.setTimeout(() => {
-      this.startDrag(e, el);
-    }, 220);
-
-    const cancelIfMoved = (moveEvent) => {
-      const dx = Math.abs(moveEvent.clientX - startX);
-      const dy = Math.abs(moveEvent.clientY - startY);
-      if (dx + dy > 8) {
-        this.clearLongPress();
-        window.removeEventListener("pointermove", cancelIfMoved);
-      }
-    };
-
-    window.addEventListener("pointermove", cancelIfMoved, { passive: true });
-    window.addEventListener(
-      "pointerup",
-      () => {
-        this.clearLongPress();
-        window.removeEventListener("pointermove", cancelIfMoved);
-      },
-      { once: true }
-    );
-  }
-
-  clearLongPress() {
-    if (this.longPressTimer) {
-      window.clearTimeout(this.longPressTimer);
-      this.longPressTimer = null;
-    }
-  }
-
-  startDrag(e, el) {
-    this.isDragging = true;
-    this.dragEl = el;
-
-    const r = el.getBoundingClientRect();
-
-    this.placeholder = document.createElement("span");
-    this.placeholder.className = "inline-block";
-    this.placeholder.style.width = `${r.width}px`;
-    this.placeholder.style.height = `${r.height}px`;
-    el.parentNode.insertBefore(this.placeholder, el.nextSibling);
-
-    this.dragStartLeft = r.left;
-    this.dragStartTop = r.top;
-    this.dragOffsetX = e.clientX - r.left;
-    this.dragOffsetY = e.clientY - r.top;
-
-    el.classList.add("ring-2", "ring-white/30");
-    el.style.position = "fixed";
-    el.style.left = `${this.dragStartLeft}px`;
-    el.style.top = `${this.dragStartTop}px`;
-    el.style.zIndex = "9999";
-
-    this.onPointerMove(e);
-
-    window.addEventListener("pointermove", this.onPointerMove, { passive: false });
-    window.addEventListener("pointerup", this.onPointerUp, { passive: false, once: true });
-  }
-
-  onPointerMove(e) {
-    if (!this.isDragging || !this.dragEl) return;
-    e.preventDefault();
-
-    const desiredLeft = e.clientX - this.dragOffsetX;
-    const desiredTop = e.clientY - this.dragOffsetY;
-
-    const tx = desiredLeft - this.dragStartLeft;
-    const ty = desiredTop - this.dragStartTop;
-
-    this.dragEl.style.transform = `translate(${tx}px, ${ty}px)`;
-  }
-
-  onPointerUp(e) {
-    if (!this.isDragging || !this.dragEl) return;
-    e.preventDefault();
-
-    const elUnder = document.elementFromPoint(e.clientX, e.clientY);
-    const dropInSlots = elUnder?.closest?.("[data-footer-word-game-target='slots']");
-
-    this.dragEl.style.position = "";
-    this.dragEl.style.left = "";
-    this.dragEl.style.top = "";
-    this.dragEl.style.zIndex = "";
-    this.dragEl.style.transform = "";
-    this.dragEl.classList.remove("ring-2", "ring-white/30");
-
-    if (dropInSlots) {
-      this.slotsTarget.appendChild(this.dragEl);
-    } else {
-      this.placeholder?.parentNode?.insertBefore(this.dragEl, this.placeholder);
-    }
-
-    this.placeholder?.remove();
-    this.cleanupDragListeners();
-  }
-
-  cleanupDragListeners() {
-    window.removeEventListener("pointermove", this.onPointerMove);
-    this.isDragging = false;
-    this.dragEl = null;
-    this.placeholder = null;
-  }
-
-  cleanupDrag() {
-    this.clearLongPress();
-    this.cleanupDragListeners();
-  }
-
-  // ---------- word / reset ----------
-  getSlotsWord() {
-    return Array.from(this.slotsTarget.querySelectorAll("[data-letter]"))
-      .map((el) => el.dataset.letter)
-      .join("");
-  }
-
-  reset() {
-    // clean drag
-    this.cleanupDrag();
-    if (this.placeholder) {
-      this.placeholder.remove();
-      this.placeholder = null;
-    }
-
-    // restore exact positions
-    const entries = Array.from(this.originMap.entries());
-    entries.sort((a, b) => {
-      const oa = a[1], ob = b[1];
-      if (oa.parent === ob.parent) return oa.index - ob.index;
-      return 0;
-    });
-
-    for (const [el, { parent, index }] of entries) {
-      const children = Array.from(parent.children);
-      if (index >= children.length) parent.appendChild(el);
-      else parent.insertBefore(el, children[index]);
-    }
-
-    this.updateStatus();
-  }
-
-  // ---------- submit / attempts ----------
   async submit() {
     if (this.isSubmitting) return;
 
     const word = this.getSlotsWord();
-    if (!word || word.length < 2) {
+    if (!word || word.length < 1) {
       this.showRetroPopup({
         title: "Info",
-        lines: ["Dépose des lettres dans SLOTS avant de valider."],
+        lines: ["Clique au moins une lettre avant de valider."],
         kind: "info",
       });
       return;
     }
 
-    // Pas connecté → on peut jouer, mais pas valider
     if (!this.isAuthValue || !this.claimUrlValue) {
       this.flashSlots("ko");
       this.showRetroPopup({
@@ -336,7 +226,6 @@ export default class extends Controller {
     this.setSubmitDisabled(true);
 
     try {
-      // endpoint unique : il gère essais/jour + win/lose + reward
       const res = await fetch(this.claimUrlValue, {
         method: "POST",
         headers: {
@@ -348,12 +237,9 @@ export default class extends Controller {
 
       const ct = res.headers.get("content-type") || "";
       const raw = await res.text();
-      const data = ct.includes("application/json") ? JSON.parse(raw) : { message: "Non JSON", raw };
+      const data = ct.includes("application/json") ? JSON.parse(raw) : { message: raw };
 
-      // serveur renvoie triesRemaining dans tous les cas
-      if (typeof data.triesRemaining === "number") {
-        this.updateTriesUI(data.triesRemaining);
-      }
+      if (typeof data.triesRemaining === "number") this.updateTriesUI(data.triesRemaining);
 
       if (!res.ok) {
         this.flashSlots("ko");
@@ -366,11 +252,9 @@ export default class extends Controller {
         return;
       }
 
-      // attendu: { ok: bool, awarded?: bool, ... }
       if (data.ok) {
         this.flashSlots("ok");
 
-        // si reward
         if (data.awarded) {
           this.hasClaimed = true;
           this.updateStatus("Récompense obtenue");
@@ -382,25 +266,22 @@ export default class extends Controller {
               `Bon : ${data.couponCode} (${data.discountLabel})`,
               `Niveau : ${data.level} | XP : ${data.xpTotal}`,
             ],
-            sub: "GG. Depuis l'intérim je suis plus sûr d'avoir une âme d'enfant. /n Profite avant le 35h.",
+            sub: "GG.",
             kind: "success",
           });
         } else {
           this.showRetroPopup({
             title: "Validé",
-            lines: ["Bien joué, c'est effectivement le même mot. Mais il n'y a pas d'autre bon de réduction. La vie est dure pour tout le monde"],
+            lines: ["Bien joué."],
             kind: "success",
           });
         }
       } else {
-        // faux
         this.flashSlots("ko");
         this.showRetroPopup({
           title: "Faux",
           lines: ["Ce n'est pas le bon mot."],
-          sub: typeof data.triesRemaining === "number"
-            ? `Essais restants : ${data.triesRemaining}`
-            : "",
+          sub: typeof data.triesRemaining === "number" ? `Essais restants : ${data.triesRemaining}` : "",
           kind: "info",
         });
       }

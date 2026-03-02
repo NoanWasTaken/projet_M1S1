@@ -37,13 +37,20 @@
         </a>
 
         {% if app.user %}
-          <a href="{{ path('app_client_profile') }}"
-            class="pixel-icon-chip"
-            data-tip="Profil ({{ app.user.email }})"
-            aria-label="Profil">
-            <i data-lucide="user" class="w-5 h-5"></i>
-          </a>
-
+          {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin') }}"
+              class="pixel-icon-link text-gray-300 hover:text-white"
+              data-tip="Administration"
+              aria-label="Administration">
+              <i data-lucide="shield" class="w-5 h-5"></i>
+            </a>
+          {% endif %}
+            <a href="{{ path('app_client_profile') }}"
+              class="pixel-icon-chip"
+              data-tip="Profil ({{ app.user.email }})"
+              aria-label="Profil">
+              <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
           <a href="{{ path('app_logout') }}"
              class="pixel-icon-link"
              data-tip="Déconnexion"

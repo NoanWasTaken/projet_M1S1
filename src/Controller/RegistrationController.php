@@ -40,11 +40,19 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_USER']);
+
+            $tz = new \DateTimeZone('Europe/Paris');
+            $now = new \DateTimeImmutable('now', $tz);
             
             $profile = new PlayerProfile();
             $profile->setOwner($user);
-            $profile->setCreatedAt(new \DateTimeImmutable());
-            $profile->setUpdatedAt(new \DateTimeImmutable());
+            $profile->setXpTotal(0);
+            $profile->setLevel(1);
+            $profile->setCreatedAt($now);
+            $profile->setUpdatedAt($now);
+
+            $profile->setHairSkin('bald_head.webp');
+            $profile->setBodySkin('normal_body.webp');
             
             $entityManager->persist($user);
             $entityManager->persist($profile);

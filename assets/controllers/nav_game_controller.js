@@ -58,7 +58,7 @@ export default class extends Controller {
 
     this.longPressTimer = window.setTimeout(() => {
       this.startDrag(e, el);
-    }, 1000);
+    }, 500);
 
     const startX = e.clientX;
     const startY = e.clientY;

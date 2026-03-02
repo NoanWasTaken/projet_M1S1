@@ -109,7 +109,7 @@ final class GameFooterWordController extends AbstractController
         $attemptEvent->setCreatedAt(new \DateTimeImmutable('now', $tz));
 
         $em->persist($attemptEvent);
-        $em->flush(); // on sécurise la consommation d'essai même si la suite plante
+        $em->flush(); 
 
         $triesRemainingAfter = max(0, $triesRemainingBefore - 1);
 
@@ -166,6 +166,55 @@ final class GameFooterWordController extends AbstractController
             'couponCode' => $couponCode,
             'discountLabel' => $discountLabel,
             'message' => '+1000 XP ! Coupon débloqué.',
+        ], 200);
+    }
+
+    #[Route('/game/footer-word/status', name: 'app_game_footer_word_status', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function status(
+        EntityManagerInterface $em,
+        PlayerProfileRepository $profileRepo,
+        RewardRepository $rewardRepo,
+        UserRewardRepository $userRewardRepo,
+    ): JsonResponse {
+        $user = $this->getUser();
+        $profile = $profileRepo->findOneBy(['owner' => $user]);
+
+        if (!$profile) {
+            return $this->json(['message' => 'Profil joueur introuvable.'], 400);
+        }
+
+        $tz = new \DateTimeZone('Europe/Paris');
+        $start = new \DateTimeImmutable('today', $tz);
+        $end = $start->modify('+1 day');
+
+        $attemptsUsed = (int) $em->createQueryBuilder()
+            ->select('COUNT(e.id)')
+            ->from(XPEvent::class, 'e')
+            ->where('e.profile = :profile')
+            ->andWhere('e.reason = :reason')
+            ->andWhere('e.createdAt >= :start AND e.createdAt < :end')
+            ->setParameter('profile', $profile)
+            ->setParameter('reason', self::ATTEMPT_REASON)
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $triesRemaining = max(0, self::DAILY_TRIES - $attemptsUsed);
+
+        $reward = $rewardRepo->findOneBy(['code' => self::REWARD_CODE]);
+        $hasClaimed = false;
+
+        if ($reward && $reward->isActive()) {
+            $already = $userRewardRepo->findOneBy(['profile' => $profile, 'reward' => $reward]);
+            $hasClaimed = (bool) $already;
+        }
+
+        return $this->json([
+            'triesRemaining' => $triesRemaining,
+            'hasClaimed' => $hasClaimed,
+            'date' => $start->format('Y-m-d'),
         ], 200);
     }
 
