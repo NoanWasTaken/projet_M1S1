@@ -32,7 +32,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted('ROLE_MODERATOR')]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
@@ -170,26 +170,31 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Retour à l\'accueil', 'fa fa-arrow-left', 'app_home');
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
-        yield MenuItem::section('Utilisateurs');
-        yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
-        yield MenuItem::linkToCrud('Profils joueur', 'fas fa-user-circle', PlayerProfile::class);
-        yield MenuItem::linkToCrud('Conversations chatbot', 'fas fa-comments', ChatConversation::class);
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::section('Utilisateurs');
+            yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
+            yield MenuItem::linkToCrud('Profils joueur', 'fas fa-user-circle', PlayerProfile::class);
+            yield MenuItem::linkToCrud('Conversations chatbot', 'fas fa-comments', ChatConversation::class);
+        }
 
         yield MenuItem::section('Boutique');
         yield MenuItem::linkToCrud('Produits', 'fas fa-box', Products::class);
-        yield MenuItem::linkToCrud('Types de jeux', 'fas fa-gamepad', GameTypes::class);
-        yield MenuItem::linkToCrud('Avis', 'fas fa-star', Review::class);
-        yield MenuItem::linkToCrud('Paniers', 'fas fa-shopping-cart', Cart::class);
-        yield MenuItem::linkToCrud('Articles de panier', 'fas fa-list', CartItem::class);
         yield MenuItem::linkToCrud('Commandes', 'fas fa-receipt', Order::class);
 
-        yield MenuItem::section('Pro Players');
-        yield MenuItem::linkToCrud('Pro Players', 'fas fa-trophy', ProPlayer::class);
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::linkToCrud('Types de jeux', 'fas fa-gamepad', GameTypes::class);
+            yield MenuItem::linkToCrud('Avis', 'fas fa-star', Review::class);
+            yield MenuItem::linkToCrud('Paniers', 'fas fa-shopping-cart', Cart::class);
+            yield MenuItem::linkToCrud('Articles de panier', 'fas fa-list', CartItem::class);
 
-        yield MenuItem::section('Récompenses & XP');
-        yield MenuItem::linkToCrud('Récompenses', 'fas fa-gift', Reward::class);
-        yield MenuItem::linkToCrud('Récompenses utilisateurs', 'fas fa-medal', UserReward::class);
-        yield MenuItem::linkToCrud('Événements XP', 'fas fa-bolt', XPEvent::class);
+            yield MenuItem::section('Pro Players');
+            yield MenuItem::linkToCrud('Pro Players', 'fas fa-trophy', ProPlayer::class);
+
+            yield MenuItem::section('Récompenses & XP');
+            yield MenuItem::linkToCrud('Récompenses', 'fas fa-gift', Reward::class);
+            yield MenuItem::linkToCrud('Récompenses utilisateurs', 'fas fa-medal', UserReward::class);
+            yield MenuItem::linkToCrud('Événements XP', 'fas fa-bolt', XPEvent::class);
+        }
     }
 }
 
