@@ -19,7 +19,10 @@ final class Version20260302083555 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        $this->skipIf(
+            !$schema->hasTable('intro_profile_answer'),
+            'Table intro_profile_answer does not exist yet; will be created with correct schema by a later migration.'
+        );
         $this->addSql('ALTER TABLE intro_profile_answer ALTER answered_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
         $this->addSql('COMMENT ON COLUMN intro_profile_answer.answered_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER INDEX idx_user RENAME TO IDX_5B228EA3A76ED395');
