@@ -1,0 +1,186 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block main %}
+<div class="ea-content-panel">
+
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type == 'warning' ? 'warning' : (type == 'success' ? 'success' : 'info') }} d-flex align-items-start gap-2 mb-4" role="alert" style="white-space: normal;">
+                <span style="font-size: 1.2rem; line-height: 1.4;">
+                    {{ type == 'warning' ? 'Attention' : 'OK' }}
+                </span>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3 mt-4">Commandes</h6>
+    <div class="row g-4 mb-5">
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Chiffre d'affaires</p>
+                    <p class="fw-bold fs-4 mb-0 text-success">{{ revenue|number_format(2, ',', ' ') }} €</p>
+                    <p class="text-muted smaller mb-0" style="font-size:0.75rem">commandes hors annulées</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Commandes total</p>
+                    <p class="fw-bold fs-4 mb-0">{{ total_orders }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">toutes périodes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Nouvelles commandes</p>
+                    <p class="fw-bold fs-4 mb-0 text-primary">{{ new_orders_7d }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">7 derniers jours</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">En attente</p>
+                    <p class="fw-bold fs-4 mb-0 text-warning">{{ orders_by_status.pending ?? 0 }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">à traiter</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% if total_orders > 0 %}
+    <div class="card border-0 shadow-sm mb-5" style="max-width: 560px;">
+        <div class="card-body p-4">
+            <h6 class="fw-semibold mb-3">Répartition des commandes</h6>
+            {% for status, count in orders_by_status %}
+                {% set pct = ((count / total_orders) * 100)|round %}
+                {% set color = status == 'validated' ? 'success' : (status == 'cancelled' ? 'danger' : (status == 'pending' ? 'warning' : 'info')) %}
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small text-capitalize">{{ status }}</span>
+                    <span class="small fw-semibold">{{ count }}</span>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-{{ color }}" style="width: {{ pct }}%"></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3">Utilisateurs</h6>
+    <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Membres inscrits</p>
+                    <p class="fw-bold fs-4 mb-0">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3">Stock produits</h6>
+    <div class="row g-4 mb-5">
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div>
+                        <p class="text-muted small mb-0">Produits total</p>
+                        <p class="fw-bold fs-4 mb-0">{{ total }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div>
+                        <p class="text-muted small mb-0">Stock OK (≥ {{ threshold }})</p>
+                        <p class="fw-bold fs-4 mb-0 text-success">{{ ok_stock }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div>
+                        <p class="text-muted small mb-0">Stock faible (< {{ threshold }})</p>
+                        <p class="fw-bold fs-4 mb-0 text-warning">{{ low_stock }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div>
+                        <p class="text-muted small mb-0">Rupture de stock</p>
+                        <p class="fw-bold fs-4 mb-0 text-danger">{{ out_of_stock }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4" style="max-width: 560px;">
+        <div class="card-body p-4">
+
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div>
+                    <h5 class="mb-0 fw-semibold">Vérification des stocks</h5>
+                    <p class="text-muted small mb-0">
+                        Analyse tous les produits et envoie une alerte sur
+                        <strong>Discord</strong> et <strong>Telegram</strong>
+                        pour chaque produit dont le stock est inférieur à
+                        <strong>{{ threshold }} unités</strong>.
+                    </p>
+                </div>
+            </div>
+
+            {% if total > 0 %}
+                {% set pct_ok  = ((ok_stock  / total) * 100)|round %}
+                {% set pct_low = ((low_stock / total) * 100)|round %}
+                {% set pct_out = ((out_of_stock / total) * 100)|round %}
+                <div class="progress mb-3" style="height: 10px; border-radius: 8px;" title="{{ ok_stock }} OK · {{ low_stock }} faibles · {{ out_of_stock }} ruptures">
+                    <div class="progress-bar bg-success" style="width: {{ pct_ok }}%"></div>
+                    <div class="progress-bar bg-warning"  style="width: {{ pct_low }}%"></div>
+                    <div class="progress-bar bg-danger"   style="width: {{ pct_out }}%"></div>
+                </div>
+                <p class="text-muted small mb-3">
+                    {{ ok_stock }} OK &nbsp;·&nbsp; {{ low_stock }} faible(s) &nbsp;·&nbsp; {{ out_of_stock }} rupture(s)
+                </p>
+            {% endif %}
+
+            <form method="POST" action="{{ path('admin_stock_check') }}"
+                  onsubmit="this.querySelector('button').disabled=true; this.querySelector('button').innerHTML='<span class=\'spinner-border spinner-border-sm me-2\' role=\'status\'></span>Vérification…';">
+                <input type="hidden" name="_token" value="{{ csrf_token('stock_check') }}">
+                <button type="submit" class="btn btn-warning fw-semibold px-4">
+                    Vérifier les stocks maintenant
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

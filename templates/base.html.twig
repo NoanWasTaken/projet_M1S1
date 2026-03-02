@@ -1,23 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-            {{ vite_entry_link_tags('app') }}
-            {{ vite_entry_link_tags('chatbot') }}
-        {% endblock %}
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        {% block javascripts %}
-            {{ vite_entry_script_tags('app') }}
-            {{ vite_entry_script_tags('chatbot') }}
-        {% endblock %}
-    </head>
-    <body>
-        <script>
-            window.GearForge = { isAuthenticated: {{ app.user ? 'true' : 'false' }} };
-        </script>
-        {% block body %}{% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+
+    {% block stylesheets %}
+      {{ vite_entry_link_tags('app') }}
+      {{ vite_entry_link_tags('chatbot') }}
+    {% endblock %}
+
+    {% block javascripts %}
+      {{ vite_entry_script_tags('app') }}
+      {{ vite_entry_script_tags('chatbot') }}
+    {% endblock %}
+  </head>
+
+    <body class="min-h-screen overflow-x-hidden">
+      <script>
+          window.GearForge = { isAuthenticated: {{ app.user ? 'true' : 'false' }} };
+      </script>
+      <div data-controller="sidebar" class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+
+        <div class="flex min-h-screen">
+            {{ include('components/_sidebar.html.twig') }}
+
+            <main class="flex-1 min-w-0">
+              {{ include('components/_header.html.twig') }}
+              {% if showIntroDialogue is defined and showIntroDialogue %}
+                {% include 'components/_intro_dialogue.html.twig' %}
+              {% endif %}
+              {% block body %}{% endblock %}
+            </main>
+        </div>
+      </div>     
+      
+      <div id="global-popup-host"
+          class="pointer-events-none fixed inset-0 z-[999999] flex items-center justify-center p-6">
+      </div>
     </body>
 </html>

@@ -18,6 +18,7 @@ class ProductsController extends AbstractController
         private ProductsRepository $productRepository,
         private EntityManagerInterface $entityManager,
         private ReviewRepository $reviewRepository,
+        private \App\Service\CartService $cartService,
     ) {
     }
 
@@ -37,11 +38,17 @@ class ProductsController extends AbstractController
 
         $categories = $this->productRepository->getAvailableCategories();
 
+        $cart = null;
+        if ($this->getUser()) {
+            $cart = $this->cartService->getOrCreateCart($this->getUser());
+        }
         return $this->render('product/catalogue.html.twig', [
             'products' => $products,
             'categories' => $categories,
             'currentCategory' => $category,
             'searchQuery' => $search,
+            'cart' => $cart,
+            'showIntroDialogue' => false,
         ]);
     }
 
@@ -85,6 +92,7 @@ class ProductsController extends AbstractController
         return $this->render('product/detail.html.twig', [
             'product' => $product,
             'reviewForm' => $form->createView(),
+            'showIntroDialogue' => false,
         ]);
     }
 }

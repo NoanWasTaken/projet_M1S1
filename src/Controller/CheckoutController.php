@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Enum\OrderStatus;
 use App\Service\CartService;
 use App\Service\StripeService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +20,8 @@ class CheckoutController extends AbstractController
 {
     public function __construct(
         private CartService $cartService,
-        private StripeService $stripeService
+        private StripeService $stripeService,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -75,14 +80,58 @@ class CheckoutController extends AbstractController
     #[Route('/success', name: 'app_checkout_success')]
     public function success(): Response
     {
-        $this->cartService->clearCart($this->getUser());
-        
-        return $this->render('checkout/success.html.twig');
+        $user = $this->getUser();
+        $cart = $this->cartService->getOrCreateCart($user);
+
+        if (!$cart->getItems()->isEmpty()) {
+            foreach ($cart->getItems() as $cartItem) {
+                $product = $cartItem->getProduct();
+                if ($cartItem->getQuantity() > $product->getStock()) {
+                    $this->cartService->clearCart($user);
+                    $this->addFlash('error', sprintf(
+                        'Stock insuffisant pour "%s" (disponible : %d). Votre panier a été vidé.',
+                        $product->getName(),
+                        $product->getStock()
+                    ));
+                    return $this->redirectToRoute('app_home');
+                }
+            }
+
+            $order = new Order();
+            $order->setUser($user);
+            $order->setStatus(OrderStatus::VALIDATED);
+
+            $total = 0.0;
+            foreach ($cart->getItems() as $cartItem) {
+                $product = $cartItem->getProduct();
+                $qty     = $cartItem->getQuantity();
+                $product->setStock($product->getStock() - $qty);
+
+                $orderItem = new OrderItem();
+                $orderItem->setProduct($product);
+                $orderItem->setQuantity($qty);
+                $orderItem->setUnitPrice((float) $product->getPrice());
+                $order->addItem($orderItem);
+                $total += $orderItem->getSubtotal();
+            }
+
+            $order->setTotal($total);
+            $this->entityManager->persist($order);
+            $this->entityManager->flush();
+        }
+
+        $this->cartService->clearCart($user);
+
+        return $this->render('checkout/success.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 
     #[Route('/cancel', name: 'app_checkout_cancel')]
     public function cancel(): Response
     {
-        return $this->render('checkout/cancel.html.twig');
+        return $this->render('checkout/cancel.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 }

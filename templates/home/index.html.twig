@@ -4,9 +4,7 @@
 
 {% block body %}
 <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-    {{ include('components/_navbar.html.twig', { sticky: false }) }}
 
-    <!-- Hero Section -->
     <section class="container mx-auto px-4 py-20">
         <div class="text-center">
             <h1 class="text-6xl md:text-7xl font-bold text-white mb-6">
@@ -32,7 +30,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="container mx-auto px-4 py-20">
         <div class="grid md:grid-cols-3 gap-8">
             <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 hover:border-purple-500 transition">
@@ -53,7 +50,6 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
     <section class="container mx-auto px-4 py-20">
         <div class="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-12 border border-purple-500/30">
             <div class="grid md:grid-cols-4 gap-8 text-center">
@@ -77,7 +73,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="container mx-auto px-4 py-20 text-center">
         <h2 class="text-4xl font-bold text-white mb-6">Prêt à améliorer votre setup ?</h2>
         <p class="text-xl text-gray-400 mb-8">Rejoignez des milliers de gamers qui nous font confiance</p>
@@ -85,7 +80,7 @@
             Explorer le catalogue
         </a>
     </section>
-
+    {{ include('components/_banner.html.twig') }}
     {{ include('components/_footer.html.twig') }}
 </div>
 {% endblock %}

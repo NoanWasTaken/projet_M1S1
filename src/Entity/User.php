@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\ChatConversation;
+use App\Entity\Order;
+use App\Entity\SavedCart;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,6 +46,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?PlayerProfile $playerProfile = null;
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
@@ -59,9 +64,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: GameTypes::class)]
     private Collection $game_types;
 
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $orders;
+
+    /**
+     * @var Collection<int, ChatConversation>
+     */
+    #[ORM\OneToMany(targetEntity: ChatConversation::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: false)]
+    private Collection $chatConversations;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedCart::class, cascade: ['persist', 'remove'])]
+    private Collection $savedCarts;
+
     public function __construct()
     {
         $this->game_types = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->chatConversations = new ArrayCollection();
+        $this->savedCarts = new ArrayCollection();
     }
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
@@ -226,5 +249,73 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->cart = $cart;
 
         return $this;
+    }
+
+    public function getPlayerProfile(): ?PlayerProfile
+    {
+        return $this->playerProfile;
+    }
+
+    public function setPlayerProfile(PlayerProfile $playerProfile): static
+    {
+        // set the owning side of the relation if necessary
+        if ($playerProfile->getOwner() !== $this) {
+            $playerProfile->setOwner($this);
+        }
+
+        $this->playerProfile = $playerProfile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): static
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): static
+    {
+        if ($this->orders->removeElement($order)) {
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChatConversation>
+     */
+    public function getChatConversations(): Collection
+    {
+        return $this->chatConversations;
+    }
+
+    public function addChatConversation(ChatConversation $conversation): static
+    {
+        if (!$this->chatConversations->contains($conversation)) {
+            $this->chatConversations->add($conversation);
+            $conversation->setUser($this);
+        }
+        return $this;
+    }
+
+    public function getSavedCarts(): Collection
+    {
+        return $this->savedCarts;
     }
 }

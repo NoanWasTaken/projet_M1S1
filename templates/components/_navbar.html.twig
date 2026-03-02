@@ -1,4 +1,4 @@
-<header class="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700{% if sticky is not defined or sticky %} sticky top-0 z-50{% endif %}">
+<header class="bg-gray-900 border-b border-gray-700{% if sticky is not defined or sticky %} sticky top-0 z-50{% endif %}">
     {% set current_route = app.request is defined and app.request is not null ? app.request.attributes.get('_route') : null %}
     <div class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
@@ -12,21 +12,29 @@
                 >
                     Catalogue
                 </a>
+                <a
+                    href="{{ path('app_profiles_index') }}"
+                    class="transition {% if current_route == 'app_profiles_index' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"
+                >
+                    Profils joueurs
+                </a>
                 {% if app.user %}
                     <a
                         href="{{ path('app_cart') }}"
                         class="relative inline-flex items-center transition {% if current_route == 'app_cart' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"
                     >
-                        <span>Panier</span>
-                        {% if cart is defined and cart.totalItems is defined and cart.totalItems > 0 %}
-                            <span class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold leading-none text-white bg-pink-600 rounded-full">
-                                {{ cart.totalItems }}
-                            </span>
-                        {% endif %}
+                        <span class="pixel-btn__ico">🛍️</span>
+                        <span class="pixel-btn__text">Panier
+                            {% if cart is defined and cart.totalItems is defined and cart.totalItems > 0 %}
+                                <span class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold leading-none text-white bg-pink-600 rounded-full">
+                                    {{ cart.totalItems }}
+                                </span>
+                            {% endif %}
+                        </span>
                     </a>
                     <span class="text-gray-400">{{ app.user.email }}</span>
                     <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white transition">Déconnexion</a>
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_MODERATOR') %}
                         <a
                             href="{{ path('admin') }}"
                             class="transition {% if current_route == 'admin' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"
@@ -48,7 +56,7 @@
                         S'inscrire
                     </a>
                 {% endif %}
-            </nav>
+        </nav>
         </div>
     </div>
 </header>

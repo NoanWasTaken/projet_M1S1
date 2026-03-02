@@ -32,6 +32,7 @@ class AuthController extends AbstractController
         return $this->render('auth/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'showIntroDialogue' => false,
         ]);
     }
 

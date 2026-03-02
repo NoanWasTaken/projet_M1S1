@@ -10,6 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CartRepository::class)]
 class Cart
 {
+    #[ORM\Column(type: 'string', length: 64, nullable: true, unique: true)]
+    private ?string $shareToken = null;
+
+    public function getShareToken(): ?string
+    {
+        return $this->shareToken;
+    }
+
+    public function setShareToken(?string $shareToken): static
+    {
+        $this->shareToken = $shareToken;
+        return $this;
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,6 +46,11 @@ class Cart
         $this->items = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function __toString(): string
+    {
+        return 'Panier #' . $this->id . ($this->user ? ' (' . $this->user . ')' : '');
     }
 
     public function getId(): ?int

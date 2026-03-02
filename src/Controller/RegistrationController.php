@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\PlayerProfile;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +40,22 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_USER']);
+
+            $tz = new \DateTimeZone('Europe/Paris');
+            $now = new \DateTimeImmutable('now', $tz);
+            
+            $profile = new PlayerProfile();
+            $profile->setOwner($user);
+            $profile->setXpTotal(0);
+            $profile->setLevel(1);
+            $profile->setCreatedAt($now);
+            $profile->setUpdatedAt($now);
+
+            $profile->setHairSkin('bald_head.webp');
+            $profile->setBodySkin('normal_body.webp');
+            
             $entityManager->persist($user);
+            $entityManager->persist($profile);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -57,13 +73,16 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
+            'showIntroDialogue' => false,
         ]);
     }
 
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
-        return $this->render('registration/check_email.html.twig');
+        return $this->render('registration/check_email.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 
     #[Route('/verify/email/{id}', name: 'app_verify_email')]

@@ -107,4 +107,9 @@ class CartItem
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return ($this->product ? (string) $this->product : 'Article') . ' x' . ($this->quantity ?? 1);
+    }
 }

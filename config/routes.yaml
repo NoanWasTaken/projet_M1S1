@@ -1,3 +1,6 @@
+profiles:
+    path: /profiles
+    controller: App\Controller\ProfilesController::index
 controllers:
     resource:
         path: ../src/Controller/
