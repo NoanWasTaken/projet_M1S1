@@ -20,7 +20,7 @@ class ProductsFixtures extends Fixture
                 'brand' => 'Finalmouse',
                 'stock' => 10,
                 'rating' => '4.9',
-                'photos' => ['https://prosettings.net/wp-content/uploads/finalmouse-starlight-12.jpg'],
+                'photos' => ['https://m.media-amazon.com/images/I/61am-+aiRmL._AC_SL1500_.jpg'],
             ],
             [
                 'name' => 'Logitech G Pro X Superlight',
@@ -40,7 +40,7 @@ class ProductsFixtures extends Fixture
                 'brand' => 'VAXEE',
                 'stock' => 8,
                 'rating' => '4.7',
-                'photos' => ['https://prosettings.net/wp-content/uploads/vaxee-outset-ax.png'],
+                'photos' => ['https://eu.vaxee.co/data/goods/gallery/202310/1698389314169743476.png'],
             ],
             [
                 'name' => 'Razer DeathAdder V3 Pro',
@@ -122,7 +122,7 @@ class ProductsFixtures extends Fixture
                 'brand' => 'Sennheiser',
                 'stock' => 7,
                 'rating' => '4.7',
-                'photos' => ['https://prosettings.net/wp-content/uploads/sennheiser-hd-599.png'],
+                'photos' => ['https://cobra.fr/cdn/shop/files/sennheiser-hd-599.jpg?v=1738538980&width=2048'],
             ],
             [
                 'name' => 'HyperX Cloud II',

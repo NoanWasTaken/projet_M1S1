@@ -43,6 +43,7 @@ class CartController extends AbstractController
         return $this->render('cart/share.html.twig', [
             'shareUrl' => $shareUrl,
             'cart' => $cart,
+            'showIntroDialogue' => false,
         ]);
     }
 
@@ -55,6 +56,7 @@ class CartController extends AbstractController
         }
         return $this->render('cart/shared_view.html.twig', [
             'cart' => $cart,
+            'showIntroDialogue' => false,
         ]);
     }
     public function __construct(
@@ -72,6 +74,7 @@ class CartController extends AbstractController
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'savedCartForm' => $savedCartForm->createView(),
+            'showIntroDialogue' => false,
         ]);
     }
 

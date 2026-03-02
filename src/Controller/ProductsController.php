@@ -48,6 +48,7 @@ class ProductsController extends AbstractController
             'currentCategory' => $category,
             'searchQuery' => $search,
             'cart' => $cart,
+            'showIntroDialogue' => false,
         ]);
     }
 
@@ -91,6 +92,7 @@ class ProductsController extends AbstractController
         return $this->render('product/detail.html.twig', [
             'product' => $product,
             'reviewForm' => $form->createView(),
+            'showIntroDialogue' => false,
         ]);
     }
 }

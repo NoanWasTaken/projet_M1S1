@@ -33,6 +33,9 @@
 
             <main class="flex-1 min-w-0">
               {{ include('components/_header.html.twig') }}
+              {% if showIntroDialogue %}
+                {% include 'components/_intro_dialogue.html.twig' %}
+              {% endif %}
               {% block body %}{% endblock %}
             </main>
         </div>
