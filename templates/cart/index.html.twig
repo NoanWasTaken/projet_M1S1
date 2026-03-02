@@ -249,4 +249,25 @@
 
     {{ include('components/_footer.html.twig') }}
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const shareBtn = document.getElementById('share-cart-btn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function() {
+            const token = '{{ cart.shareToken }}';
+            if (token && token.length === 64) {
+                const url = window.location.origin + '/cart/shared/' + token;
+                navigator.clipboard.writeText(url).then(() => {
+                    const msg = document.getElementById('share-cart-msg');
+                    msg.classList.remove('hidden');
+                    setTimeout(() => msg.classList.add('hidden'), 2000);
+                });
+            } else {
+                alert('Impossible de copier le lien');
+            }
+        });
+    }
+});
+</script>
+</div>
 {% endblock %}
