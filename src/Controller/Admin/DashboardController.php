@@ -16,13 +16,19 @@ use App\Entity\User;
 use App\Entity\UserReward;
 use App\Entity\XPEvent;
 use App\Repository\ChatConversationRepository;
+use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
+use App\Service\StockAlertService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
@@ -30,14 +36,59 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private ChatConversationRepository $conversationRepository,
-        private AdminUrlGenerator $adminUrlGenerator,
+        private AdminUrlGenerator          $adminUrlGenerator,
+        private ProductsRepository         $productsRepository,
+        private StockAlertService          $stockAlert,
+        private CsrfTokenManagerInterface  $csrfTokenManager,
     ) {
     }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('@EasyAdmin/page/content.html.twig');
+        $threshold = (int) ($_ENV['STOCK_ALERT_THRESHOLD'] ?? 10);
+        $allProducts = $this->productsRepository->findAll();
+
+        $outOfStock  = array_filter($allProducts, fn ($p) => $p->getStock() === 0);
+        $lowStock    = array_filter($allProducts, fn ($p) => $p->getStock() > 0 && $p->getStock() < $threshold);
+        $okStock     = array_filter($allProducts, fn ($p) => $p->getStock() >= $threshold);
+
+        return $this->render('admin/dashboard.html.twig', [
+            'threshold'    => $threshold,
+            'total'        => count($allProducts),
+            'out_of_stock' => count($outOfStock),
+            'low_stock'    => count($lowStock),
+            'ok_stock'     => count($okStock),
+        ]);
+    }
+
+
+    #[Route('/admin/stock/check', name: 'admin_stock_check', methods: ['POST'])]
+    public function checkStocks(Request $request): RedirectResponse
+    {
+        $token = new CsrfToken('stock_check', (string) $request->request->get('_token'));
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            $this->addFlash('danger', 'Token CSRF invalide. Veuillez recharger la page.');
+            return $this->redirectToRoute('admin');
+        }
+
+        $result = $this->stockAlert->checkAll();
+
+        if ($result['alerts'] === 0) {
+            $this->addFlash(
+                'success',
+                'Vérification terminée — tous les stocks sont au-dessus du seuil (' . $result['threshold'] . ' unités).'
+            );
+        } else {
+            $names = array_map(fn ($p) => $p['name'] . ' (' . $p['stock'] . ')', $result['products']);
+            $this->addFlash(
+                'warning',
+                '' . $result['alerts'] . ' produit(s) en alerte — notifications envoyées à Discord & Telegram : '
+                . implode(', ', $names) . '.'
+            );
+        }
+
+        return $this->redirectToRoute('admin');
     }
 
     #[Route('/admin/user/{userId}/conversations', name: 'admin_user_conversations')]
