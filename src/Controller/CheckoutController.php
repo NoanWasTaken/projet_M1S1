@@ -105,12 +105,16 @@ class CheckoutController extends AbstractController
 
         $this->cartService->clearCart($user);
 
-        return $this->render('checkout/success.html.twig');
+        return $this->render('checkout/success.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 
     #[Route('/cancel', name: 'app_checkout_cancel')]
     public function cancel(): Response
     {
-        return $this->render('checkout/cancel.html.twig');
+        return $this->render('checkout/cancel.html.twig', [
+            'showIntroDialogue' => false,
+        ]);
     }
 }
