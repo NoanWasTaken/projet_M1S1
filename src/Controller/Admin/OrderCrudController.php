@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Order;
 use App\Enum\OrderStatus;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -17,6 +18,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 
 class OrderCrudController extends AbstractCrudController
 {
+    public function __construct(private EntityManagerInterface $em) {}
+
     public static function getEntityFqcn(): string
     {
         return Order::class;
@@ -59,5 +62,26 @@ class OrderCrudController extends AbstractCrudController
         yield CollectionField::new('items', 'Articles')
             ->hideOnIndex()
             ->hideOnForm();
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $originalData = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
+        $previousStatus = $originalData['status'] ?? null;
+        $newStatus = $entityInstance->getStatus();
+
+        $wasCancelled = $previousStatus !== OrderStatus::CANCELLED
+            && $newStatus === OrderStatus::CANCELLED;
+
+        if ($wasCancelled) {
+            foreach ($entityInstance->getItems() as $item) {
+                $product = $item->getProduct();
+                if ($product !== null) {
+                    $product->setStock($product->getStock() + $item->getQuantity());
+                }
+            }
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }

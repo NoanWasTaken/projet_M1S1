@@ -16,6 +16,83 @@
         {% endfor %}
     {% endfor %}
 
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3 mt-4">Commandes</h6>
+    <div class="row g-4 mb-5">
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Chiffre d'affaires</p>
+                    <p class="fw-bold fs-4 mb-0 text-success">{{ revenue|number_format(2, ',', ' ') }} €</p>
+                    <p class="text-muted smaller mb-0" style="font-size:0.75rem">commandes hors annulées</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Commandes total</p>
+                    <p class="fw-bold fs-4 mb-0">{{ total_orders }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">toutes périodes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Nouvelles commandes</p>
+                    <p class="fw-bold fs-4 mb-0 text-primary">{{ new_orders_7d }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">7 derniers jours</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">En attente</p>
+                    <p class="fw-bold fs-4 mb-0 text-warning">{{ orders_by_status.pending ?? 0 }}</p>
+                    <p class="text-muted mb-0" style="font-size:0.75rem">à traiter</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% if total_orders > 0 %}
+    <div class="card border-0 shadow-sm mb-5" style="max-width: 560px;">
+        <div class="card-body p-4">
+            <h6 class="fw-semibold mb-3">Répartition des commandes</h6>
+            {% for status, count in orders_by_status %}
+                {% set pct = ((count / total_orders) * 100)|round %}
+                {% set color = status == 'validated' ? 'success' : (status == 'cancelled' ? 'danger' : (status == 'pending' ? 'warning' : 'info')) %}
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small text-capitalize">{{ status }}</span>
+                    <span class="small fw-semibold">{{ count }}</span>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-{{ color }}" style="width: {{ pct }}%"></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3">Utilisateurs</h6>
+    <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Membres inscrits</p>
+                    <p class="fw-bold fs-4 mb-0">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3">Stock produits</h6>
     <div class="row g-4 mb-5">
 
         <div class="col-sm-6 col-xl-3">
@@ -106,3 +183,4 @@
 
 </div>
 {% endblock %}
+

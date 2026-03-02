@@ -84,16 +84,33 @@ class CheckoutController extends AbstractController
         $cart = $this->cartService->getOrCreateCart($user);
 
         if (!$cart->getItems()->isEmpty()) {
+            foreach ($cart->getItems() as $cartItem) {
+                $product = $cartItem->getProduct();
+                if ($cartItem->getQuantity() > $product->getStock()) {
+                    $this->cartService->clearCart($user);
+                    $this->addFlash('error', sprintf(
+                        'Stock insuffisant pour "%s" (disponible : %d). Votre panier a été vidé.',
+                        $product->getName(),
+                        $product->getStock()
+                    ));
+                    return $this->redirectToRoute('app_home');
+                }
+            }
+
             $order = new Order();
             $order->setUser($user);
             $order->setStatus(OrderStatus::VALIDATED);
 
             $total = 0.0;
             foreach ($cart->getItems() as $cartItem) {
+                $product = $cartItem->getProduct();
+                $qty     = $cartItem->getQuantity();
+                $product->setStock($product->getStock() - $qty);
+
                 $orderItem = new OrderItem();
-                $orderItem->setProduct($cartItem->getProduct());
-                $orderItem->setQuantity($cartItem->getQuantity());
-                $orderItem->setUnitPrice((float) $cartItem->getProduct()->getPrice());
+                $orderItem->setProduct($product);
+                $orderItem->setQuantity($qty);
+                $orderItem->setUnitPrice((float) $product->getPrice());
                 $order->addItem($orderItem);
                 $total += $orderItem->getSubtotal();
             }
