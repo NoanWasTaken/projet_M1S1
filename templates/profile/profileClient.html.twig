@@ -221,7 +221,17 @@
       </section>
     </article>
 
-    {# à mettre les réductions, les badges, historique de commande etc #}
+    <article class="w-full rounded-xl border border-white/10 bg-black/35 p-4">
+      <div class="flex items-center justify-between mb-3">
+        <div class="text-[10px] tracking-widest text-white/70">MES COMMANDES</div>
+        <a href="{{ path('app_order_index') }}"
+           class="text-[9px] tracking-widest text-purple-300 border border-purple-400/30 px-3 py-1 rounded-lg hover:bg-purple-500/20 transition-colors">
+          VOIR TOUT →
+        </a>
+      </div>
+      <p class="text-[9px] text-white/40 tracking-wide">Consultez l'historique de vos commandes, suivez leur statut ou annulez-en une en attente.</p>
+    </article>
+
     <article class="w-full rounded-xl border border-white/10 bg-black/35 p-4">
       <div class="text-[10px] tracking-widest text-white/70 mb-3">STATS</div>
 
