@@ -57,6 +57,11 @@ class OrderController extends AbstractController
 
         $this->validateCsrf('cancel_order_' . $order->getId());
 
+        foreach ($order->getItems() as $item) {
+            $product = $item->getProduct();
+            $product->setStock($product->getStock() + $item->getQuantity());
+        }
+
         $order->setStatus(OrderStatus::CANCELLED);
         $this->em->flush();
 
@@ -65,9 +70,7 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_order_index');
     }
 
-    /**
-     * Vérifie le token CSRF manuellement.
-     */
+
     private function validateCsrf(string $tokenId): void
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
