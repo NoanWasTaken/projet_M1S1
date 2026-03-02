@@ -34,7 +34,7 @@
                     </a>
                     <span class="text-gray-400">{{ app.user.email }}</span>
                     <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white transition">Déconnexion</a>
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_MODERATOR') %}
                         <a
                             href="{{ path('admin') }}"
                             class="transition {% if current_route == 'admin' %}text-white font-semibold{% else %}text-gray-300 hover:text-white{% endif %}"

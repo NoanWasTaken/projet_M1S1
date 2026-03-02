@@ -21,7 +21,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
@@ -67,7 +69,7 @@ class UserCrudController extends AbstractCrudController
         yield TextField::new('name');
         yield TextField::new('surname');
         
-        $roles = ['ROLE_USER', 'ROLE_ADMIN'];
+        $roles = ['ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN'];
         yield ChoiceField::new('roles')
             ->setChoices(array_combine($roles, $roles))
             ->allowMultipleChoices()
