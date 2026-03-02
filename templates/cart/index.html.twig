@@ -48,6 +48,45 @@
                     </div>
                 </form>
             </dialog>
+
+            <dialog id="save-cart-modal" class="rounded-xl p-6 bg-gray-900 text-white shadow-xl">
+                                <style>
+                                    #save-cart-modal[open] {
+                                        position: fixed ;
+                                        top: 50% ;
+                                        left: 50% ;
+                                        transform: translate(-50%, -50%) ;
+                                        margin: 0 ;
+                                        padding: 0;
+                                        border: none;
+                                        background: none;
+                                        z-index: 1000;
+                                    }
+                                    #save-cart-modal > form {
+                                        box-shadow: 0 8px 40px 0 #000a, 0 0 0 4px #22c55e;
+                                    }
+                                    #save-cart-modal::backdrop {
+                                        background: rgba(20, 20, 30, 0.7);
+                                    }
+                                </style>
+                <form method="post" action="/cart/save" class="flex flex-col items-center gap-6 w-[90vw] max-w-xl min-w-[340px] p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-purple-900 rounded-2xl shadow-2xl border-4 border-green-700 text-center">
+                    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600 mb-2 tracking-wider uppercase">Enregistrer le panier</h2>
+                    {{ form_start(savedCartForm) }}
+                    <div class="mb-4 w-full">
+                        <label for="saved_cart_name" class="block mb-2 text-lg font-semibold text-blue-400">Nom du panier</label>
+                        {{ form_widget(savedCartForm.name, {'attr': {'class': 'w-full p-4 rounded-lg bg-gray-800 border-2 border-blue-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500 text-blue-200 font-mono text-center text-xl transition-all outline-none shadow-lg'}}) }}
+                    </div>
+                    <div class="flex gap-6 mt-2 w-full justify-center">
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:scale-105 hover:from-blue-600 hover:to-green-600 transition-all duration-150 flex items-center gap-2 text-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Enregistrer
+                        </button>
+                        <button type="button" onclick="document.getElementById('save-cart-modal').close()" class="px-8 py-3 bg-gray-800 text-gray-300 font-bold rounded-xl border border-gray-600 hover:bg-gray-700 hover:text-white transition-all duration-150 text-lg">Annuler</button>
+                    </div>
+                    {{ form_end(savedCartForm) }}
+                </form>
+            </dialog>
+
             <script>
                                 document.getElementById('share-cart-btn')?.addEventListener('click', function() {
                                     const token = '{{ cart.shareToken }}';
@@ -188,22 +227,9 @@
                         <span id="share-cart-msg" class="hidden text-green-400 text-sm mb-2">Lien copié !</span>
                         {% endif %}
 
+                        <button onclick="document.getElementById('save-cart-modal').showModal()" class="block w-full py-3 bg-blue-600 text-white text-center rounded-xl hover:bg-blue-700 transition mb-3">Enregistrer le panier</button>
+
                         <a href="{{ path('app_catalogue') }}" class="block w-full py-3 bg-gray-700 hover:bg-gray-600 text-white text-center rounded-xl transition">
-                                        <script>
-                                            document.getElementById('share-cart-btn')?.addEventListener('click', function() {
-                                                const token = '{{ cart.shareToken }}';
-                                                if (token && token.length === 64) {
-                                                    const url = window.location.origin + '/cart/shared/' + token;
-                                                    navigator.clipboard.writeText(url).then(() => {
-                                                        const msg = document.getElementById('share-cart-msg');
-                                                        msg.classList.remove('hidden');
-                                                        setTimeout(() => msg.classList.add('hidden'), 2000);
-                                                    });
-                                                } else {
-                                                    alert('Impossible de copier le lien');
-                                                }
-                                            });
-                                        </script>
                             Continuer mes achats
                         </a>
                     </div>

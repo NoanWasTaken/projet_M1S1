@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\PlayerProfileRepository;
+use App\Repository\SavedCartRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,7 +13,7 @@ final class ClientProfileController extends AbstractController
 {
     #[Route('/profile', name: 'app_client_profile', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function index(PlayerProfileRepository $profileRepo): Response
+    public function index(PlayerProfileRepository $profileRepo, SavedCartRepository $savedCartRepo): Response
     {
         $user = $this->getUser();
         $profile = $profileRepo->findOneBy(['owner' => $user]); 
@@ -26,6 +27,12 @@ final class ClientProfileController extends AbstractController
         $xpInLevel = $xpTotal % 1000;
         $xpPercent = (int) round(($xpInLevel / 1000) * 100);
 
+        $savedCarts = $savedCartRepo->findBy(['user' => $user]);
+
+        $cart = null;
+        if ($user && method_exists($user, 'getCart')) {
+            $cart = $user->getCart();
+        }
         return $this->render('profile/profileClient.html.twig', [
             'profile'   => $profile,
             'level'     => $level,
@@ -34,6 +41,8 @@ final class ClientProfileController extends AbstractController
             'xpPercent' => $xpPercent,
             'hairSkin' => $hairSkin,
             'bodySkin' => $bodySkin,
+            'savedCarts' => $savedCarts,
+            'cart' => $cart,
         ]);
     }
 }

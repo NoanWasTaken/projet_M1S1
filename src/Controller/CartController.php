@@ -63,13 +63,15 @@ class CartController extends AbstractController
     ) {}
 
     #[Route('', name: 'app_cart')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
         $this->cartService->ensureShareToken($cart);
+        $savedCartForm = $this->createForm(\App\Form\SavedCartType::class);
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
+            'savedCartForm' => $savedCartForm->createView(),
         ]);
     }
 
