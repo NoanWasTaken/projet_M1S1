@@ -63,6 +63,16 @@ jobs:
                   echo "DEFAULT_URI=http://localhost" >> .env
                   echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
                   echo "MAILER_DSN=null://null" >> .env
+                  echo "MAILER_FROM_EMAIL=test@example.com" >> .env
+                  echo "MAILER_FROM_NAME=GearforgeTest" >> .env
+                  echo "OPENAI_API_KEY=sk-test" >> .env
+                  echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+                  echo "CHATBOT_SYSTEM_MESSAGE=test" >> .env
+                  echo "STRIPE_SECRET_KEY=sk_test_placeholder" >> .env
+                  echo "STRIPE_PUBLIC_KEY=pk_test_placeholder" >> .env
+                  echo "N8N_API_KEY=test" >> .env
+                  echo "N8N_WEBHOOK_URL=http://localhost" >> .env
+                  echo "STOCK_ALERT_THRESHOLD=10" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -132,6 +142,16 @@ jobs:
                   echo "DEFAULT_URI=http://localhost" >> .env
                   echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
                   echo "MAILER_DSN=null://null" >> .env
+                  echo "MAILER_FROM_EMAIL=test@example.com" >> .env
+                  echo "MAILER_FROM_NAME=GearforgeTest" >> .env
+                  echo "OPENAI_API_KEY=sk-test" >> .env
+                  echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+                  echo "CHATBOT_SYSTEM_MESSAGE=test" >> .env
+                  echo "STRIPE_SECRET_KEY=sk_test_placeholder" >> .env
+                  echo "STRIPE_PUBLIC_KEY=pk_test_placeholder" >> .env
+                  echo "N8N_API_KEY=test" >> .env
+                  echo "N8N_WEBHOOK_URL=http://localhost" >> .env
+                  echo "STOCK_ALERT_THRESHOLD=10" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -183,6 +203,16 @@ jobs:
                   echo "DEFAULT_URI=http://localhost" >> .env
                   echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
                   echo "MAILER_DSN=null://null" >> .env
+                  echo "MAILER_FROM_EMAIL=test@example.com" >> .env
+                  echo "MAILER_FROM_NAME=GearforgeTest" >> .env
+                  echo "OPENAI_API_KEY=sk-test" >> .env
+                  echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+                  echo "CHATBOT_SYSTEM_MESSAGE=test" >> .env
+                  echo "STRIPE_SECRET_KEY=sk_test_placeholder" >> .env
+                  echo "STRIPE_PUBLIC_KEY=pk_test_placeholder" >> .env
+                  echo "N8N_API_KEY=test" >> .env
+                  echo "N8N_WEBHOOK_URL=http://localhost" >> .env
+                  echo "STOCK_ALERT_THRESHOLD=10" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
@@ -260,6 +290,16 @@ jobs:
                   echo "DEFAULT_URI=http://localhost" >> .env
                   echo "MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0" >> .env
                   echo "MAILER_DSN=null://null" >> .env
+                  echo "MAILER_FROM_EMAIL=test@example.com" >> .env
+                  echo "MAILER_FROM_NAME=GearforgeTest" >> .env
+                  echo "OPENAI_API_KEY=sk-test" >> .env
+                  echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+                  echo "CHATBOT_SYSTEM_MESSAGE=test" >> .env
+                  echo "STRIPE_SECRET_KEY=sk_test_placeholder" >> .env
+                  echo "STRIPE_PUBLIC_KEY=pk_test_placeholder" >> .env
+                  echo "N8N_API_KEY=test" >> .env
+                  echo "N8N_WEBHOOK_URL=http://localhost" >> .env
+                  echo "STOCK_ALERT_THRESHOLD=10" >> .env
 
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
