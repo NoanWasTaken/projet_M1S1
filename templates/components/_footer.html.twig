@@ -1,5 +1,70 @@
-<footer class="bg-gray-900 border-t border-gray-800 mt-20 py-12">
-    <div class="container mx-auto px-4 text-center">
-        <p class="text-gray-400">&copy; 2026 GearForge. Tous droits réservés.</p>
+<footer class="pixel-footer relative isolate mt-20" style="font-family:'Press Start 2P', sans-serif;">
+
+  <div class="pointer-events-none absolute inset-0 z-0"
+       style="
+         background:
+           linear-gradient(180deg, rgba(18,10,46,0.88), rgba(11,7,32,0.95)),
+           linear-gradient(90deg, rgba(233,221,255,0.10) 1px, transparent 1px),
+           linear-gradient(0deg,  rgba(233,221,255,0.10) 1px, transparent 1px),
+           repeating-linear-gradient(45deg, rgba(233,221,255,0.10) 0 2px, rgba(0,0,0,0) 2px 5px);
+         background-size: auto, 5px 5px, 5px 5px, auto;
+       ">
+  </div>
+
+  <div class="relative z-10 border-t-4" style="border-color:var(--pixel-border);">
+
+   <div class="container mx-auto px-6 py-8">
+      <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <a href="{{ path('app_home') }}" class="pixel-brand">
+            <span class="pixel-brand__main">GEARFORGE</span>
+            <span class="pixel-brand__sub">GAMING GEAR & MORE</span>
+          </a>
+          <p class="text-[8px] tracking-widest mt-1" style="color:var(--secondary); max-width:220px; line-height:1.6;">
+            Votre boutique gaming ultime.<br>Équipez-vous. Montez en niveau.
+          </p>
+        </div>
+
+        <nav class="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-3">
+          <div class="flex flex-col gap-2">
+            <span class="text-[8px] tracking-[0.3em] mb-1" style="color:var(--pixel-head);">NAVIGATION</span>
+            <a href="{{ path('app_home') }}"    class="footer-link">Accueil</a>
+            <a href="{{ path('app_cart') }}"    class="footer-link">Panier</a>
+            {% if app.user %}
+              <a href="{{ path('app_client_profile') }}" class="footer-link">Mon profil</a>
+              <a href="{{ path('app_order_index') }}"    class="footer-link">Mes commandes</a>
+            {% else %}
+              <a href="{{ path('app_login') }}"        class="footer-link">Connexion</a>
+              <a href="{{ path('app_register') }}"     class="footer-link">Inscription</a>
+            {% endif %}
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <span class="text-[8px] tracking-[0.3em] mb-1" style="color:var(--pixel-head);">LÉGAL</span>
+            <a href="{{ path('app_rgpd') }}" class="footer-link">Politique de confidentialité</a>
+            <a href="{{ path('app_rgpd') }}" class="footer-link">RGPD</a>
+            <a href="{{ path('app_rgpd') }}" class="footer-link">Cookies</a>
+          </div>
+        </nav>
+
+      </div>
     </div>
+
+    <div class="mx-6" style="height:3px; background:linear-gradient(90deg, transparent, var(--pixel-border), transparent);"></div>
+
+    <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p class="text-[8px] tracking-widest" style="color:rgba(233,221,255,0.45);">
+        &copy; 2026 GearForge.
+      </p>
+      <a href="{{ path('app_rgpd') }}"
+         class="text-[8px] tracking-widest transition-colors"
+         style="color:rgba(233,221,255,0.45);"
+         onmouseover="this.style.color='var(--color-mauve-400)'"
+         onmouseout="this.style.color='rgba(233,221,255,0.45)'">
+        Tous droits réservés — Politique de confidentialité
+      </a>
+    </div>
+
+  </div>
 </footer>

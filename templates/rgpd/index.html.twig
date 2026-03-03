@@ -1,0 +1,546 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de confidentialité (RGPD) — GearForge{% endblock %}
+
+{% block body %}
+<div class="m-5 mt-7 mb-7 p-3 rounded-2xl border border-white/10 shadow-2xl" style="background:#2C0735; font-family:'Press Start 2P', sans-serif;">
+
+  <div class="mb-6 flex flex-col gap-2">
+    <div class="text-[9px] tracking-widest text-white/50">LEGAL / PRIVACY</div>
+    <h1 class="text-base leading-snug tracking-widest" style="color:var(--color-mauve-300); text-shadow:2px 2px 0 #000;">
+      POLITIQUE DE CONFIDENTIALITÉ
+    </h1>
+    <p class="text-[9px] tracking-wider text-white/60 mt-1">
+      Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679)
+    </p>
+    <div class="mt-2 h-0.75 rounded-full" style="background: linear-gradient(90deg, var(--color-mauve-500), var(--tertiary), transparent);"></div>
+    <p class="text-[9px] text-white/50 tracking-wide">Dernière mise à jour : 3 mars 2026</p>
+  </div>
+
+  <div class="flex flex-col gap-5">
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">01 — RESPONSABLE DU TRAITEMENT</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Le responsable du traitement des données à caractère personnel collectées sur le site <strong class="text-white">GearForge</strong> 
+          (accessible à l'adresse <span style="color:var(--color-mauve-300);">gearforge.fr</span>) est :
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Société</span><span class="ds-v">GearForge SAS</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Adresse</span><span class="ds-v">France</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Email DPO</span><span class="ds-v" style="word-break:break-all;">privacy@gearforge.fr</span>
+          </div>
+        </div>
+        <p>
+          Conformément à l'article 13 du RGPD, vous êtes informé(e) ci-dessous de la manière dont vos données sont collectées, 
+          utilisées, conservées et protégées.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(206,81,228,.15);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">02 — DONNÉES PERSONNELLES COLLECTÉES</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-4">
+
+        <p>GearForge collecte les catégories de données suivantes, selon les interactions que vous avez avec le site :</p>
+
+        <div class="space-y-3">
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--color-mauve-400);">▸ Données d'identification et de compte</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Adresse e-mail (obligatoire à la création du compte)</li>
+              <li>Mot de passe (stocké sous forme de hachage bcrypt — jamais en clair)</li>
+              <li>Rôles et permissions (client, modérateur, administrateur)</li>
+              <li>Préférences de personnalisation du personnage pixel (skin, couleur de cheveux, tenue)</li>
+              <li>Type de joueur et réponses au dialogue d'introduction</li>
+            </ul>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--color-mauve-400);">▸ Données de commande et de paiement (e-commerce)</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Adresse de livraison et de facturation (nom, prénom, adresse postale, code postal, ville, pays)</li>
+              <li>Historique des commandes (articles, quantités, prix, statuts, dates)</li>
+              <li>Données de panier (contenu, paniers sauvegardés, date de création)</li>
+              <li>Méthode de paiement (type de carte : Visa, Mastercard…)</li>
+              <li>Les données bancaires complètes (numéro de carte, cryptogramme, date d'expiration) 
+                  <strong class="text-white">ne sont jamais stockées</strong> sur nos serveurs. Elles sont traitées 
+                  directement et exclusivement par notre prestataire de paiement sécurisé 
+                  <span style="color:var(--secondary);">Stripe</span> (certifié PCI-DSS niveau 1).
+              </li>
+            </ul>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--color-mauve-400);">▸ Données liées au chatbot IA</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Historique complet des conversations avec l'assistant IA (messages envoyés et reçus, horodatage)</li>
+              <li>Identifiant de conversation</li>
+              <li>Contenu des messages, qui peut inclure des informations que vous choisissez de partager librement</li>
+            </ul>
+            <div class="mt-2 p-2 rounded border border-yellow-400/30 bg-yellow-400/5 text-[8px] text-yellow-200/80">
+              ⚠ Attention : évitez de saisir des informations sensibles (données bancaires, mots de passe, données médicales) 
+              dans le chatbot. L'historique est associé à votre compte et conservé pour améliorer votre expérience.
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--color-mauve-400);">▸ Données de navigation et techniques</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Adresse IP (pour la sécurité et la prévention de la fraude)</li>
+              <li>Type de navigateur, système d'exploitation, résolution d'écran</li>
+              <li>Pages visitées, durée de visite, parcours de navigation</li>
+              <li>Tokens CSRF (sécurité des formulaires)</li>
+            </ul>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--color-mauve-400);">▸ Données de gamification et engagement</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Points d'expérience (XP) et niveau du joueur</li>
+              <li>Récompenses et badges obtenus</li>
+              <li>Participation aux mini-jeux (footer, barre de navigation)</li>
+              <li>Profil joueur (type de joueur déclaré)</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(133,138,227,.15);">
+        <div class="ds-label" style="color:var(--tertiary);">03 — FINALITÉS ET BASES LÉGALES</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-2">
+        <div class="overflow-x-auto">
+          <table class="w-full text-[8px] border-collapse">
+            <thead>
+              <tr style="background:rgba(124,58,237,.25);">
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">FINALITÉ</th>
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">BASE LÉGALE</th>
+              </tr>
+            </thead>
+            <tbody class="text-white/70">
+              <tr class="border-b border-white/5">
+                <td class="p-2 border border-white/10">Création et gestion du compte utilisateur</td>
+                <td class="p-2 border border-white/10">Exécution du contrat (art. 6.1.b)</td>
+              </tr>
+              <tr class="border-b border-white/5" style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Traitement des commandes et gestion des livraisons</td>
+                <td class="p-2 border border-white/10">Exécution du contrat (art. 6.1.b)</td>
+              </tr>
+              <tr class="border-b border-white/5">
+                <td class="p-2 border border-white/10">Traitement sécurisé des paiements via Stripe</td>
+                <td class="p-2 border border-white/10">Exécution du contrat + Obligation légale (art. 6.1.b et 6.1.c)</td>
+              </tr>
+              <tr class="border-b border-white/5" style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Conservation de l'historique des commandes</td>
+                <td class="p-2 border border-white/10">Obligation légale — archivage fiscal 10 ans (art. 6.1.c)</td>
+              </tr>
+              <tr class="border-b border-white/5">
+                <td class="p-2 border border-white/10">Historique des conversations avec le chatbot IA</td>
+                <td class="p-2 border border-white/10">Intérêt légitime + Consentement (art. 6.1.a et 6.1.f)</td>
+              </tr>
+              <tr class="border-b border-white/5" style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Personnalisation du profil (skins, avatar)</td>
+                <td class="p-2 border border-white/10">Consentement (art. 6.1.a)</td>
+              </tr>
+              <tr class="border-b border-white/5">
+                <td class="p-2 border border-white/10">Système de gamification (XP, niveaux, récompenses)</td>
+                <td class="p-2 border border-white/10">Exécution du contrat (art. 6.1.b)</td>
+              </tr>
+              <tr class="border-b border-white/5" style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Sécurité du site, prévention de la fraude</td>
+                <td class="p-2 border border-white/10">Intérêt légitime (art. 6.1.f)</td>
+              </tr>
+              <tr class="border-b border-white/5">
+                <td class="p-2 border border-white/10">Envoi d'e-mails transactionnels (confirmation commande, alertes)</td>
+                <td class="p-2 border border-white/10">Exécution du contrat (art. 6.1.b)</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Analyse de navigation et amélioration du service</td>
+                <td class="p-2 border border-white/10">Intérêt légitime (art. 6.1.f)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(81,228,206,.12);">
+        <div class="ds-label" style="color:#51e4ce;">04 — PAIEMENT EN LIGNE ET SÉCURITÉ FINANCIÈRE</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          GearForge utilise <strong class="text-white">Stripe</strong> comme prestataire de services de paiement. 
+          Stripe est certifié <strong class="text-white">PCI-DSS niveau 1</strong>, la norme de sécurité la plus élevée 
+          du secteur des paiements par carte bancaire.
+        </p>
+        <div class="space-y-2">
+          <div class="flex items-start gap-2">
+            <span style="color:#51e4ce;">▸</span>
+            <span>Toutes les transactions sont chiffrées via le protocole <strong class="text-white">TLS 1.2/1.3</strong>.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:#51e4ce;">▸</span>
+            <span>Votre numéro de carte, cryptogramme et date d'expiration <strong class="text-white">ne transitent jamais par nos serveurs</strong> et ne sont jamais stockés dans notre base de données.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:#51e4ce;">▸</span>
+            <span>Stripe peut mettre en œuvre l'authentification forte du client (<strong class="text-white">3D Secure / SCA</strong>) conformément à la Directive européenne sur les services de paiement (<strong class="text-white">DSP2</strong>).</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:#51e4ce;">▸</span>
+            <span>Nous conservons uniquement : le type de carte, les 4 derniers chiffres (pour affichage), l'identifiant de la transaction Stripe, et le statut du paiement.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:#51e4ce;">▸</span>
+            <span>Les données de facturation (adresse) sont conservées conformément aux obligations comptables légales françaises (<strong class="text-white">10 ans</strong>).</span>
+          </div>
+        </div>
+        <p>
+          La politique de confidentialité de Stripe est disponible à l'adresse : 
+          <span style="color:var(--secondary);">https://stripe.com/fr/privacy</span>
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(233,170,246,.12);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">05 — ASSISTANT IA ET HISTORIQUE DES CONVERSATIONS</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          GearForge intègre un chatbot alimenté par une intelligence artificielle. L'utilisation de cet assistant 
+          implique la collecte et le traitement de données spécifiques :
+        </p>
+        <div class="space-y-2">
+          <div class="flex items-start gap-2">
+            <span style="color:var(--color-mauve-400);">▸</span>
+            <span><strong class="text-white">Stockage de l'historique :</strong> Chaque conversation est associée à votre compte et stockée dans 
+            notre base de données. Cela vous permet de retrouver vos échanges passés.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:var(--color-mauve-400);">▸</span>
+            <span><strong class="text-white">Transmission à des tiers IA :</strong> Le contenu de vos messages peut être transmis à des services 
+            tiers d'intelligence artificielle (par exemple OpenAI / n8n) afin de générer une réponse. Ces 
+            prestataires ont leurs propres politiques de confidentialité.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:var(--color-mauve-400);">▸</span>
+            <span><strong class="text-white">Finalité :</strong> Assistance à la navigation, recommandations de produits, support client automatisé.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:var(--color-mauve-400);">▸</span>
+            <span><strong class="text-white">Durée de conservation :</strong> L'historique est conservé pendant la durée d'activité de votre compte, 
+            puis supprimé dans les 30 jours suivant la clôture.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span style="color:var(--color-mauve-400);">▸</span>
+            <span><strong class="text-white">Suppression :</strong> Vous pouvez demander la suppression de l'intégralité de votre historique de 
+            chatbot à tout moment en contactant <span style="color:var(--secondary);">privacy@gearforge.fr</span>.</span>
+          </div>
+        </div>
+        <div class="mt-2 p-2 rounded border border-yellow-400/30 bg-yellow-400/5 text-[8px] text-yellow-200/80">
+          ⚠ Ne partagez jamais d'informations sensibles (données bancaires, mots de passe, numéro de sécurité sociale) 
+          via le chatbot. GearForge ne pourra être tenu responsable des conséquences d'un tel partage.
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">06 — DESTINATAIRES ET SOUS-TRAITANTS</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Vos données personnelles peuvent être partagées avec les prestataires suivants, strictement dans le cadre 
+          de la fourniture de nos services :
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[8px] border-collapse">
+            <thead>
+              <tr style="background:rgba(124,58,237,.25);">
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">PRESTATAIRE</th>
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">RÔLE</th>
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">LOCALISATION</th>
+              </tr>
+            </thead>
+            <tbody class="text-white/70">
+              <tr>
+                <td class="p-2 border border-white/10">Stripe Inc.</td>
+                <td class="p-2 border border-white/10">Paiement en ligne sécurisé</td>
+                <td class="p-2 border border-white/10">États-Unis (Clauses contractuelles types)</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Resend</td>
+                <td class="p-2 border border-white/10">Envoi d'e-mails transactionnels</td>
+                <td class="p-2 border border-white/10">États-Unis (Clauses contractuelles types)</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-white/10">Prestataire IA (n8n / OpenAI)</td>
+                <td class="p-2 border border-white/10">Traitement des conversations chatbot</td>
+                <td class="p-2 border border-white/10">UE / États-Unis selon configuration</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Hébergeur (Docker / serveur)</td>
+                <td class="p-2 border border-white/10">Hébergement de l'application et de la base de données</td>
+                <td class="p-2 border border-white/10">Union Européenne</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Aucune de vos données n'est vendue à des tiers à des fins commerciales ou publicitaires.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(133,138,227,.15);">
+        <div class="ds-label" style="color:var(--tertiary);">07 — COOKIES ET TRACEURS</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>GearForge utilise des cookies strictement nécessaires au fonctionnement du site :</p>
+        <div class="space-y-2">
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--tertiary);">Cookies essentiels (non soumis au consentement)</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li><strong class="text-white">Session Symfony</strong> : maintien de votre connexion et panier (durée : session navigateur)</li>
+              <li><strong class="text-white">Token CSRF</strong> : protection contre les attaques de falsification de requête inter-sites</li>
+              <li><strong class="text-white">Cookie d'authentification</strong> : maintien de l'état de connexion ("Se souvenir de moi")</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-2" style="color:var(--tertiary);">Cookies tiers (Stripe)</div>
+            <ul class="list-disc list-inside space-y-1 text-white/70">
+              <li>Stripe peut déposer des cookies pour la détection de fraude lors du paiement</li>
+              <li>Ces cookies sont régis par la politique de confidentialité de Stripe</li>
+            </ul>
+          </div>
+        </div>
+        <p>
+          GearForge <strong class="text-white">ne dépose pas</strong> de cookies publicitaires, de tracking analytique 
+          tiers (Google Analytics, etc.) ou de cookies de réseaux sociaux sans votre consentement explicite.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">08 — DURÉES DE CONSERVATION</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80">
+        <div class="overflow-x-auto">
+          <table class="w-full text-[8px] border-collapse">
+            <thead>
+              <tr style="background:rgba(124,58,237,.25);">
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">CATÉGORIE DE DONNÉES</th>
+                <th class="text-left p-2 border border-white/10 tracking-widest text-white/90">DURÉE</th>
+              </tr>
+            </thead>
+            <tbody class="text-white/70">
+              <tr>
+                <td class="p-2 border border-white/10">Données de compte (email, mot de passe)</td>
+                <td class="p-2 border border-white/10">Durée de vie du compte + 3 ans après inactivité</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Données de commande et factures</td>
+                <td class="p-2 border border-white/10">10 ans (obligation légale comptable)</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-white/10">Données de paiement (référence Stripe)</td>
+                <td class="p-2 border border-white/10">13 mois (délai de rétrofacturation bancaire)</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Historique chatbot IA</td>
+                <td class="p-2 border border-white/10">Durée de vie du compte + 30 jours après clôture</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-white/10">Personnalisation profil (skins, avatar)</td>
+                <td class="p-2 border border-white/10">Durée de vie du compte</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Données de gamification (XP, niveaux)</td>
+                <td class="p-2 border border-white/10">Durée de vie du compte</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-white/10">Logs de connexion / sécurité</td>
+                <td class="p-2 border border-white/10">12 mois</td>
+              </tr>
+              <tr style="background:rgba(255,255,255,.03);">
+                <td class="p-2 border border-white/10">Paniers sauvegardés</td>
+                <td class="p-2 border border-white/10">Durée de vie du compte ou suppression manuelle</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(206,81,228,.15);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">09 — VOS DROITS</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Conformément au RGPD (articles 15 à 22), vous disposez des droits suivants sur vos données personnelles :
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit d'accès (art. 15)</div>
+            <p class="text-white/65">Obtenir une copie de l'ensemble des données vous concernant.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit de rectification (art. 16)</div>
+            <p class="text-white/65">Corriger des données inexactes ou incomplètes.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit à l'effacement (art. 17)</div>
+            <p class="text-white/65">Demander la suppression de vos données ("droit à l'oubli"), sous réserve des obligations légales de conservation.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit à la limitation (art. 18)</div>
+            <p class="text-white/65">Suspendre temporairement le traitement de vos données.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit à la portabilité (art. 20)</div>
+            <p class="text-white/65">Recevoir vos données dans un format structuré, lisible par machine, ou les faire transférer vers un autre responsable.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit d'opposition (art. 21)</div>
+            <p class="text-white/65">Vous opposer au traitement de vos données fondé sur l'intérêt légitime, notamment à des fins de prospection.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Retrait du consentement</div>
+            <p class="text-white/65">Retirer votre consentement à tout moment pour les traitements fondés sur celui-ci (ex : historique chatbot), sans affecter les traitements antérieurs.</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div class="text-[10px] tracking-widest mb-1" style="color:var(--color-mauve-400);">▸ Droit de recours (art. 77)</div>
+            <p class="text-white/65">Introduire une réclamation auprès de la <strong class="text-white">CNIL</strong> (Commission Nationale de l'Informatique et des Libertés) en France.</p>
+          </div>
+
+        </div>
+
+        <div class="mt-3 rounded-lg border border-white/15 bg-white/5 p-3 space-y-1">
+          <div class="text-[10px] tracking-widest" style="color:var(--color-mauve-300);">EXERCER VOS DROITS</div>
+          <p class="text-white/65 mt-1">
+            Pour exercer l'un de ces droits, contactez notre Délégué(e) à la Protection des Données (DPO) :
+          </p>
+          <p style="color:var(--secondary);">privacy@gearforge.fr</p>
+          <p class="text-white/50 text-[8px] mt-1">
+            Nous nous engageons à répondre à toute demande dans un délai de <strong class="text-white">30 jours</strong> à compter de la réception. 
+            Une pièce d'identité pourra être demandée pour vérifier votre identité.
+          </p>
+          <div class="mt-2 text-white/50 text-[8px]">
+            CNIL — 3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07 — 
+            <span style="color:var(--secondary);">www.cnil.fr</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">10 — SÉCURITÉ DES DONNÉES</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-2">
+        <p>GearForge met en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données :</p>
+        <ul class="list-disc list-inside space-y-1 text-white/70">
+          <li>Chiffrement des communications via HTTPS / TLS</li>
+          <li>Mots de passe hashés (bcrypt) — aucun stockage en clair</li>
+          <li>Protection CSRF sur tous les formulaires</li>
+          <li>Contrôle d'accès basé sur les rôles (RBAC) : client, modérateur, administrateur</li>
+          <li>Séparation des environnements (développement / production)</li>
+          <li>Paiements externalisés à Stripe (PCI-DSS niveau 1)</li>
+          <li>Aucun accès des employés aux données bancaires</li>
+          <li>Journaux d'audit pour les accès administrateurs</li>
+        </ul>
+        <p class="text-white/50 text-[8px] mt-2">
+          En cas de violation de données susceptible d'engendrer un risque pour vos droits et libertés, 
+          GearForge s'engage à vous en notifier dans les <strong class="text-white">72 heures</strong> conformément à l'article 33 du RGPD, 
+          et à en informer la CNIL.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">11 — MINEURS</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-2">
+        <p>
+          GearForge est une plateforme e-commerce destinée aux personnes ayant la capacité juridique de contracter. 
+          Les personnes de moins de <strong class="text-white">15 ans</strong> ne peuvent pas créer de compte ni effectuer 
+          d'achats sans le consentement préalable de leurs représentants légaux, conformément à la loi française 
+          (art. 45 de la loi Informatique et Libertés modifiée).
+        </p>
+        <p>
+          Si nous apprenons qu'un mineur nous a fourni des données sans consentement parental, nous supprimerons 
+          ces informations dans les meilleurs délais. Contactez-nous à <span style="color:var(--secondary);">privacy@gearforge.fr</span>.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">12 — MODIFICATIONS DE LA POLITIQUE</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-2">
+        <p>
+          GearForge se réserve le droit de modifier la présente politique de confidentialité à tout moment, 
+          notamment pour se conformer à l'évolution de la réglementation ou aux changements apportés au site.
+        </p>
+        <p>
+          En cas de modification substantielle, vous en serez informé(e) par e-mail et/ou via une notification 
+          sur le site. La date de dernière mise à jour est indiquée en haut de cette page.
+        </p>
+        <p>
+          En continuant à utiliser GearForge après la mise à jour de cette politique, vous en acceptez les termes révisés.
+        </p>
+      </div>
+    </article>
+
+    <div class="rounded-xl border border-white/10 bg-black/20 p-4 text-center">
+      <p class="text-[8px] tracking-widest text-white/40">
+        © 2026 GearForge SAS — Tous droits réservés — 
+        <span style="color:var(--color-mauve-400);">privacy@gearforge.fr</span>
+      </p>
+      <div class="mt-3 flex justify-center gap-3 flex-wrap">
+        <a href="{{ path('app_home') }}" 
+           class="text-[8px] tracking-widest px-3 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+          ← RETOUR À L'ACCUEIL
+        </a>
+        {% if app.user %}
+          <a href="{{ path('app_client_profile') }}" 
+             class="text-[8px] tracking-widest px-3 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+            MON PROFIL
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
