@@ -15,5 +15,6 @@ class RegisterControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Register');
+        $this->assertSelectorExists('form');
     }
 }
