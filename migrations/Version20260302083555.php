@@ -25,7 +25,14 @@ final class Version20260302083555 extends AbstractMigration
         );
         $this->addSql('ALTER TABLE intro_profile_answer ALTER answered_at TYPE TIMESTAMP(0) WITHOUT TIME ZONE');
         $this->addSql('COMMENT ON COLUMN intro_profile_answer.answered_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('ALTER INDEX idx_user RENAME TO IDX_5B228EA3A76ED395');
+        $this->addSql(<<<'SQL'
+            DO $$
+            BEGIN
+                IF EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_user') THEN
+                    ALTER INDEX idx_user RENAME TO IDX_5B228EA3A76ED395;
+                END IF;
+            END $$;
+        SQL);
     }
 
     public function down(Schema $schema): void
