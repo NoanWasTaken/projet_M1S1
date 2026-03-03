@@ -3,99 +3,53 @@
 {% block title %}Paiement annulé - GearForge{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-    <!-- Header -->
-    <header class="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="{{ path('app_home') }}" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                    GearForge
-                </a>
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="{{ path('app_catalogue') }}" class="text-gray-300 hover:text-white transition">Catalogue</a>
-                    <a href="{{ path('app_cart') }}" class="relative text-gray-300 hover:text-white transition">
-                        <span>Panier</span>
-                    </a>
-                    {% if app.user %}
-                        <span class="text-gray-400">{{ app.user.email }}</span>
-                        <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white transition">Déconnexion</a>
-                    {% else %}
-                        <a href="{{ path('app_login') }}" class="text-gray-300 hover:text-white transition">Connexion</a>
-                    {% endif %}
-                </nav>
-            </div>
+<div class="relative isolate overflow-x-hidden" style="font-family:var(--font-pixel), sans-serif;">
+
+  <div class="pointer-events-none fixed inset-0 -z-10"
+       style="background:
+         linear-gradient(180deg, rgba(18,10,46,0.97), rgba(11,7,32,1)),
+         linear-gradient(90deg, rgba(233,221,255,0.07) 1px, transparent 1px),
+         linear-gradient(0deg,  rgba(233,221,255,0.07) 1px, transparent 1px),
+         repeating-linear-gradient(45deg, rgba(233,221,255,0.05) 0 2px, rgba(0,0,0,0) 2px 5px);
+         background-size: auto, 5px 5px, 5px 5px, auto;">
+  </div>
+
+  <div class="container mx-auto px-6 pt-16 pb-24">
+    <div class="max-w-xl mx-auto flex flex-col items-center gap-8 text-center">
+
+      <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(249,115,22,0.12); border:2px solid rgba(249,115,22,0.30);">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fdba74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <p class="text-[8px] tracking-[0.4em]" style="color:var(--secondary);">PAIEMENT</p>
+        <h1 class="text-xl md:text-2xl tracking-widest" style="color:#fdba74; text-shadow:3px 3px 0 var(--pixel-shadow);">COMMANDE ANNULÉE</h1>
+        <div class="h-[2px] w-24 mx-auto rounded-full" style="background:linear-gradient(90deg, #f97316, var(--color-mauve-500));"></div>
+        <p style="font-family:var(--font-ui),sans-serif; font-size:13px; line-height:1.7; color:rgba(233,221,255,0.55);">Votre paiement a été annulé. Vos articles sont toujours dans votre panier.</p>
+      </div>
+
+      <div class="detail-panel detail-panel--flush w-full">
+        <div class="ds-panel__top">
+          <span class="ds-label">AUCUN MONTANT DÉBITÉ</span>
         </div>
-    </header>
-
-    <div class="container mx-auto px-4 py-20">
-        <div class="max-w-2xl mx-auto text-center">
-            <div class="mb-8 flex justify-center">
-                <div class="w-32 h-32 bg-gradient-to-r from-orange-600 to-red-600 rounded-full flex items-center justify-center">
-                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <h1 class="text-5xl font-bold text-white mb-4">
-                Paiement <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">Annulé</span>
-            </h1>
-            
-            <p class="text-xl text-gray-300 mb-8">
-                Votre paiement a été annulé. Vos articles sont toujours dans votre panier.
-            </p>
-
-            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700 mb-8">
-                <div class="flex items-center justify-center gap-4 text-gray-400">
-                    <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                    <div class="text-left">
-                        <p class="text-white font-semibold text-lg">Aucun montant n'a été débité</p>
-                        <p class="text-sm">Vous pouvez réessayer quand vous le souhaitez</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <a href="{{ path('app_cart') }}" class="block w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg font-bold rounded-xl hover:opacity-90 transition flex items-center justify-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                    Retour au panier
-                </a>
-                <a href="{{ path('app_catalogue') }}" class="block w-full py-4 bg-gray-700 hover:bg-gray-600 text-white text-lg font-bold rounded-xl transition">
-                    Continuer mes achats
-                </a>
-            </div>
-
-            <div class="mt-12 p-6 bg-gray-800/50 rounded-lg border border-gray-700">
-                <h3 class="text-xl font-bold text-white mb-4">Besoin d'aide ?</h3>
-                <p class="text-gray-400 mb-4">
-                    Si vous avez rencontré un problème lors du paiement, n'hésitez pas à nous contacter.
-                </p>
-                <div class="flex flex-wrap gap-4 justify-center">
-                    <a href="#" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        Nous contacter
-                    </a>
-                    <a href="#" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        FAQ
-                    </a>
-                </div>
-            </div>
+        <div class="p-5">
+          <p style="font-family:var(--font-ui),sans-serif; font-size:13px; line-height:1.7; color:rgba(233,221,255,0.55);">Vous pouvez réessayer quand vous le souhaitez ou nous contacter si vous avez rencontré un problème.</p>
         </div>
+      </div>
+
+      <div class="flex flex-col gap-3 w-full">
+        <a href="{{ path('app_cart') }}" class="pixel-btn is-cta" style="width:100%; justify-content:center; text-decoration:none;">
+          <span class="pixel-btn__text">RETOUR AU PANIER</span>
+          <span class="pixel-btn__arrow"><span class="css-arrow-right" aria-hidden="true"></span></span>
+        </a>
+        <a href="{{ path('app_catalogue') }}" class="cart-action-btn" style="text-decoration:none;">CONTINUER MES ACHATS</a>
+      </div>
+
     </div>
+  </div>
 
-    <footer class="bg-gray-900 border-t border-gray-800 mt-20 py-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">&copy; 2026 GearForge. Tous droits réservés.</p>
-        </div>
-    </footer>
+  {{ include('components/_footer.html.twig') }}
 </div>
 {% endblock %}
