@@ -1,56 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil joueur{% endblock %}
+{% block title %}{{ player.name }} - Pro Player - GearForge{% endblock %}
 
 {% block body %}
+<div class="relative isolate overflow-x-hidden" style="font-family:var(--font-pixel), sans-serif;">
 
+  <div class="pointer-events-none fixed inset-0 -z-10"
+       style="background:
+         linear-gradient(180deg, rgba(18,10,46,0.97), rgba(11,7,32,1)),
+         linear-gradient(90deg, rgba(233,221,255,0.07) 1px, transparent 1px),
+         linear-gradient(0deg,  rgba(233,221,255,0.07) 1px, transparent 1px),
+         repeating-linear-gradient(45deg, rgba(233,221,255,0.05) 0 2px, rgba(0,0,0,0) 2px 5px);
+         background-size: auto, 5px 5px, 5px 5px, auto;">
+  </div>
 
-<div class="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-purple-900">
-    <div class="flex-grow flex flex-col items-center justify-center py-10">
-        <div class="max-w-2xl w-full bg-gray-900 rounded-2xl shadow-2xl p-8 flex flex-col items-center">
-            <h1 class="text-4xl font-bold text-pink-500 mb-4">{{ player.name }}</h1>
-            <img src="{{ player.photo }}" alt="Photo joueur" class="w-40 h-40 rounded-full object-cover border-4 border-pink-400 mb-6 shadow-lg" />
-            <div class="text-lg text-gray-300 mb-2">
-                <span class="font-semibold text-purple-400">Rôle :</span> {{ player.role }}
-                <span class="mx-2">•</span>
-                <span class="font-semibold text-purple-400">Équipe :</span> {{ player.team }}
-                <span class="mx-2">•</span>
-                <span class="font-semibold text-purple-400">Pays :</span> {{ player.country }}
-                <span class="mx-2">•</span>
-                <span class="font-semibold text-purple-400">Jeu :</span> {{ player.game }}
+  <div class="container mx-auto px-6 pt-10 pb-24">
+
+    <a href="{{ path('app_profiles_index') }}" class="detail-breadcrumb-link inline-flex items-center gap-2 mb-8">
+      <span class="css-arrow-left" aria-hidden="true"></span> PRO PLAYERS
+    </a>
+
+    <div class="max-w-2xl mx-auto flex flex-col gap-6">
+
+      <div class="detail-panel detail-panel--flush">
+        <div class="flex flex-col sm:flex-row items-center gap-6 p-6">
+          {% if player.photo %}
+            <img src="{{ player.photo }}" alt="{{ player.name }}" class="pro-player__avatar" />
+          {% else %}
+            <div class="pro-player__avatar pro-player__avatar--placeholder"></div>
+          {% endif %}
+          <div class="text-center sm:text-left flex flex-col gap-2">
+            <p class="text-[8px] tracking-[0.4em]" style="color:var(--secondary);">{{ player.game|upper }}</p>
+            <h1 class="text-xl md:text-2xl tracking-widest" style="color:var(--pixel-head); text-shadow:3px 3px 0 var(--pixel-shadow);">{{ player.name }}</h1>
+            <div class="flex flex-wrap gap-2 mt-1 justify-center sm:justify-start">
+              <span class="detail-badge detail-badge--cat">{{ player.role }}</span>
+              <span class="detail-badge">{{ player.team }}</span>
+              <span class="detail-badge">{{ player.country }}</span>
             </div>
-            <div class="w-full mt-6 mb-6 bg-gray-800 rounded-xl p-6 shadow">
-                <h2 class="text-2xl font-bold text-pink-400 mb-2">Description</h2>
-                <p class="text-gray-200">{{ player.description ? player.description : 'Aucune description disponible.' }}</p>
-            </div>
-            <div class="w-full mb-6 bg-gray-800 rounded-xl p-6 shadow">
-                <h2 class="text-2xl font-bold text-purple-400 mb-2">Configuration</h2>
-                <ul class="space-y-4">
-                    <li class="flex items-center justify-between">
-                        <span><span class="font-bold text-pink-400">Souris :</span> <span class="text-white">{{ player.mouse }}</span></span>
-                        <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'mouse'}) }}">
-                            <button type="submit" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold shadow hover:scale-105 transition">Ajouter au panier</button>
-                        </form>
-                    </li>
-                    <li class="flex items-center justify-between">
-                        <span><span class="font-bold text-pink-400">Clavier :</span> <span class="text-white">{{ player.keyboard }}</span></span>
-                        <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'keyboard'}) }}">
-                            <button type="submit" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold shadow hover:scale-105 transition">Ajouter au panier</button>
-                        </form>
-                    </li>
-                <li class="flex items-center justify-between">
-                    <span><span class="font-bold text-pink-400">Casque :</span> <span class="text-white">{{ player.headset }}</span></span>
-                    <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'headset'}) }}">
-                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold shadow hover:scale-105 transition">Ajouter au panier</button>
-                    </form>
-                </li>
-            </ul>
-            <form method="post" action="{{ path('player_add_config', {id: player.id}) }}" class="mt-6 flex justify-center">
-                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl font-bold text-lg shadow-lg hover:scale-105 transition">Ajouter toute la config au panier</button>
-            </form>
+          </div>
         </div>
-    </div>
-</div>
-{{ include('components/_footer.html.twig') }}
+      </div>
 
+      {% if player.description %}
+      <div class="detail-panel detail-panel--flush">
+        <div class="ds-panel__top">
+          <span class="ds-label">DESCRIPTION</span>
+        </div>
+        <div class="p-5">
+          <p style="font-family:var(--font-ui),sans-serif; font-size:13px; line-height:1.8; color:rgba(233,221,255,0.65);">{{ player.description }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="detail-panel detail-panel--flush">
+        <div class="ds-panel__top">
+          <span class="ds-label">CONFIGURATION DU JOUEUR</span>
+        </div>
+        <div class="p-5 flex flex-col gap-0">
+
+          <div class="player-gear__row">
+            <div class="player-gear__info">
+              <p class="player-gear__label">SOURIS</p>
+              <p class="player-gear__product">{{ player.mouse }}</p>
+            </div>
+            <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'mouse'}) }}">
+              <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
+                <span class="pixel-btn__text">AJOUTER AU PANIER</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="player-gear__row">
+            <div class="player-gear__info">
+              <p class="player-gear__label">CLAVIER</p>
+              <p class="player-gear__product">{{ player.keyboard }}</p>
+            </div>
+            <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'keyboard'}) }}">
+              <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
+                <span class="pixel-btn__text">AJOUTER AU PANIER</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="player-gear__row" style="border-bottom:none;">
+            <div class="player-gear__info">
+              <p class="player-gear__label">CASQUE</p>
+              <p class="player-gear__product">{{ player.headset }}</p>
+            </div>
+            <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'headset'}) }}">
+              <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
+                <span class="pixel-btn__text">AJOUTER AU PANIER</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+        <div class="p-5 pt-0">
+          <form method="post" action="{{ path('player_add_config', {id: player.id}) }}" style="display:flex; justify-content:center;">
+            <button type="submit" class="pixel-btn is-cta" style="width:100%; justify-content:center; text-align:center;">
+              <span class="pixel-btn__text" style="text-align:center;">AJOUTER TOUTE LA CONFIG AU PANIER</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{ include('components/_footer.html.twig') }}
+</div>
 {% endblock %}
