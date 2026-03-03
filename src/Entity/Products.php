@@ -299,7 +299,6 @@ class Products
             $avg = round($total / $count, 1);
         }
 
-        // Store rating as a string matching DECIMAL(3,1) precision.
         $this->rating = number_format($avg, 1, '.', '');
     }
 }

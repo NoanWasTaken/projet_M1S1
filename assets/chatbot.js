@@ -257,7 +257,7 @@ async function handleSubmit(e) {
         removeTypingIndicator();
         appendMessage(
             "assistant",
-            "⚠️ Impossible de contacter le serveur. Vérifie ta connexion.",
+            "Impossible de contacter le serveur. Vérifie ta connexion.",
         );
     } finally {
         isLoading = false;

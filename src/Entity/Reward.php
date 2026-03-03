@@ -194,7 +194,6 @@ class Reward
     public function removeUserReward(UserReward $userReward): static
     {
         if ($this->userRewards->removeElement($userReward)) {
-            // set the owning side to null (unless already changed)
             if ($userReward->getReward() === $this) {
                 $userReward->setReward(null);
             }

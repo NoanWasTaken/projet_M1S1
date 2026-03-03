@@ -120,6 +120,28 @@ class ProductsRepository extends ServiceEntityRepository
         return array_values($bestByCategory);
     }
 
+    public function findTopByCategory(string $category, ?float $maxPrice = null, ?float $minPrice = null, int $limit = 4): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('LOWER(p.category) = LOWER(:cat)')
+            ->setParameter('cat', $category)
+            ->andWhere('p.isAvailable = true')
+            ->andWhere('p.stock > 0')
+            ->orderBy('p.rating', 'DESC')
+            ->addOrderBy('p.createdAt', 'DESC')
+            ->setMaxResults($limit);
+
+        if ($maxPrice !== null) {
+            $qb->andWhere('p.price <= :maxPrice')->setParameter('maxPrice', $maxPrice);
+        }
+
+        if ($minPrice !== null) {
+            $qb->andWhere('p.price >= :minPrice')->setParameter('minPrice', $minPrice);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function updateAverageRating(Products $product): void
     {
         $avg = $this->getEntityManager()
