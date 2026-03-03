@@ -68,8 +68,16 @@ function createChatWidget() {
     const bubble = document.createElement("button");
     bubble.id = "gf-chat-bubble";
     bubble.innerHTML = `
-        <span class="gf-chat-bubble-icon">💬</span>
-        <span class="gf-chat-bubble-close">✕</span>
+        <span class="gf-chat-bubble-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+        </span>
+        <span class="gf-chat-bubble-close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+        </span>
     `;
     bubble.addEventListener("click", toggleChat);
 
@@ -83,14 +91,28 @@ function createChatWidget() {
                 <span class="gf-chat-header-title">GearForge Assistant</span>
             </div>
             <div class="gf-chat-header-actions">
-                <button id="gf-chat-reset" title="Nouvelle conversation">🗑️</button>
-                <button id="gf-chat-close" title="Fermer">✕</button>
+                <button id="gf-chat-reset" title="Nouvelle conversation">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                    </svg>
+                </button>
+                <button id="gf-chat-close" title="Fermer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
         </div>
         <div id="gf-chat-messages" class="gf-chat-messages">
             <div class="gf-chat-welcome">
-                <div class="gf-chat-welcome-emoji">🎮</div>
-                <p>Salut ! Je suis l'assistant GearForge.<br>Comment puis-je t'aider ?</p>
+                <div class="gf-chat-welcome-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="13" rx="2"/>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                        <path d="M9 12h6M12 9v6"/>
+                    </svg>
+                </div>
+                <p>Salut&nbsp;! Je suis l&rsquo;assistant GearForge.<br>Comment puis-je t&rsquo;aider&nbsp;?</p>
             </div>
         </div>
         <form id="gf-chat-form" class="gf-chat-form">
@@ -151,8 +173,14 @@ function renderMessages() {
     if (messages.length === 0) {
         container.innerHTML = `
             <div class="gf-chat-welcome">
-                <div class="gf-chat-welcome-emoji">🎮</div>
-                <p>Salut ! Je suis l'assistant GearForge.<br>Comment puis-je t'aider ?</p>
+                <div class="gf-chat-welcome-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="13" rx="2"/>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                        <path d="M9 12h6M12 9v6"/>
+                    </svg>
+                </div>
+                <p>Salut ! Je suis l’assistant GearForge.<br>Comment puis-je t’aider ?</p>
             </div>
         `;
         return;
@@ -257,7 +285,7 @@ async function handleSubmit(e) {
         removeTypingIndicator();
         appendMessage(
             "assistant",
-            "⚠️ Impossible de contacter le serveur. Vérifie ta connexion.",
+            "Impossible de contacter le serveur. Vérifie ta connexion.",
         );
     } finally {
         isLoading = false;

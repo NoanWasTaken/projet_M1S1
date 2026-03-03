@@ -61,7 +61,7 @@ class CheckoutController extends AbstractController
         try {
             $session = $this->stripeService->createCheckoutSession(
                 $lineItems,
-                $this->generateUrl('app_checkout_success', ['session_id' => '{CHECKOUT_SESSION_ID}'], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->generateUrl('app_checkout_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . '?session_id={CHECKOUT_SESSION_ID}',
                 $this->generateUrl('app_checkout_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 [
                     'user_id' => $user->getId(),

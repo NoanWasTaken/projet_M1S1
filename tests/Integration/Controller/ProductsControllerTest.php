@@ -6,16 +6,18 @@ use App\Entity\Products;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProductsControllerTest extends WebTestCase
 {
+    private KernelBrowser $client;
     private EntityManagerInterface $entityManager;
 
     protected function setUp(): void
     {
-        static::bootKernel();
+        $this->client = static::createClient();
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
         $schemaTool = new SchemaTool($this->entityManager);
@@ -62,16 +64,14 @@ class ProductsControllerTest extends WebTestCase
 
     public function testCataloguePageIsAccessible(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/catalogue');
+        $this->client->request('GET', '/catalogue');
 
         $this->assertResponseIsSuccessful();
     }
 
     public function testProductDetailPageReturns404ForNonExistentProduct(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/product/9999');
+        $this->client->request('GET', '/product/9999');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -79,9 +79,10 @@ class ProductsControllerTest extends WebTestCase
     public function testProductDetailPageIsAccessible(): void
     {
         $product = $this->createProduct();
+        $user = $this->createUser();
 
-        $client = static::createClient();
-        $client->request('GET', '/product/' . $product->getId());
+        $this->client->loginUser($user);
+        $this->client->request('GET', '/product/' . $product->getId());
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form');
@@ -91,17 +92,10 @@ class ProductsControllerTest extends WebTestCase
     {
         $product = $this->createProduct();
 
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/product/' . $product->getId());
+        $this->client->request('GET', '/product/' . $product->getId());
         $this->assertResponseIsSuccessful();
-
-        $form = $crawler->filter('form[name="review"]')->form([
-            'review[rating]' => '5',
-            'review[comment]' => 'Great product!',
-        ]);
-        $client->submit($form);
-
-        $this->assertResponseRedirects('/login');
+        $this->assertSelectorNotExists('form[name="review"]');
+        $this->assertSelectorExists('a[href$="/login"]');
     }
 
     public function testAuthenticatedUserCanSubmitReview(): void
@@ -109,20 +103,19 @@ class ProductsControllerTest extends WebTestCase
         $product = $this->createProduct();
         $user = $this->createUser();
 
-        $client = static::createClient();
-        $client->loginUser($user);
+        $this->client->loginUser($user);
 
-        $crawler = $client->request('GET', '/product/' . $product->getId());
+        $crawler = $this->client->request('GET', '/product/' . $product->getId());
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->filter('form[name="review"]')->form([
             'review[rating]' => '5',
             'review[comment]' => 'Great product!',
         ]);
-        $client->submit($form);
+        $this->client->submit($form);
 
         $this->assertResponseRedirects('/product/' . $product->getId());
-        $client->followRedirect();
+        $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
     }
 }

@@ -1,23 +1,133 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription - GearForge{% endblock %}
 
 {% block body %}
+<div class="min-h-screen flex flex-col items-center justify-center px-4">
+  <div class="pixel-dots w-full mb-10">
+    <img src="{{ asset('pacman.webp') }}" alt="" class="pacman pacman--top" />
+  </div>
+
+  <div class="w-full max-w-md pixel-ui">
+
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <div class="pixel-title">INSCRIPTION</div>
+        <div class="pixel-subtitle">Crée ton compte GearForge</div>
+      </div>
+      <div class="pixel-icon-btn" aria-hidden="true">
+        <i data-lucide="user-plus" class="w-5 h-5"></i>
+      </div>
+    </div>
+
+    <div class="pixel-rule my-6"></div>
+
+    {# === Erreurs globales du formulaire === #}
+    {% if form_errors(registrationForm) %}
+      <div class="pixel-alert pixel-alert--error mb-4">
+        <i data-lucide="triangle-alert" class="w-4 h-4"></i>
+        <span>{{ form_errors(registrationForm) }}</span>
+      </div>
+    {% endif %}
+
     {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+      <div class="pixel-alert pixel-alert--error mb-4">
+        <i data-lucide="triangle-alert" class="w-4 h-4"></i>
+        <span>{{ flash_error }}</span>
+      </div>
     {% endfor %}
 
-    <h1>Register</h1>
+    {{ form_start(registrationForm, { attr: { class: 'space-y-4' } }) }}
 
-    {{ form_errors(registrationForm) }}
+      <div>
+        <label class="pixel-label block mb-2">NOM</label>
+        <div class="pixel-input">
+          <i data-lucide="user" class="w-4 h-4"></i>
+          {{ form_widget(registrationForm.name, {
+            attr: {
+              class: 'pixel-input__field',
+              placeholder: 'Ton nom'
+            }
+          }) }}
+        </div>
+        {{ form_errors(registrationForm.name) }}
+      </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.surname) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+      <div>
+        <label class="pixel-label block mb-2">PRÉNOM</label>
+        <div class="pixel-input">
+          <i data-lucide="user" class="w-4 h-4"></i>
+          {{ form_widget(registrationForm.surname, {
+            attr: {
+              class: 'pixel-input__field',
+              placeholder: 'Ton prénom'
+            }
+          }) }}
+        </div>
+        {{ form_errors(registrationForm.surname) }}
+      </div>
 
-        <button type="submit" class="btn">Register</button>
+      <div>
+        <label class="pixel-label block mb-2">EMAIL</label>
+        <div class="pixel-input">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          {{ form_widget(registrationForm.email, {
+            attr: {
+              class: 'pixel-input__field',
+              placeholder: 'ton@email.com',
+              autocomplete: 'email'
+            }
+          }) }}
+        </div>
+        {{ form_errors(registrationForm.email) }}
+      </div>
+
+      {# MOT DE PASSE #}
+      <div>
+        <label class="pixel-label block mb-2">MOT DE PASSE</label>
+        <div class="pixel-input">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          {{ form_widget(registrationForm.plainPassword, {
+            attr: {
+              class: 'pixel-input__field',
+              placeholder: 'min. 6 caractères',
+              autocomplete: 'new-password'
+            }
+          }) }}
+        </div>
+        <div class="pixel-muted mt-2">Au moins 6 caractères.</div>
+        {{ form_errors(registrationForm.plainPassword) }}
+      </div>
+
+      {# CONDITIONS #}
+      <div class="flex items-center gap-2 text-[10px] tracking-widest">
+        {{ form_widget(registrationForm.agreeTerms) }}
+        <label class="pixel-muted">J'accepte les conditions</label>
+      </div>
+      {{ form_errors(registrationForm.agreeTerms) }}
+
+      <button type="submit" class="pixel-btn is-cta">
+        <span class="pixel-btn__ico">
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </span>
+        <span class="pixel-btn__text">CRÉER MON COMPTE</span>
+        <span class="pixel-btn__arrow">▶</span>
+      </button>
+
+      <div class="pixel-muted text-center pt-2">
+        Déjà un compte ?
+        <a href="{{ path('app_login') }}" class="pixel-link-inline">
+          Se connecter
+        </a>
+      </div>
+
     {{ form_end(registrationForm) }}
+
+  </div>
+
+  <div class="pixel-dots w-full mt-10">
+    <img src="{{ asset('pacman_left.webp') }}" alt="" class="pacman pacman--bottom" />
+  </div>
+
+</div>
 {% endblock %}

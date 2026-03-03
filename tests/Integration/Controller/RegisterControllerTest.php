@@ -14,6 +14,7 @@ class RegisterControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/register');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Register');
+        $this->assertSelectorExists('form');
+        $this->assertSelectorExists('input[name="registration_form[email]"]');
     }
 }
