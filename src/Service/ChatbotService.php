@@ -99,6 +99,7 @@ class ChatbotService
                     $hasAnyData = true; // erreur explicite à relayer
                     $collectedProductSummaries[] = $result['message'] ?? $result['error'];
                 } elseif (isset($result['message'])) {
+                    $hasAnyData = true;
                     $collectedProductSummaries[] = $result['message'];
                 }
 
@@ -319,6 +320,10 @@ class ChatbotService
 
         $products = $this->productsRepository->findBestByGameTypes($gameTypes, $maxPrice, $minPrice, $category);
 
+        if (empty($products) && $category) {
+            $products = $this->productsRepository->findTopByCategory($category, $maxPrice, $minPrice);
+        }
+
         if (empty($products)) {
             $filters = [];
             if ($category !== null) $filters[] = 'catégorie ' . $category;
@@ -335,6 +340,7 @@ class ChatbotService
         $result = [];
         foreach ($products as $product) {
             $result[] = [
+                'id' => $product->getId(),
                 'name' => $product->getName(),
                 'category' => $product->getCategory(),
                 'brand' => $product->getBrand(),
