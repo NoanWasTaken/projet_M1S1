@@ -1,48 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Roster Joueurs Pros & Influenceurs{% endblock %}
+{% block title %}Pro Players - GearForge{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-5xl font-bold text-white mb-12 text-center">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Joueurs Pros & Influenceurs</span>
-        </h1>
-        <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            <div class="bg-gray-800 rounded-2xl p-8 border-4 border-purple-600 shadow-xl flex flex-col items-center cursor-pointer hover:scale-105 transition" onclick="showRoster('valorant')">
-                <img src="https://static.actugaming.net/media/2020/06/valorant.jpeg" alt="Valorant" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-purple-400" />
-                <h2 class="text-2xl font-bold text-white mb-2">Valorant</h2>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 border-4 border-blue-600 shadow-xl flex flex-col items-center cursor-pointer hover:scale-105 transition" onclick="showRoster('csgo')">
-                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg?t=1749053861" alt="CS:GO 2" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-blue-400" />
-                <h2 class="text-2xl font-bold text-white mb-2">CS:GO 2</h2>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 border-4 border-green-600 shadow-xl flex flex-col items-center cursor-pointer hover:scale-105 transition" onclick="showRoster('lol')">
-                <img src="https://store-images.s-microsoft.com/image/apps.18996.14127010465288187.f9de4a96-0ee4-4da3-bf66-d4132b38c599.caf661a7-e0b3-492d-b91b-63627e47283e" alt="League of Legends" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-green-400" />
-                <h2 class="text-2xl font-bold text-white mb-2">League of Legends</h2>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 border-4 border-yellow-600 shadow-xl flex flex-col items-center cursor-pointer hover:scale-105 transition" onclick="showRoster('fortnite')">
-                <img src="https://cdn1.epicgames.com/offer/fn/FNECO_39-40_LoveAndLegends_EGS_Launcher_KeyArt_Blade_2560x1440_2560x1440-407af99db5db41f2a0596d35eb57b7d4" alt="Fortnite" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-yellow-400" />
-                <h2 class="text-2xl font-bold text-white mb-2">Fortnite</h2>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 border-4 border-pink-600 shadow-xl flex flex-col items-center cursor-pointer hover:scale-105 transition" onclick="showRoster('influenceur')">
-                <img src="https://m.media-amazon.com/images/I/21kRx-CJsUL.png" alt="Influenceurs" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-pink-400" />
-                <h2 class="text-2xl font-bold text-white mb-2">Influenceurs</h2>
-            </div>
-        </div>
-        <div id="roster-section" style="display:none;">
-            <button onclick="showCategories()" class="mb-8 px-6 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-600">Retour aux catégories</button>
-            <div id="roster-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10"></div>
-        </div>
-        <dialog id="player-modal" class="rounded-xl p-8 bg-gray-900 text-white shadow-2xl max-w-lg w-full">
-            <div id="modal-content"></div>
-            <div class="flex justify-end mt-6">
-                <button onclick="document.getElementById('player-modal').close()" class="px-6 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-600">Fermer</button>
-            </div>
-        </dialog>
+<div class="relative isolate overflow-x-hidden" style="font-family:var(--font-pixel), sans-serif;">
+
+  <div class="pointer-events-none fixed inset-0 -z-10"
+       style="background:
+         linear-gradient(180deg, rgba(18,10,46,0.97), rgba(11,7,32,1)),
+         linear-gradient(90deg, rgba(233,221,255,0.07) 1px, transparent 1px),
+         linear-gradient(0deg,  rgba(233,221,255,0.07) 1px, transparent 1px),
+         repeating-linear-gradient(45deg, rgba(233,221,255,0.05) 0 2px, rgba(0,0,0,0) 2px 5px);
+         background-size: auto, 5px 5px, 5px 5px, auto;">
+  </div>
+
+  <div class="container mx-auto px-6 pt-12 pb-24">
+
+    <div class="text-center mb-12">
+      <p class="text-[8px] tracking-[0.4em] mb-2" style="color:var(--secondary);">ESPORT</p>
+      <h1 class="text-2xl md:text-3xl tracking-widest" style="color:var(--pixel-head); text-shadow:3px 3px 0 var(--pixel-shadow);">PRO PLAYERS</h1>
+      <div class="h-[2px] w-16 mx-auto mt-4 rounded-full" style="background:linear-gradient(90deg, var(--pixel-accent), var(--tertiary));"></div>
+      <p class="mt-4 text-[8px] tracking-wide" style="font-family:var(--font-ui),sans-serif; font-size:13px; color:rgba(233,221,255,0.45);">Découvre la configuration des pros et recrée leur setup.</p>
     </div>
-    {{ include('components/_footer.html.twig') }}
+
+    <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 max-w-4xl mx-auto">
+      <div class="game-cat-card" onclick="showRoster('valorant')">
+        <img src="https://static.actugaming.net/media/2020/06/valorant.jpeg" alt="Valorant" class="game-cat-card__img" />
+        <span class="game-cat-card__name">VALORANT</span>
+      </div>
+      <div class="game-cat-card" onclick="showRoster('csgo')">
+        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg?t=1749053861" alt="CS:GO 2" class="game-cat-card__img" />
+        <span class="game-cat-card__name">CS:GO 2</span>
+      </div>
+      <div class="game-cat-card" onclick="showRoster('lol')">
+        <img src="https://store-images.s-microsoft.com/image/apps.18996.14127010465288187.f9de4a96-0ee4-4da3-bf66-d4132b38c599.caf661a7-e0b3-492d-b91b-63627e47283e" alt="League of Legends" class="game-cat-card__img" />
+        <span class="game-cat-card__name">LEAGUE OF LEGENDS</span>
+      </div>
+      <div class="game-cat-card" onclick="showRoster('fortnite')">
+        <img src="https://cdn1.epicgames.com/offer/fn/FNECO_39-40_LoveAndLegends_EGS_Launcher_KeyArt_Blade_2560x1440_2560x1440-407af99db5db41f2a0596d35eb57b7d4" alt="Fortnite" class="game-cat-card__img" />
+        <span class="game-cat-card__name">FORTNITE</span>
+      </div>
+      <div class="game-cat-card" onclick="showRoster('influenceur')">
+        <img src="https://m.media-amazon.com/images/I/21kRx-CJsUL.png" alt="Influenceurs" class="game-cat-card__img" />
+        <span class="game-cat-card__name">INFLUENCEURS</span>
+      </div>
+    </div>
+
+    <div id="roster-section" style="display:none;">
+      <div class="flex items-center gap-6 mb-8">
+        <button onclick="showCategories()" class="cart-action-btn flex items-center gap-2">
+          <span class="css-arrow-left" aria-hidden="true"></span> CATÉGORIES
+        </button>
+        <span id="roster-title" class="text-[9px] tracking-widest" style="color:var(--pixel-head);"></span>
+      </div>
+      <div id="roster-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5"></div>
+    </div>
+
+  </div>
+
+  {{ include('components/_footer.html.twig') }}
 </div>
+
 <script>
 const players = {};
 {% for player in players %}
@@ -53,51 +71,46 @@ const players = {};
         role: '{{ player.role|e('js') }}',
         team: '{{ player.team|e('js') }}',
         country: '{{ player.country|e('js') }}',
-        photo: '{{ player.photo|e('js') }}',
-        config: {
-            souris: '{{ player.mouse|e('js') }}',
-            clavier: '{{ player.keyboard|e('js') }}',
-            casque: '{{ player.headset|e('js') }}'
-        }
+        photo: '{{ player.photo|e('js') }}'
     });
 {% endfor %}
+
+const gameTitles = {
+    valorant: 'VALORANT',
+    csgo: 'CS:GO 2',
+    lol: 'LEAGUE OF LEGENDS',
+    fortnite: 'FORTNITE',
+    influenceur: 'INFLUENCEURS'
+};
 
 function showCategories() {
     document.getElementById('categories-grid').style.display = '';
     document.getElementById('roster-section').style.display = 'none';
 }
+
 function showRoster(game) {
     document.getElementById('categories-grid').style.display = 'none';
     document.getElementById('roster-section').style.display = '';
+    document.getElementById('roster-title').textContent = gameTitles[game] || game.toUpperCase();
     const grid = document.getElementById('roster-grid');
     grid.innerHTML = '';
-    (players[game] || []).forEach((player, idx) => {
+    (players[game] || []).forEach(player => {
         const card = document.createElement('div');
-        card.className = 'bg-gray-900 rounded-2xl p-8 border-4 border-purple-600 shadow-2xl flex flex-col items-center cursor-pointer hover:scale-105 hover:shadow-pink-600 transition duration-200';
-        card.innerHTML = `<img src="${player.photo}" alt="${player.name}" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-pink-400" />
-            <h2 class="text-2xl font-bold text-white mb-2">${player.name}</h2>
-            <div class="text-pink-400 font-semibold mb-1">${player.role}</div>
-            <div class="text-gray-400 mb-1">${player.team} • ${player.country}</div>`;
-        card.onclick = () => {
+        card.className = 'pro-card';
+        const img = player.photo
+            ? `<img src="${player.photo}" alt="${player.name}" class="pro-card__img" />`
+            : `<div class="pro-card__img pro-card__img--placeholder"></div>`;
+        card.innerHTML = `
+            ${img}
+            <p class="pro-card__name">${player.name}</p>
+            <p class="pro-card__role">${player.role}</p>
+            <p class="pro-card__team">${player.team} · ${player.country}</p>
+        `;
+        card.addEventListener('click', () => {
             window.location.href = '/player/' + encodeURIComponent(player.id);
-        };
+        });
         grid.appendChild(card);
     });
-}
-
-async function addConfigToCart(products) {
-    for (const name of products) {
-        await fetch('/profiles/add-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            body: JSON.stringify({ name })
-        });
-    }
-    alert('Config ajoutée au panier : ' + products.join(', '));
-    window.location.href = '/cart';
 }
 </script>
 {% endblock %}
