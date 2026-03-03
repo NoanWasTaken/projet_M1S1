@@ -96,7 +96,7 @@ export default class extends Controller {
 
     await this._fetchRecommendation({ wpm, accuracy });
 
-    if (wpm >= 35) {
+    if (wpm >= 45) {
       if (!this.isAuthValue) {
         this._showRetroPopup({
           title: "Victoire !",
