@@ -60,7 +60,6 @@ final class GameFooterWordController extends AbstractController
 
         $triesRemainingBefore = max(0, self::DAILY_TRIES - $attemptsUsed);
 
-        // plus d'essais restant 
         if ($triesRemainingBefore <= 0) {
             return $this->json([
                 'ok' => false,
@@ -113,7 +112,6 @@ final class GameFooterWordController extends AbstractController
 
         $triesRemainingAfter = max(0, $triesRemainingBefore - 1);
 
-        //faux
         if (!$isCorrect) {
             return $this->json([
                 'ok' => false,
@@ -123,9 +121,25 @@ final class GameFooterWordController extends AbstractController
             ], 200);
         }
 
-        //vrai 
         $couponCode = $this->generateCouponCode('GF');
         $discountLabel = '-10%';
+
+        $promoCodeRepo = $em->getRepository(\App\Entity\PromoCode::class);
+        $promoCode = $promoCodeRepo->findOneBy(['code' => 'MINIGAME_HOME']);
+        if (!$promoCode) {
+            $promoCode = new \App\Entity\PromoCode();
+            $promoCode->setCode('MINIGAME_HOME');
+            $promoCode->setDescription('Débloqué via le mini-jeu homepage');
+            $promoCode->setActive(true);
+            $promoCode->setUnlockCondition('MINIGAME_HOME');
+            $em->persist($promoCode);
+        }
+        if (!$user->getPromoCodes()->contains($promoCode)) {
+            $user->getPromoCodes()->add($promoCode);
+            $promoCode->getUsers()->add($user);
+        }
+        $em->persist($user);
+        $em->persist($promoCode);
 
         $ur = new UserReward();
         $ur->setProfile($profile);
@@ -165,6 +179,7 @@ final class GameFooterWordController extends AbstractController
             'level' => $profile->getLevel(),
             'couponCode' => $couponCode,
             'discountLabel' => $discountLabel,
+            'promoCode' => $promoCode->getCode(),
             'message' => '+1000 XP ! Coupon débloqué.',
         ], 200);
     }

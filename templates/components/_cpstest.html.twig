@@ -2,7 +2,7 @@
 <footer class="mt-16 border-t border-gray-700 bg-gray-900/40">
   <div class="container mx-auto px-4 py-10 text-gray-300">
     <div class="flex items-center justify-center">
-      <div data-controller="cps-test" data-cps-test-duration-value="15" data-cps-test-required-clicks-value="100" data-cps-test-promo-code-value="PROMO-100CLICKS">
+      <div data-controller="cps-test" data-cps-test-duration-value="15" data-cps-test-required-clicks-value="100" data-cps-test-promo-code-value="PROMO-100CLICKS" data-cps-test-is-auth-value="{{ app.user ? '1' : '0' }}">
         <button
           type="button"
           data-cps-test-target="openBtn"

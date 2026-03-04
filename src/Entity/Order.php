@@ -30,6 +30,8 @@ class Order
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $stripeSessionId = null;
 
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $items;
@@ -93,6 +95,17 @@ class Order
         return $this;
     }
 
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): static
+    {
+        $this->stripeSessionId = $stripeSessionId;
+
+        return $this;
+    }
 
     public function getItems(): Collection
     {

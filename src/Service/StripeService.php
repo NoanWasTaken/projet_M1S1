@@ -5,16 +5,23 @@ namespace App\Service;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
+use Stripe\Webhook;
+use Stripe\Exception\SignatureVerificationException;
 
 class StripeService
 {
     private string $secretKey;
     private string $publicKey;
+    private ?string $webhookSecret;
 
-    public function __construct(string $stripeSecretKey, string $stripePublicKey)
-    {
+    public function __construct(
+        string $stripeSecretKey, 
+        string $stripePublicKey,
+        ?string $stripeWebhookSecret = null
+    ) {
         $this->secretKey = $stripeSecretKey;
         $this->publicKey = $stripePublicKey;
+        $this->webhookSecret = $stripeWebhookSecret;
         Stripe::setApiKey($this->secretKey);
     }
 
@@ -24,7 +31,7 @@ class StripeService
      * @param array $lineItems Les articles à payer (format Stripe)
      * @param string $successUrl URL de redirection après paiement réussi
      * @param string $cancelUrl URL de redirection si paiement annulé
-     * @param array $metadata Métadonnées supplémentaires (ex: order_id)
+     * @param array $metadata Métadonnées supplémentaires 
      * @return Session
      * @throws ApiErrorException
      */
@@ -75,7 +82,7 @@ class StripeService
                         'description' => $item['description'] ?? '',
                         'images' => $item['images'] ?? [],
                     ],
-                    'unit_amount' => (int)($item['price'] * 100), // Montant en centimes
+                    'unit_amount' => (int)($item['price'] * 100),
                 ],
                 'quantity' => $item['quantity'],
             ];
@@ -87,5 +94,25 @@ class StripeService
     public function getPublicKey(): string
     {
         return $this->publicKey;
+    }
+
+    /**
+     * Construire et vérifier un événement webhook Stripe
+     * @param string 
+     * @param string 
+     * @return Event
+     * @throws SignatureVerificationException 
+     */
+    public function constructWebhookEvent(string $payload, string $signature): \Stripe\Event
+    {
+        if (!$this->webhookSecret) {
+            throw new \RuntimeException('Webhook secret not configured');
+        }
+
+        return Webhook::constructEvent(
+            $payload,
+            $signature,
+            $this->webhookSecret
+        );
     }
 }

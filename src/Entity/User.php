@@ -79,12 +79,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SavedCart::class, cascade: ['persist', 'remove'])]
     private Collection $savedCarts;
 
+    #[ORM\ManyToMany(targetEntity: PromoCode::class, mappedBy: 'users')]
+    private Collection $promoCodes;
+
     public function __construct()
     {
         $this->game_types = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->chatConversations = new ArrayCollection();
         $this->savedCarts = new ArrayCollection();
+        $this->promoCodes = new ArrayCollection();
     }
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
@@ -317,5 +321,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getSavedCarts(): Collection
     {
         return $this->savedCarts;
+    }
+    public function getPromoCodes(): Collection
+    {
+        return $this->promoCodes;
+    }
+    public function addPromoCode(PromoCode $promoCode): static
+    {
+        if (!$this->promoCodes->contains($promoCode)) {
+            $this->promoCodes->add($promoCode);
+            $promoCode->addUser($this);
+        }
+        return $this;
+    }
+    public function removePromoCode(PromoCode $promoCode): static
+    {
+        $this->promoCodes->removeElement($promoCode);
+        $promoCode->removeUser($this);
+        return $this;
     }
 }
