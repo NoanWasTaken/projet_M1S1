@@ -35,7 +35,6 @@ class CheckoutController extends AbstractController
         $totalWithPromo = null;
         $discountMultiplier = 1.0;
         
-        // Calculer le multiplicateur de réduction si un code promo est appliqué
         if ($promoCode) {
             $totalWithPromo = $cart->getTotalWithPromo($promoCode, $this->entityManager, $user);
             $originalTotal = $cart->getTotal();
@@ -57,7 +56,6 @@ class CheckoutController extends AbstractController
                 return $this->redirectToRoute('app_cart');
             }
             
-            // Appliquer la réduction proportionnelle sur chaque produit
             $unitPrice = $product->getPrice() * $discountMultiplier;
             
             $lineItems[] = [
