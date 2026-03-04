@@ -97,10 +97,17 @@ class CheckoutController extends AbstractController
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
         
-        // Récupérer le code promo de la session avant de le supprimer
         $promoCode = $request->getSession()->get('applied_promo_code');
-
-        if (!$cart->getItems()->isEmpty()) {
+        
+        $stripeSessionId = $request->query->get('session_id');
+        
+        $existingOrder = null;
+        if ($stripeSessionId) {
+            $existingOrder = $this->entityManager->getRepository(Order::class)
+                ->findOneBy(['stripeSessionId' => $stripeSessionId]);
+        }
+        
+        if (!$existingOrder && !$cart->getItems()->isEmpty()) {
             foreach ($cart->getItems() as $cartItem) {
                 $product = $cartItem->getProduct();
                 if ($cartItem->getQuantity() > $product->getStock()) {
@@ -117,11 +124,15 @@ class CheckoutController extends AbstractController
             $order = new Order();
             $order->setUser($user);
             $order->setStatus(OrderStatus::VALIDATED);
+            
+            if ($stripeSessionId) {
+                $order->setStripeSessionId($stripeSessionId);
+            }
 
             $total = 0.0;
             foreach ($cart->getItems() as $cartItem) {
                 $product = $cartItem->getProduct();
-                $qty     = $cartItem->getQuantity();
+                $qty = $cartItem->getQuantity();
                 $product->setStock($product->getStock() - $qty);
 
                 $orderItem = new OrderItem();
@@ -132,7 +143,6 @@ class CheckoutController extends AbstractController
                 $total += $orderItem->getSubtotal();
             }
             
-            // Appliquer le code promo au total de la commande si présent
             if ($promoCode) {
                 $totalWithPromo = $cart->getTotalWithPromo($promoCode, $this->entityManager, $user);
                 $order->setTotal($totalWithPromo);
@@ -142,11 +152,14 @@ class CheckoutController extends AbstractController
             
             $this->entityManager->persist($order);
             $this->entityManager->flush();
+            
+            $this->addFlash('success', 'Commande créée avec succès !');
+        } elseif ($existingOrder) {
+            $this->addFlash('info', 'Commande déjà enregistrée (créée par webhook).');
         }
-
+        
         $this->cartService->clearCart($user);
         
-        // Supprimer le code promo de la session après le paiement réussi
         $request->getSession()->remove('applied_promo_code');
 
         return $this->render('checkout/success.html.twig', [
