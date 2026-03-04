@@ -21,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
+use App\Entity\IntroProfileAnswer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -45,6 +46,10 @@ class UserCrudController extends AbstractCrudController
             $order->setUser(null);
             $entityManager->persist($order);
         }
+
+        $entityManager->createQuery(
+            'UPDATE ' . IntroProfileAnswer::class . ' a SET a.user = NULL WHERE a.user = :user'
+        )->setParameter('user', $entityInstance)->execute();
 
         $entityManager->flush();
         parent::deleteEntity($entityManager, $entityInstance);
@@ -96,7 +101,7 @@ class UserCrudController extends AbstractCrudController
         yield TextField::new('password')
             ->setFormType(PasswordType::class)
             ->setFormTypeOption('empty_data', '')
-            ->setRequired($pageName === \EasyCorp\Bundle\EasyAdminBundle\Config\Crud::PAGE_NEW)
+            ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms()
             ->setHelp('Leave empty to keep current password');
 
