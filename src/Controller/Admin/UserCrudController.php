@@ -21,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
@@ -29,7 +30,24 @@ class UserCrudController extends AbstractCrudController
     public function __construct(
         public UserPasswordHasherInterface $userPasswordHasher,
         private AdminUrlGenerator $adminUrlGenerator,
+        private EntityManagerInterface $entityManager,
     ) {
+    }
+
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof User) {
+            parent::deleteEntity($entityManager, $entityInstance);
+            return;
+        }
+
+        foreach ($entityInstance->getOrders() as $order) {
+            $order->setUser(null);
+            $entityManager->persist($order);
+        }
+
+        $entityManager->flush();
+        parent::deleteEntity($entityManager, $entityInstance);
     }
 
     public static function getEntityFqcn(): string
