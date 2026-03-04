@@ -65,16 +65,25 @@ class CartController extends AbstractController
     ) {}
 
     #[Route('', name: 'app_cart')]
-    public function index(Request $request): Response
+    public function index(Request $request, \Doctrine\ORM\EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
         $this->cartService->ensureShareToken($cart);
         $savedCartForm = $this->createForm(\App\Form\SavedCartType::class);
+        
+        // Calculer le total avec promo si applicable
+        $appliedPromoCode = $request->getSession()->get('applied_promo_code');
+        $totalWithPromo = null;
+        if ($appliedPromoCode) {
+            $totalWithPromo = $cart->getTotalWithPromo($appliedPromoCode, $em, $user);
+        }
+        
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'savedCartForm' => $savedCartForm->createView(),
             'showIntroDialogue' => false,
+            'totalWithPromo' => $totalWithPromo,
         ]);
     }
 
@@ -121,6 +130,38 @@ class CartController extends AbstractController
     {
         $this->cartService->clearCart($this->getUser());
         $this->addFlash('success', 'Panier vidé');
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/apply-promo', name: 'app_cart_apply_promo', methods: ['POST'])]
+    public function applyPromo(Request $request, \Doctrine\ORM\EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $code = trim($request->request->get('promo_code', ''));
+        if (!$code) {
+            $this->addFlash('error', 'Veuillez entrer un code promo.');
+            return $this->redirectToRoute('app_cart');
+        }
+        $promoRepo = $em->getRepository(\App\Entity\PromoCode::class);
+        $promo = $promoRepo->findOneBy(['code' => $code]);
+        if (!$promo || !$promo->isActive()) {
+            $this->addFlash('error', 'Code promo invalide ou expiré.');
+            return $this->redirectToRoute('app_cart');
+        }
+        if (!$user->getPromoCodes()->contains($promo)) {
+            $this->addFlash('error', 'Ce code promo n\'a pas été débloqué sur votre compte.');
+            return $this->redirectToRoute('app_cart');
+        }
+        $request->getSession()->set('applied_promo_code', $promo->getCode());
+        $this->addFlash('success', 'Code promo appliqué !');
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/remove-promo', name: 'app_cart_remove_promo', methods: ['POST'])]
+    public function removePromo(Request $request): Response
+    {
+        $request->getSession()->remove('applied_promo_code');
+        $this->addFlash('success', 'Code promo retiré.');
         return $this->redirectToRoute('app_cart');
     }
 }

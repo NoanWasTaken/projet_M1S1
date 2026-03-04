@@ -15,7 +15,8 @@ export default class extends Controller {
     static values = {
         duration: { type: Number, default: 10 },
         requiredClicks: { type: Number, default: 100 },
-        promoCode: { type: String, default: "PROMO-100CLICKS" }
+        promoCode: { type: String, default: "PROMO-100CLICKS" },
+        isAuth: { type: Boolean, default: false }
     };
 
     connect() {
@@ -69,14 +70,47 @@ export default class extends Controller {
         this.scoreTarget.textContent = String(this._clicks);
     }
 
-    finish() {
+    async finish() {
         this._stopTimer();
         this._running = false;
         this.clickZoneTarget.classList.add("pointer-events-none");
         if (this._clicks >= this.requiredClicksValue) {
-            this.promoTarget.textContent = `Bravo ! Code promo : ${this.promoCodeValue}`;
+            // Vérifier l'authentification
+            if (!this.isAuthValue) {
+                this.promoTarget.textContent = "Vous devez être connecté pour débloquer le code promo.";
+                this.promoTarget.classList.remove("text-green-600");
+                this.promoTarget.classList.add("text-yellow-500");
+                return;
+            }
+            // Appel API pour débloquer le code promo côté serveur
+            try {
+                const response = await fetch("/api/cps-test/claim", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({ clicks: this._clicks })
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    this.promoTarget.textContent = `Bravo ! Code promo : ${data.promoCode}`;
+                    this.promoTarget.classList.remove("text-yellow-500");
+                    this.promoTarget.classList.add("text-green-600");
+                } else {
+                    this.promoTarget.textContent = data.message || "Erreur lors du déblocage du code promo.";
+                    this.promoTarget.classList.remove("text-green-600");
+                    this.promoTarget.classList.add("text-yellow-500");
+                }
+            } catch (e) {
+                this.promoTarget.textContent = "Erreur serveur.";
+                this.promoTarget.classList.remove("text-green-600");
+                this.promoTarget.classList.add("text-red-600");
+            }
         } else {
             this.promoTarget.textContent = `Raté ! (${this._clicks} clics)`;
+            this.promoTarget.classList.remove("text-green-600");
+            this.promoTarget.classList.add("text-red-600");
         }
     }
 
