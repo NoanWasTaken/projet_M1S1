@@ -14,6 +14,16 @@ class ProductsRepository extends ServiceEntityRepository
     }
 
 
+    public function findOneByNameInsensitive(string $name): ?Products
+    {
+        return $this->createQueryBuilder('p')
+            ->where('LOWER(p.name) = LOWER(:name)')
+            ->setParameter('name', trim($name))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findAvailableProducts(): array
     {
         return $this->createQueryBuilder('p')
