@@ -20,6 +20,9 @@ export default class extends Controller {
   }
 
   _apply() {
+    this.sidebarTarget.classList.toggle("w-72", this.isOpen);
+    this.sidebarTarget.classList.toggle("w-0", !this.isOpen);
+
     this.sidebarTarget.classList.toggle("lg:w-72", this.isOpen);
     this.sidebarTarget.classList.toggle("lg:w-0", !this.isOpen);
 

@@ -3,42 +3,60 @@
 {% block title %}Vérifiez votre email{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow">
-                <div class="card-body p-5 text-center">
-                    <div class="mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-envelope-check text-success" viewBox="0 0 16 16">
-                            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
-                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686"/>
-                        </svg>
-                    </div>
-                    
-                    <h2 class="mb-3">Email de confirmation envoyé !</h2>
-                    
-                    <p class="text-muted mb-4">
-                        Nous avons envoyé un email de confirmation à votre adresse.
-                        Veuillez vérifier votre boîte de réception et cliquer sur le lien de confirmation pour activer votre compte.
-                    </p>
-                    
-                    <div class="alert alert-info" role="alert">
-                        <strong>Important :</strong> Vous devez confirmer votre email avant de pouvoir vous connecter.
-                    </div>
-                    
-                    <p class="small text-muted mt-4">
-                        Vous n'avez pas reçu l'email ? Vérifiez votre dossier spam ou 
-                        <a href="{{ path('app_register') }}">réessayez de vous inscrire</a>.
-                    </p>
-                    
-                    <div class="mt-4">
-                        <a href="{{ path('app_login') }}" class="btn btn-outline-primary">
-                            Retour à la connexion
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="pointer-events-none fixed inset-0 -z-10" style="background: linear-gradient(180deg, rgba(18,10,46,0.97), rgba(11,7,32,1)), linear-gradient(90deg, rgba(233,221,255,0.07) 1px, transparent 1px), linear-gradient(0deg, rgba(233,221,255,0.07) 1px, transparent 1px), repeating-linear-gradient(45deg, rgba(233,221,255,0.05) 0 2px, rgba(0,0,0,0) 2px 5px); background-size: auto, 5px 5px, 5px 5px, auto;"></div>
+
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-16">
+  <div class="w-full max-w-md">
+
+<div class="ds-panel is-visible text-center">
+
+      <div class="ds-panel__top mb-8">
+        <span class="text-[10px] tracking-widest" style="color:var(--pixel-head);">INSCRIPTION</span>
+      </div>
+
+      <div class="flex justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none"
+          stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"
+          style="filter:drop-shadow(0 0 8px rgba(151,223,252,0.4));">
+          <rect x="2" y="4" width="20" height="16" rx="0"/>
+          <polyline points="2,4 12,13 22,4"/>
+          <polyline points="16,13 22,20"/>
+          <polyline points="8,13 2,20"/>
+          <polyline points="16,17 19,20"/>
+          <circle cx="19" cy="20" r="0" fill="var(--secondary)"/>
+          <polyline points="15,19 17,21 22,16" stroke="var(--secondary)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <h1 class="pixel-brand text-base mb-4" style="color:var(--pixel-border);">
+        EMAIL ENVOYÉ !
+      </h1>
+
+      <p class="text-[9px] leading-[1.9] mb-6" style="color:rgba(233,221,255,0.60);">
+        Nous avons envoyé un lien de confirmation<br>
+        à votre adresse email.<br>
+        Vérifiez votre boîte de réception et cliquez<br>
+        sur le lien pour activer votre compte.
+      </p>
+
+      <div class="pixel-alert pixel-alert--info mb-6 text-left">
+        <span class="text-[8px] tracking-widest" style="color:var(--secondary);">IMPORTANT</span>
+        <p class="mt-1 text-[8px] leading-[1.8]" style="color:rgba(233,221,255,0.70);">
+          Vous devez confirmer votre email avant de pouvoir vous connecter.
+        </p>
+      </div>
+
+      <p class="text-[8px] mb-8" style="color:rgba(233,221,255,0.40);">
+        Pas reçu l'email ? Vérifiez vos spams ou
+        <a href="{{ path('app_register') }}" class="detail-breadcrumb-link">réinscrivez-vous</a>.
+      </p>
+
+      <a href="{{ path('app_login') }}" class="pixel-btn w-full">
+        <span class="pixel-btn__arrow">&#9664;</span>
+        <span class="pixel-btn__text">RETOUR À LA CONNEXION</span>
+      </a>
+
     </div>
+  </div>
 </div>
 {% endblock %}

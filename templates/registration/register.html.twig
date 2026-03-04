@@ -87,7 +87,7 @@
         <label class="pixel-label block mb-2">MOT DE PASSE</label>
         <div class="pixel-input">
           <i data-lucide="lock" class="w-4 h-4"></i>
-          {{ form_widget(registrationForm.plainPassword, {
+          {{ form_widget(registrationForm.plainPassword.first, {
             attr: {
               class: 'pixel-input__field',
               placeholder: 'min. 6 caractères',
@@ -95,8 +95,23 @@
             }
           }) }}
         </div>
-        <div class="pixel-muted mt-2">Au moins 6 caractères.</div>
-        {{ form_errors(registrationForm.plainPassword) }}
+        {{ form_errors(registrationForm.plainPassword.first) }}
+      </div>
+
+      {# CONFIRMATION #}
+      <div>
+        <label class="pixel-label block mb-2">CONFIRMER LE MOT DE PASSE</label>
+        <div class="pixel-input">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          {{ form_widget(registrationForm.plainPassword.second, {
+            attr: {
+              class: 'pixel-input__field',
+              placeholder: 'retape ton mot de passe',
+              autocomplete: 'new-password'
+            }
+          }) }}
+        </div>
+        {{ form_errors(registrationForm.plainPassword.second) }}
       </div>
 
       {# CONDITIONS #}

@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions Générales de Vente - GearForge{% endblock %}
+
+{% block body %}
+<div class="m-5 mt-7 mb-7 p-3 rounded-2xl border border-white/10 shadow-2xl" style="background:#2C0735; font-family:'Press Start 2P', sans-serif;">
+
+  <div class="mb-6 flex flex-col gap-2">
+    <div class="text-[9px] tracking-widest text-white/50">LEGAL / SALES</div>
+    <h1 class="text-base leading-snug tracking-widest" style="color:var(--color-mauve-300); text-shadow:2px 2px 0 #000;">
+      CONDITIONS GÉNÉRALES DE VENTE
+    </h1>
+    <p class="text-[9px] tracking-wider text-white/60 mt-1">
+      CGV - Applicables à toute commande passée sur GearForge
+    </p>
+    <div class="mt-2 h-0.75 rounded-full" style="background: linear-gradient(90deg, var(--color-mauve-500), var(--tertiary), transparent);"></div>
+    <p class="text-[9px] text-white/50 tracking-wide">Dernière mise à jour : 3 mars 2026</p>
+  </div>
+
+  <div class="flex flex-col gap-5">
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">01 - VENDEUR ET CHAMP D'APPLICATION</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Les présentes Conditions Générales de Vente (ci-après « CGV ») s'appliquent à toutes les ventes de produits
+          effectuées par <strong class="text-white">GearForge SAS</strong> via le site <span style="color:var(--color-mauve-300);">gearforge.fr</span>
+          à destination de consommateurs particuliers résidant en France métropolitaine.
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Société</span><span class="ds-v">GearForge SAS</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Contact commercial</span><span class="ds-v">sales@gearforge.fr</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Applicable à</span><span class="ds-v">Tout acheteur consommateur</span>
+          </div>
+        </div>
+        <p>
+          Toute commande passée sur le Site implique l'acceptation sans réserve des présentes CGV.
+          GearForge se réserve le droit de les modifier à tout moment ; les CGV applicables sont celles en vigueur à la date de la commande.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(206,81,228,.15);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">02 - PRODUITS ET DISPONIBILITÉ</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Les produits proposés à la vente sont ceux décrits sur le Site au moment de la consultation.
+          Les photographies et descriptions sont fournies à titre indicatif et ne sont pas contractuelles.
+        </p>
+        <p>
+          Les offres sont valables dans la limite des stocks disponibles.
+          En cas d'indisponibilité d'un produit après validation de votre commande, GearForge vous en informera
+          dans les <strong class="text-white">48 heures</strong> et procédera au remboursement intégral.
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Stock</span><span class="ds-v">En temps réel</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Rupture détectée après commande</span><span class="ds-v">Remboursement sous 48h</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Prix affichés</span><span class="ds-v">TTC en euros (€)</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(133,138,227,.15);">
+        <div class="ds-label" style="color:var(--tertiary);">03 - PRIX ET MODALITÉS DE PAIEMENT</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Les prix sont indiqués en <strong class="text-white">euros TTC</strong> (toutes taxes comprises) et incluent la TVA applicable.
+          Les frais de livraison sont indiqués séparément lors de la validation du panier.
+        </p>
+        <p>
+          Le paiement s'effectue en ligne, de manière sécurisée, via la plateforme <strong class="text-white">Stripe</strong>.
+          Les données bancaires sont entièrement gérées par Stripe et ne sont jamais stockées sur les serveurs de GearForge.
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Modes de paiement</span><span class="ds-v">Carte bancaire (Visa, MC, CB)</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Paiement sécurisé</span><span class="ds-v">Par Stripe (PCI-DSS)</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Débit</span><span class="ds-v">À la validation de la commande</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Devise</span><span class="ds-v">Euro (€)</span>
+          </div>
+        </div>
+        <p>
+          En cas de refus de paiement par l'organisme bancaire, la commande est automatiquement annulée.
+          GearForge ne pourra être tenu responsable des frais liés au refus.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(151,223,252,.10);">
+        <div class="ds-label" style="color:var(--secondary);">04 - COMMANDE ET VALIDATION</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>Le processus de commande se déroule comme suit :</p>
+        <ul class="space-y-2 pl-4">
+          <li class="flex gap-2"><span class="css-bullet shrink-0 mt-1" aria-hidden="true"></span>Sélection des produits et ajout au panier</li>
+          <li class="flex gap-2"><span class="css-bullet shrink-0 mt-1" aria-hidden="true"></span>Vérification du panier et validation</li>
+          <li class="flex gap-2"><span class="css-bullet shrink-0 mt-1" aria-hidden="true"></span>Saisie des informations de livraison</li>
+          <li class="flex gap-2"><span class="css-bullet shrink-0 mt-1" aria-hidden="true"></span>Choix et confirmation du mode de paiement</li>
+          <li class="flex gap-2"><span class="css-bullet shrink-0 mt-1" aria-hidden="true"></span>Confirmation de commande par email</li>
+        </ul>
+        <p>
+          La commande est définitivement validée après <strong class="text-white">confirmation du paiement par Stripe</strong>.
+          Un récapitulatif est envoyé à l'adresse email associée à votre compte.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">05 - LIVRAISON</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Les livraisons sont effectuées à l'adresse indiquée lors de la commande, en France métropolitaine uniquement.
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Délai préparation</span><span class="ds-v">1 à 2 jours ouvrés</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Délai livraison</span><span class="ds-v">2 à 5 jours ouvrés</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Zones desservies</span><span class="ds-v">France métropolitaine</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Suivi</span><span class="ds-v">Par email dès expédition</span>
+          </div>
+        </div>
+        <p>
+          GearForge ne saurait être tenu responsable des retards causés par le transporteur ou par des événements de force majeure.
+          Tout colis endommagé à la réception doit faire l'objet d'une réserve auprès du transporteur dans les <strong class="text-white">3 jours</strong>.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(206,81,228,.15);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">06 - DROIT DE RÉTRACTATION</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Conformément aux articles L221-18 et suivants du Code de la Consommation, vous disposez d'un délai de
+          <strong class="text-white">14 jours calendaires</strong> à compter de la réception de votre commande pour exercer votre droit de rétractation,
+          sans avoir à justifier de motif ni à payer de pénalités.
+        </p>
+        <p>
+          Pour exercer ce droit, contactez-nous à <span style="color:var(--color-mauve-300);">retours@gearforge.fr</span>
+          avec votre numéro de commande. Les frais de retour sont à votre charge.
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Délai légal</span><span class="ds-v">14 jours après réception</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Remboursement</span><span class="ds-v">Sous 14 jours après retour</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Frais de retour</span><span class="ds-v">À la charge du client</span>
+          </div>
+        </div>
+        <p>
+          Les produits retournés doivent être dans leur état d'origine, non utilisés, et dans leur emballage d'origine.
+          Tout produit endommagé ou incomplet peut faire l'objet d'une décote.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(133,138,227,.15);">
+        <div class="ds-label" style="color:var(--tertiary);">07 - GARANTIES ET SAV</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Tous les produits vendus sur GearForge bénéficient de la <strong class="text-white">garantie légale de conformité</strong>
+          (articles L217-4 à L217-14 du Code de la Consommation) et de la
+          <strong class="text-white">garantie contre les vices cachés</strong> (articles 1641 à 1649 du Code Civil).
+        </p>
+        <div class="rounded-lg border border-white/10 bg-white/5 p-3 space-y-1">
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Garantie conformité</span><span class="ds-v">2 ans à compter de la livraison</span>
+          </div>
+          <div class="ds-row" style="border-bottom:1px dashed rgba(255,255,255,.15);">
+            <span class="ds-k">Garantie vices cachés</span><span class="ds-v">2 ans à compter de la découverte</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-k">Contact SAV</span><span class="ds-v">sav@gearforge.fr</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top">
+        <div class="ds-label">08 - RESPONSABILITÉ</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          La responsabilité de GearForge ne pourra être engagée qu'en cas de faute prouvée et sera limitée au montant
+          de la commande concernée.
+        </p>
+        <p>
+          GearForge ne saurait être tenu responsable des dommages indirects tels que perte de revenus, perte de données
+          ou préjudice commercial liés à l'utilisation ou à l'impossibilité d'utiliser les produits commandés.
+        </p>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-white/10 bg-black/35 overflow-hidden">
+      <div class="ds-panel__top" style="background:rgba(206,81,228,.10);">
+        <div class="ds-label" style="color:var(--color-mauve-300);">09 - DROIT APPLICABLE ET LITIGES</div>
+      </div>
+      <div class="ds-panel__body text-[9px] leading-relaxed tracking-wide text-white/80 space-y-3">
+        <p>
+          Les présentes CGV sont soumises au <strong class="text-white">droit français</strong>.
+          En cas de litige, une solution amiable sera prioritairement recherchée via notre service client.
+        </p>
+        <p>
+          Conformément à l'article L612-1 du Code de la Consommation, vous pouvez recourir gratuitement à un médiateur de la consommation.
+          Vous pouvez également vous connecter à la plateforme européenne de résolution des litiges en ligne :
+          <span style="color:var(--color-mauve-300);">ec.europa.eu/odr</span>
+        </p>
+        <p>
+          À défaut de résolution amiable, les tribunaux compétents du ressort du siège de GearForge SAS seront saisis.
+        </p>
+      </div>
+    </article>
+
+    <div class="rounded-xl border border-white/10 bg-black/20 p-4 text-center">
+      <p class="text-[8px] tracking-widest text-white/40">
+        © 2026 GearForge SAS - Tous droits réservés -
+        <span style="color:var(--color-mauve-400);">sales@gearforge.fr</span>
+      </p>
+      <div class="mt-3 flex justify-center gap-3 flex-wrap">
+        <a href="{{ path('app_home') }}"
+           class="text-[8px] tracking-widest px-3 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+          <span>&#60;</span> RETOUR À L'ACCUEIL
+        </a>
+        <a href="{{ path('app_cgu') }}"
+           class="text-[8px] tracking-widest px-3 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+          VOIR LES CGU
+        </a>
+        <a href="{{ path('app_rgpd') }}"
+           class="text-[8px] tracking-widest px-3 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+          RGPD / CONFIDENTIALITÉ
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

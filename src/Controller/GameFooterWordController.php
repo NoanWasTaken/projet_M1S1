@@ -177,7 +177,7 @@ final class GameFooterWordController extends AbstractController
             'triesRemaining' => $triesRemainingAfter,
             'xpTotal' => $profile->getXpTotal(),
             'level' => $profile->getLevel(),
-            'couponCode' => $couponCode,
+            'couponCode' => 'MINIGAME_HOME',
             'discountLabel' => $discountLabel,
             'promoCode' => $promoCode->getCode(),
             'message' => '+1000 XP ! Coupon débloqué.',

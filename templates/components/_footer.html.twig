@@ -43,8 +43,8 @@
           <div class="flex flex-col gap-2">
             <span class="text-[8px] tracking-[0.3em] mb-1" style="color:var(--pixel-head);">LÉGAL</span>
             <a href="{{ path('app_rgpd') }}" class="footer-link">Politique de confidentialité</a>
-            <a href="{{ path('app_rgpd') }}" class="footer-link">RGPD</a>
-            <a href="{{ path('app_rgpd') }}" class="footer-link">Cookies</a>
+            <a href="{{ path('app_cgu') }}" class="footer-link">CGU</a>
+            <a href="{{ path('app_cgv') }}" class="footer-link">CGV</a>
           </div>
         </nav>
 
@@ -53,17 +53,35 @@
 
     <div class="mx-6" style="height:3px; background:linear-gradient(90deg, transparent, var(--pixel-border), transparent);"></div>
 
-    <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 flex-wrap">
       <p class="text-[8px] tracking-widest" style="color:rgba(233,221,255,0.45);">
         &copy; 2026 GearForge.
       </p>
-      <a href="{{ path('app_rgpd') }}"
-         class="text-[8px] tracking-widest transition-colors"
-         style="color:rgba(233,221,255,0.45);"
-         onmouseover="this.style.color='var(--color-mauve-400)'"
-         onmouseout="this.style.color='rgba(233,221,255,0.45)'">
-        Tous droits réservés — Politique de confidentialité
-      </a>
+      <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
+        <a href="{{ path('app_rgpd') }}"
+           class="text-[8px] tracking-widest transition-colors"
+           style="color:rgba(233,221,255,0.45);"
+           onmouseover="this.style.color='var(--color-mauve-400)'"
+           onmouseout="this.style.color='rgba(233,221,255,0.45)'">
+          Confidentialité
+        </a>
+        <span class="text-[8px]" style="color:rgba(233,221,255,0.20);">|</span>
+        <a href="{{ path('app_cgu') }}"
+           class="text-[8px] tracking-widest transition-colors"
+           style="color:rgba(233,221,255,0.45);"
+           onmouseover="this.style.color='var(--color-mauve-400)'"
+           onmouseout="this.style.color='rgba(233,221,255,0.45)'">
+          CGU
+        </a>
+        <span class="text-[8px]" style="color:rgba(233,221,255,0.20);">|</span>
+        <a href="{{ path('app_cgv') }}"
+           class="text-[8px] tracking-widest transition-colors"
+           style="color:rgba(233,221,255,0.45);"
+           onmouseover="this.style.color='var(--color-mauve-400)'"
+           onmouseout="this.style.color='rgba(233,221,255,0.45)'">
+          CGV
+        </a>
+      </div>
     </div>
 
   </div>
