@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}404 - Page introuvable - GearForge{% endblock %}
+
+{% block body %}
+<div class="pointer-events-none fixed inset-0 -z-10" style="background: linear-gradient(180deg, rgba(18,10,46,0.97), rgba(11,7,32,1)), linear-gradient(90deg, rgba(233,221,255,0.07) 1px, transparent 1px), linear-gradient(0deg, rgba(233,221,255,0.07) 1px, transparent 1px), repeating-linear-gradient(45deg, rgba(233,221,255,0.05) 0 2px, rgba(0,0,0,0) 2px 5px); background-size: auto, 5px 5px, 5px 5px, auto;"></div>
+
+<div class="min-h-[75vh] flex items-center justify-center px-4 py-20">
+  <div class="w-full max-w-lg text-center" style="font-family:'Press Start 2P', sans-serif;">
+
+    <div class="mb-10 relative inline-block">
+      <div class="text-[96px] leading-none font-bold select-none" style="
+        color: transparent;
+        -webkit-text-stroke: 3px var(--pixel-accent);
+        text-shadow:
+          6px 6px 0 rgba(124,58,237,0.25),
+          0 0 60px rgba(124,58,237,0.15);
+        letter-spacing: 0.05em;
+      ">404</div>
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style="
+        color: var(--pixel-accent-2);
+        font-size: 96px;
+        opacity: 0.08;
+        filter: blur(2px);
+      ">404</div>
+    </div>
+
+    <div class="mb-2 text-[9px] tracking-[0.4em]" style="color:var(--pixel-head);">ERREUR SYSTÈME</div>
+
+    <h1 class="text-sm leading-snug mb-4" style="color:var(--pixel-border); text-shadow:2px 2px 0 #000;">
+      PAGE INTROUVABLE
+    </h1>
+
+    <div class="mx-auto mb-8" style="height:3px; max-width:200px; background: linear-gradient(90deg, transparent, var(--pixel-accent), transparent);"></div>
+
+    <p class="text-[9px] leading-[2] mb-10" style="color:rgba(233,221,255,0.55);">
+      La page que vous cherchez<br>
+      n'existe pas ou a été déplacée.<br>
+      Mission échouée. Réessayez.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="{{ path('app_home') }}" class="pixel-btn is-cta">
+        <span class="pixel-btn__arrow">&#9664;</span>
+        <span class="pixel-btn__text">RETOUR À L'ACCUEIL</span>
+      </a>
+      <a href="{{ path('app_catalogue') }}" class="pixel-btn">
+        <span class="pixel-btn__arrow">&#9654;</span>
+        <span class="pixel-btn__text">CATALOGUE</span>
+      </a>
+    </div>
+
+    <div class="mt-16 text-[8px] tracking-widest" style="color:rgba(233,221,255,0.20);">
+      GearForge - Erreur 404 - Page non trouvée
+    </div>
+
+  </div>
+</div>
+{% endblock %}

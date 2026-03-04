@@ -43,5 +43,89 @@
       
       <div id="global-popup-host" class="pointer-events-none fixed inset-0 z-[999999] flex items-center justify-center p-6">
       </div>
+
+      <div id="gf-cookie-banner" style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 99998;
+        background: var(--pixel-panel);
+        border-top: 3px solid var(--pixel-border);
+        box-shadow: 0 -6px 0 0 var(--pixel-shadow);
+        font-family: 'Press Start 2P', sans-serif;
+        padding: 16px 24px;
+      ">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; justify-content: space-between;">
+          <div style="flex: 1; min-width: 240px;">
+            <p style="font-size: 8px; line-height: 2; color: rgba(233,221,255,0.70); margin: 0;">
+              GearForge utilise des cookies pour améliorer votre expérience et mesurer l'audience.
+              En continuant, vous acceptez notre&nbsp;
+              <a href="{{ path('app_rgpd') }}" style="color: var(--color-mauve-300); text-decoration: none;"
+                 onmouseover="this.style.color='var(--pixel-head)'" onmouseout="this.style.color='var(--color-mauve-300)'">
+                politique de confidentialité
+              </a>.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap;">
+            <button id="gf-cookie-refuse" style="
+              font-family: 'Press Start 2P', sans-serif;
+              font-size: 8px;
+              letter-spacing: 0.1em;
+              padding: 10px 16px;
+              background: transparent;
+              border: 2px solid rgba(233,221,255,0.25);
+              color: rgba(233,221,255,0.50);
+              cursor: pointer;
+              box-shadow: 3px 3px 0 0 var(--pixel-shadow);
+              transition: border-color 0.15s, color 0.15s;
+            "
+            onmouseover="this.style.borderColor='rgba(233,221,255,0.55)'; this.style.color='rgba(233,221,255,0.80)'"
+            onmouseout="this.style.borderColor='rgba(233,221,255,0.25)'; this.style.color='rgba(233,221,255,0.50)'">
+              REFUSER
+            </button>
+            <button id="gf-cookie-accept" style="
+              font-family: 'Press Start 2P', sans-serif;
+              font-size: 8px;
+              letter-spacing: 0.1em;
+              padding: 10px 16px;
+              background: var(--pixel-accent);
+              border: 2px solid var(--pixel-border);
+              color: var(--pixel-border);
+              cursor: pointer;
+              box-shadow: 4px 4px 0 0 var(--pixel-shadow);
+              transition: transform 0.12s, box-shadow 0.12s;
+            "
+            onmouseover="this.style.transform='translate(-1px,-1px)'; this.style.boxShadow='6px 6px 0 0 var(--pixel-shadow)'"
+            onmouseout="this.style.transform=''; this.style.boxShadow='4px 4px 0 0 var(--pixel-shadow)'">
+              ACCEPTER
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var key = 'gf_cookie_consent';
+          var banner = document.getElementById('gf-cookie-banner');
+          if (!banner) return;
+          if (!localStorage.getItem(key)) {
+            banner.style.display = 'block';
+          }
+          document.getElementById('gf-cookie-accept').addEventListener('click', function () {
+            localStorage.setItem(key, 'accepted');
+            banner.style.opacity = '0';
+            banner.style.transition = 'opacity 0.3s ease';
+            setTimeout(function () { banner.style.display = 'none'; }, 300);
+          });
+          document.getElementById('gf-cookie-refuse').addEventListener('click', function () {
+            localStorage.setItem(key, 'refused');
+            banner.style.opacity = '0';
+            banner.style.transition = 'opacity 0.3s ease';
+            setTimeout(function () { banner.style.display = 'none'; }, 300);
+          });
+        })();
+      </script>
     </body>
 </html>

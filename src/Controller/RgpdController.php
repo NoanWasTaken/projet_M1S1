@@ -13,4 +13,16 @@ class RgpdController extends AbstractController
     {
         return $this->render('rgpd/index.html.twig');
     }
+
+    #[Route('/cgu', name: 'app_cgu')]
+    public function cgu(): Response
+    {
+        return $this->render('legal/cgu.html.twig');
+    }
+
+    #[Route('/cgv', name: 'app_cgv')]
+    public function cgv(): Response
+    {
+        return $this->render('legal/cgv.html.twig');
+    }
 }
