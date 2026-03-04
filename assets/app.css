@@ -429,6 +429,11 @@
     background: rgba(151, 223, 252, 0.08);
 }
 
+.pixel-alert--info {
+    border-color: rgba(167, 139, 250, 0.7);
+    background: rgba(124, 58, 237, 0.1);
+}
+
 .pixel-link-inline {
     color: var(--tertiary);
     text-decoration: none;
