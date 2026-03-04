@@ -1,105 +1,104 @@
+{% if currentCategory is not null and currentCategory|lower == 'clavier' %}
 <footer class="mt-16 border-t border-gray-700 bg-gray-900/40">
   <div class="container mx-auto px-4 py-10 text-gray-300">
     <div class="flex items-center justify-center">
-
-      {% if currentCategory is not null and currentCategory|lower == 'clavier' %}
-        <div
-          data-controller="typing-test"
-          data-typing-test-duration-value="60"
-          data-typing-test-endpoint-value="{{ path('api_typing_test_recommendation') }}"
+      <div
+        data-controller="typing-test"
+        data-typing-test-duration-value="60"
+        data-typing-test-endpoint-value="{{ path('api_typing_test_recommendation') }}"
+      >
+        <button
+          type="button"
+          data-typing-test-target="openBtn"
+          data-action="click->typing-test#open"
+          style="font-family: 'Press Start 2P', sans-serif;"
+          class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition text-sm font-semibold"
         >
-          <button
-            type="button"
-            data-typing-test-target="openBtn"
-            data-action="click->typing-test#open"
-            style="font-family: 'Press Start 2P', sans-serif;"
-            class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition text-sm font-semibold"
-          >
-            Test clavier (1 min)
-          </button>
+          Test clavier (1 min)
+        </button>
 
-          <div data-typing-test-target="modal" class="fixed inset-0 hidden z-50">
-            <div
-              data-typing-test-target="backdrop"
-              data-action="click->typing-test#close"
-              class="absolute inset-0 bg-black/70"
-            ></div>
+        <div data-typing-test-target="modal" class="fixed inset-0 hidden z-50">
+          <div
+            data-typing-test-target="backdrop"
+            data-action="click->typing-test#close"
+            class="absolute inset-0 bg-black/70"
+          ></div>
 
-            <div class="relative mx-auto mt-10 w-[92%] max-w-3xl rounded-xl border border-gray-700 bg-gray-900 shadow-2xl max-h-[85vh] overflow-hidden">
-              <div class="flex items-center justify-between p-4 border-b border-gray-700">
-                <h3 class="text-white font-bold">Test clavier — 60 secondes</h3>
-                <button
-                  type="button"
-                  data-typing-test-target="closeBtn"
-                  data-action="click->typing-test#close"
-                  class="text-gray-400 hover:text-white"
-                >✕</button>
+          <div class="relative mx-auto mt-10 w-[92%] max-w-3xl rounded-xl border border-gray-700 bg-gray-900 shadow-2xl max-h-[85vh] overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+              <h3 class="text-white font-bold">Test clavier — 60 secondes</h3>
+              <button
+                type="button"
+                data-typing-test-target="closeBtn"
+                data-action="click->typing-test#close"
+                class="text-gray-400 hover:text-white"
+              >✕</button>
+            </div>
+
+            <div class="p-4 space-y-4 overflow-y-auto max-h-[calc(85vh-60px)]">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-400">
+                  Temps restant :
+                  <span data-typing-test-target="timer" class="text-white font-semibold">60</span>s
+                </div>
+
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    data-typing-test-target="startBtn"
+                    data-action="click->typing-test#start"
+                    class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
+                  >
+                    Démarrer
+                  </button>
+
+                  <button
+                    type="button"
+                    data-typing-test-target="resetBtn"
+                    data-action="click->typing-test#reset"
+                    class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
 
-              <div class="p-4 space-y-4 overflow-y-auto max-h-[calc(85vh-60px)]">
-                <div class="flex items-center justify-between">
-                  <div class="text-sm text-gray-400">
-                    Temps restant :
-                    <span data-typing-test-target="timer" class="text-white font-semibold">60</span>s
-                  </div>
-
-                  <div class="flex gap-2">
-                    <button
-                      type="button"
-                      data-typing-test-target="startBtn"
-                      data-action="click->typing-test#start"
-                      class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
-                    >
-                      Démarrer
-                    </button>
-
-                    <button
-                      type="button"
-                      data-typing-test-target="resetBtn"
-                      data-action="click->typing-test#reset"
-                      class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-
-                <div class="rounded-lg border border-gray-700 bg-gray-800 p-4">
-                  <p data-typing-test-target="prompt" class="text-gray-200 leading-relaxed text-sm"></p>
-                </div>
-
-                <textarea
-                  data-typing-test-target="input"
-                  class="w-full min-h-[140px] rounded-lg border border-gray-700 bg-gray-800 p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Recopie le texte ici…"
-                  disabled
-                ></textarea>
-
-                <div class="rounded-lg border border-gray-700 bg-gray-800 p-4">
-                  <div class="text-sm text-gray-300">
-                    Score : <span data-typing-test-target="score" class="text-white font-semibold">—</span>
-                    <span class="text-gray-500">•</span>
-                    Accuracy : <span data-typing-test-target="accuracy" class="text-white font-semibold">—</span>
-                  </div>
-
-                  <div class="mt-3 text-sm text-gray-300">
-                    Recommandation IA :
-                    <div data-typing-test-target="recommendation" class="mt-2 text-gray-200"></div>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  data-action="click->typing-test#finish"
-                  class="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition font-semibold"
-                >
-                  Terminer et obtenir ma reco clavier
-                </button>
+              <div class="rounded-lg border border-gray-700 bg-gray-800 p-4">
+                <p data-typing-test-target="prompt" class="text-gray-200 leading-relaxed text-sm"></p>
               </div>
+
+              <textarea
+                data-typing-test-target="input"
+                class="w-full min-h-[140px] rounded-lg border border-gray-700 bg-gray-800 p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Recopie le texte ici…"
+                disabled
+              ></textarea>
+
+              <div class="rounded-lg border border-gray-700 bg-gray-800 p-4">
+                <div class="text-sm text-gray-300">
+                  Score : <span data-typing-test-target="score" class="text-white font-semibold">—</span>
+                  <span class="text-gray-500">•</span>
+                  Accuracy : <span data-typing-test-target="accuracy" class="text-white font-semibold">—</span>
+                </div>
+
+                <div class="mt-3 text-sm text-gray-300">
+                  Recommandation IA :
+                  <div data-typing-test-target="recommendation" class="mt-2 text-gray-200"></div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                data-action="click->typing-test#finish"
+                class="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition font-semibold"
+              >
+                Terminer et obtenir ma reco clavier
+              </button>
             </div>
           </div>
         </div>
-      {% endif %}
+      </div>
     </div>
   </div>
 </footer>
+{% endif %}
