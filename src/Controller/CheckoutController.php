@@ -9,6 +9,7 @@ use App\Service\CartService;
 use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -26,10 +27,21 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/create-session', name: 'app_checkout_create_session', methods: ['POST'])]
-    public function createSession(): Response
+    public function createSession(Request $request): Response
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
+        $promoCode = $request->getSession()->get('applied_promo_code');
+        $totalWithPromo = null;
+        $discountMultiplier = 1.0;
+        
+        if ($promoCode) {
+            $totalWithPromo = $cart->getTotalWithPromo($promoCode, $this->entityManager, $user);
+            $originalTotal = $cart->getTotal();
+            if ($originalTotal > 0 && $totalWithPromo < $originalTotal) {
+                $discountMultiplier = $totalWithPromo / $originalTotal;
+            }
+        }
 
         if ($cart->getItems()->isEmpty()) {
             $this->addFlash('error', 'Votre panier est vide');
@@ -39,38 +51,38 @@ class CheckoutController extends AbstractController
         $lineItems = [];
         foreach ($cart->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
-            
             if ($cartItem->getQuantity() > $product->getStock()) {
                 $this->addFlash('error', "Stock insuffisant pour {$product->getName()}");
                 return $this->redirectToRoute('app_cart');
             }
-
+            
+            $unitPrice = $product->getPrice() * $discountMultiplier;
+            
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => [
-                        'name' => $product->getName(),
+                        'name' => $product->getName() . ($promoCode ? " (promo: {$promoCode})" : ''),
                         'description' => substr($product->getDescription() ?? '', 0, 200),
                     ],
-                    'unit_amount' => (int)($product->getPrice() * 100), // Montant en centimes
+                    'unit_amount' => (int)($unitPrice * 100),
                 ],
                 'quantity' => $cartItem->getQuantity(),
             ];
         }
-
+        
         try {
-            $session = $this->stripeService->createCheckoutSession(
+            $stripeSession = $this->stripeService->createCheckoutSession(
                 $lineItems,
                 $this->generateUrl('app_checkout_success', [], UrlGeneratorInterface::ABSOLUTE_URL) . '?session_id={CHECKOUT_SESSION_ID}',
                 $this->generateUrl('app_checkout_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 [
                     'user_id' => $user->getId(),
                     'cart_id' => $cart->getId(),
+                    'promo_code' => $promoCode ?? '',
                 ]
             );
-
-            return $this->redirect($session->url);
-
+            return $this->redirect($stripeSession->url);
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur lors de la création de la session de paiement: ' . $e->getMessage());
             return $this->redirectToRoute('app_cart');
@@ -78,12 +90,22 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/success', name: 'app_checkout_success')]
-    public function success(): Response
+    public function success(Request $request): Response
     {
         $user = $this->getUser();
         $cart = $this->cartService->getOrCreateCart($user);
-
-        if (!$cart->getItems()->isEmpty()) {
+        
+        $promoCode = $request->getSession()->get('applied_promo_code');
+        
+        $stripeSessionId = $request->query->get('session_id');
+        
+        $existingOrder = null;
+        if ($stripeSessionId) {
+            $existingOrder = $this->entityManager->getRepository(Order::class)
+                ->findOneBy(['stripeSessionId' => $stripeSessionId]);
+        }
+        
+        if (!$existingOrder && !$cart->getItems()->isEmpty()) {
             foreach ($cart->getItems() as $cartItem) {
                 $product = $cartItem->getProduct();
                 if ($cartItem->getQuantity() > $product->getStock()) {
@@ -100,11 +122,15 @@ class CheckoutController extends AbstractController
             $order = new Order();
             $order->setUser($user);
             $order->setStatus(OrderStatus::VALIDATED);
+            
+            if ($stripeSessionId) {
+                $order->setStripeSessionId($stripeSessionId);
+            }
 
             $total = 0.0;
             foreach ($cart->getItems() as $cartItem) {
                 $product = $cartItem->getProduct();
-                $qty     = $cartItem->getQuantity();
+                $qty = $cartItem->getQuantity();
                 $product->setStock($product->getStock() - $qty);
 
                 $orderItem = new OrderItem();
@@ -114,13 +140,25 @@ class CheckoutController extends AbstractController
                 $order->addItem($orderItem);
                 $total += $orderItem->getSubtotal();
             }
-
-            $order->setTotal($total);
+            
+            if ($promoCode) {
+                $totalWithPromo = $cart->getTotalWithPromo($promoCode, $this->entityManager, $user);
+                $order->setTotal($totalWithPromo);
+            } else {
+                $order->setTotal($total);
+            }
+            
             $this->entityManager->persist($order);
             $this->entityManager->flush();
+            
+            $this->addFlash('success', 'Commande créée avec succès !');
+        } elseif ($existingOrder) {
+            $this->addFlash('info', 'Commande déjà enregistrée (créée par webhook).');
         }
-
+        
         $this->cartService->clearCart($user);
+        
+        $request->getSession()->remove('applied_promo_code');
 
         return $this->render('checkout/success.html.twig', [
             'showIntroDialogue' => false,

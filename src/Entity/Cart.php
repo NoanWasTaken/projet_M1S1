@@ -127,9 +127,7 @@ class Cart
         return $this;
     }
 
-    /**
-     * Calculer le total du panier
-     */
+
     public function getTotal(): float
     {
         $total = 0;
@@ -139,9 +137,21 @@ class Cart
         return $total;
     }
 
-    /**
-     * Nombre total d'articles
-     */
+  
+    public function getTotalWithPromo(?string $promoCode, \Doctrine\ORM\EntityManagerInterface $em, ?\App\Entity\User $user = null): float
+    {
+        $total = $this->getTotal();
+        if ($promoCode && $user) {
+            $repo = $em->getRepository(\App\Entity\PromoCode::class);
+            $promo = $repo->findOneBy(['code' => $promoCode]);
+            if ($promo && $promo->isActive() && $user->getPromoCodes()->contains($promo)) {
+                $total = $total * 0.9;
+            }
+        }
+        return $total;
+    }
+
+
     public function getTotalItems(): int
     {
         $count = 0;
@@ -151,9 +161,7 @@ class Cart
         return $count;
     }
 
-    /**
-     * Vider le panier
-     */
+
     public function clear(): static
     {
         $this->items->clear();

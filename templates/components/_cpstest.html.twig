@@ -1,0 +1,75 @@
+{% if currentCategory is not null and currentCategory|lower == 'souris' %}
+<footer class="mt-16 border-t border-gray-700 bg-gray-900/40">
+  <div class="container mx-auto px-4 py-10 text-gray-300">
+    <div class="flex items-center justify-center">
+      <div data-controller="cps-test" data-cps-test-duration-value="15" data-cps-test-required-clicks-value="100" data-cps-test-promo-code-value="PROMO-100CLICKS" data-cps-test-is-auth-value="{{ app.user ? '1' : '0' }}">
+        <button
+          type="button"
+          data-cps-test-target="openBtn"
+          data-action="click->cps-test#open"
+          style="font-family: 'Press Start 2P', sans-serif;"
+          class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition text-sm font-semibold"
+        >
+          Test souris (15s)
+        </button>
+
+        <div data-cps-test-target="modal" class="fixed inset-0 hidden z-50">
+          <div
+            data-cps-test-target="backdrop"
+            data-action="click->cps-test#close"
+            class="absolute inset-0 bg-black/70"
+          ></div>
+
+          <div class="relative mx-auto mt-10 w-[92%] max-w-3xl rounded-xl border border-gray-700 bg-gray-900 shadow-2xl max-h-[85vh] overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+              <h3 class="text-white font-bold">Test souris — 15 secondes</h3>
+              <button
+                type="button"
+                data-cps-test-target="closeBtn"
+                data-action="click->cps-test#close"
+                class="text-gray-400 hover:text-white"
+              >✕</button>
+            </div>
+
+            <div class="p-4 space-y-4 overflow-y-auto max-h-[calc(85vh-60px)]">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-400">
+                  Temps restant :
+                  <span data-cps-test-target="timer" class="text-white font-semibold">15s</span>
+                  <br>
+                  Objectif : <span data-cps-test-target="requiredClicks" class="text-white font-semibold">100 clics</span> 
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    data-cps-test-target="startBtn"
+                    data-action="click->cps-test#start"
+                    class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
+                  >
+                    Démarrer
+                  </button>
+                  <button
+                    type="button"
+                    data-cps-test-target="resetBtn"
+                    data-action="click->cps-test#reset"
+                    class="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:bg-gray-700 text-white text-sm"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+              <div class="rounded-lg border border-gray-700 bg-gray-800 p-4 flex flex-col items-center">
+                <div data-action="click->cps-test#click" data-cps-test-target="clickZone" class="w-64 h-32 bg-blue-200 rounded-lg flex items-center justify-center text-2xl font-bold cursor-pointer select-none pointer-events-none mb-2 border-4 border-blue-400 text-gray-900">
+                  CLIC !
+                </div>
+                <div class="mb-2 text-lg">Clics : <span data-cps-test-target="score">0</span></div>
+              </div>
+              <div data-cps-test-target="promo" class="text-green-600 font-bold text-lg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endif %}

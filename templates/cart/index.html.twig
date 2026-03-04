@@ -118,12 +118,41 @@
                   <span class="text-[9px]" style="color:#86efac;">GRATUITE</span>
                 </div>
               </div>
-              <div class="flex justify-between items-end">
-                <span class="text-[9px] tracking-widest" style="color:var(--pixel-border);">TOTAL</span>
-                <span class="text-[20px] tracking-wide" style="color:var(--pixel-head); text-shadow:3px 3px 0 var(--pixel-shadow);">
-                  {{ cart.total|number_format(2, '.', '') }}€
-                </span>
-              </div>
+              <form method="post" action="{{ path('app_cart_apply_promo') }}" class="flex flex-col gap-2">
+                <label for="promo_code" class="text-[8px] tracking-wider" style="color:rgba(233,221,255,0.45);">CODE PROMO</label>
+                <div class="flex gap-2">
+                  <input type="text" id="promo_code" name="promo_code" maxlength="50" autocomplete="off"
+                    class="px-3 py-2 rounded-lg border border-gray-700 bg-gray-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1"
+                    style="font-family: 'Press Start 2P', monospace; min-width:0;" placeholder="Entrez votre code...">
+                  <button type="submit"
+                    class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition text-xs font-semibold tracking-widest"
+                    style="font-family: 'Press Start 2P', monospace; letter-spacing:0.1em;">
+                    VALIDER
+                  </button>
+                </div>
+              </form>
+              {% set appliedPromo = app.session.get('applied_promo_code') %}
+              {% if appliedPromo %}
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-green-400 text-xs font-bold" style="font-family: 'Press Start 2P', monospace;">CODE APPLIQUÉ : {{ appliedPromo }}</span>
+                  <form method="post" action="{{ path('app_cart_remove_promo') }}">
+                    <button type="submit" class="text-xs px-2 py-1 rounded bg-pink-700 hover:bg-pink-800 text-white font-bold" style="font-family: 'Press Start 2P', monospace;">RETIRER</button>
+                  </form>
+                </div>
+                <div class="flex justify-between items-end">
+                  <span class="text-[9px] tracking-widest" style="color:var(--pixel-border);">TOTAL (promo)</span>
+                  <span class="text-[20px] tracking-wide" style="color:var(--pixel-head); text-shadow:3px 3px 0 var(--pixel-shadow);">
+                    {{ totalWithPromo|number_format(2, '.', '') }}€
+                  </span>
+                </div>
+              {% else %}
+                <div class="flex justify-between items-end">
+                  <span class="text-[9px] tracking-widest" style="color:var(--pixel-border);">TOTAL</span>
+                  <span class="text-[20px] tracking-wide" style="color:var(--pixel-head); text-shadow:3px 3px 0 var(--pixel-shadow);">
+                    {{ cart.total|number_format(2, '.', '') }}€
+                  </span>
+                </div>
+              {% endif %}
 
               <form method="post" action="{{ path('app_checkout_create_session') }}" class="mt-2">
                 <button type="submit" class="pixel-btn is-cta" style="width:100%; justify-content:center;">

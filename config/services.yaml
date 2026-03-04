@@ -35,6 +35,7 @@ services:
         arguments:
             $stripeSecretKey: '%stripe.secret_key%'
             $stripePublicKey: '%stripe.public_key%'
+            $stripeWebhookSecret: '%stripe.webhook_secret%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
