@@ -54,7 +54,7 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
             - name: Validate composer.json and composer.lock
               run: composer validate --strict || true
@@ -154,7 +154,7 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
             - name: Check Symfony requirements
               run: vendor/bin/requirements-checker || true
@@ -218,7 +218,7 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install Composer dependencies
-              run: composer install --prefer-dist --no-progress --no-interaction
+              run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
             - name: Wait for PostgreSQL
               run: |
