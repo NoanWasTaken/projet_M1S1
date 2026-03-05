@@ -18,7 +18,6 @@ class ChatbotService
         private string $chatbotSystemMessage,
         private LoggerInterface $logger,
     ) {}
-
     // Point d'entrée principal — tool calling loop
     public function chat(array $messages): array
     {

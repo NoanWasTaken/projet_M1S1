@@ -141,6 +141,43 @@
 
     </div>
 
+    {% if is_granted('ROLE_ADMIN') %}
+    <h6 class="text-uppercase text-muted fw-semibold small mb-3">Chatbot</h6>
+    <div class="card border-0 shadow-sm mb-5" style="max-width: 560px;">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div>
+                    <h5 class="mb-1 fw-semibold">
+                        Assistant chatbot
+                        {% if chatbot_enabled %}
+                            <span class="badge bg-success ms-2" style="font-size:0.7rem;">ACTIF</span>
+                        {% else %}
+                            <span class="badge bg-danger ms-2" style="font-size:0.7rem;">DÉSACTIVÉ</span>
+                        {% endif %}
+                    </h5>
+                    <p class="text-muted small mb-0">
+                        {% if chatbot_enabled %}
+                            Le chatbot répond aux utilisateurs. Désactivez-le pour bloquer toutes les requêtes côté serveur.
+                        {% else %}
+                            Le chatbot est hors service. Les requêtes vers <code>/api/chatbot</code> retournent une erreur 503.
+                        {% endif %}
+                    </p>
+                </div>
+                <form method="POST" action="{{ path('admin_chatbot_toggle') }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('chatbot_toggle') }}">
+                    <button type="submit" class="btn fw-semibold px-4 {{ chatbot_enabled ? 'btn-danger' : 'btn-success' }}">
+                        {% if chatbot_enabled %}
+                            <i class="fas fa-power-off me-1"></i> Désactiver le chatbot
+                        {% else %}
+                            <i class="fas fa-power-off me-1"></i> Activer le chatbot
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="card border-0 shadow-sm mb-4" style="max-width: 560px;">
         <div class="card-body p-4">
 

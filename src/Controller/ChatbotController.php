@@ -7,6 +7,7 @@ use App\Entity\ChatMessage;
 use App\Entity\User;
 use App\Repository\ChatConversationRepository;
 use App\Service\ChatbotService;
+use App\Service\SiteSettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,6 +18,7 @@ class ChatbotController extends AbstractController
 {
     public function __construct(
         private ChatbotService $chatbotService,
+        private SiteSettingsService $siteSettings,
         private EntityManagerInterface $em,
         private ChatConversationRepository $conversationRepository,
     ) {
@@ -25,6 +27,12 @@ class ChatbotController extends AbstractController
     #[Route('/api/chatbot', name: 'api_chatbot', methods: ['POST'])]
     public function chat(Request $request): JsonResponse
     {
+        if (!$this->siteSettings->isChatbotEnabled()) {
+            return $this->json([
+                'error' => 'Le chatbot est temporairement indisponible.',
+            ], 503);
+        }
+
         try {
             $data = json_decode($request->getContent(), true);
 

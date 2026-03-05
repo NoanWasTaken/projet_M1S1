@@ -18,6 +18,7 @@ use App\Entity\XPEvent;
 use App\Repository\ChatConversationRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
+use App\Service\SiteSettingsService;
 use App\Service\StockAlertService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -40,6 +41,7 @@ class DashboardController extends AbstractDashboardController
         private AdminUrlGenerator          $adminUrlGenerator,
         private ProductsRepository         $productsRepository,
         private StockAlertService          $stockAlert,
+        private SiteSettingsService        $siteSettings,
         private CsrfTokenManagerInterface  $csrfTokenManager,
         private EntityManagerInterface     $em,
     ) {
@@ -79,16 +81,17 @@ class DashboardController extends AbstractDashboardController
         )->getSingleScalarResult();
 
         return $this->render('admin/dashboard.html.twig', [
-            'threshold' => $threshold,
-            'total' => count($allProducts),
-            'out_of_stock'=> count($outOfStock),
-            'low_stock' => count($lowStock),
-            'ok_stock' => count($okStock),
+            'threshold'        => $threshold,
+            'total'            => count($allProducts),
+            'out_of_stock'     => count($outOfStock),
+            'low_stock'        => count($lowStock),
+            'ok_stock'         => count($okStock),
             'revenue'          => round($revenue, 2),
             'orders_by_status' => $ordersByStatus,
             'total_orders'     => $totalOrders,
             'new_orders_7d'    => $newOrders7d,
             'total_users'      => $totalUsers,
+            'chatbot_enabled'  => $this->siteSettings->isChatbotEnabled(),
         ]);
     }
 
@@ -117,6 +120,28 @@ class DashboardController extends AbstractDashboardController
                 . implode(', ', $names) . '.'
             );
         }
+
+        return $this->redirectToRoute('admin');
+    }
+
+    #[Route('/admin/chatbot/toggle', name: 'admin_chatbot_toggle', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function toggleChatbot(Request $request): RedirectResponse
+    {
+        $token = new CsrfToken('chatbot_toggle', (string) $request->request->get('_token'));
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            $this->addFlash('danger', 'Token CSRF invalide.');
+            return $this->redirectToRoute('admin');
+        }
+
+        $nowEnabled = $this->siteSettings->toggleChatbot();
+
+        $this->addFlash(
+            $nowEnabled ? 'success' : 'warning',
+            $nowEnabled
+                ? 'Chatbot activé — les utilisateurs peuvent de nouveau l\'utiliser.'
+                : 'Chatbot désactivé — toutes les requêtes sont bloquées côté serveur.'
+        );
 
         return $this->redirectToRoute('admin');
     }
