@@ -20,6 +20,15 @@
       <span class="css-arrow-left" aria-hidden="true"></span> PRO PLAYERS
     </a>
 
+    {% for type, messages in app.flashes %}
+      {% for message in messages %}
+        <div class="detail-panel p-4 mb-4 {% if type == 'success' %}border border-green-500 text-green-300{% elseif type == 'warning' %}border border-yellow-500 text-yellow-300{% else %}border border-red-500 text-red-300{% endif %}"
+             style="font-family:var(--font-ui),sans-serif; font-size:13px;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endfor %}
+
     <div class="max-w-2xl mx-auto flex flex-col gap-6">
 
       <div class="detail-panel detail-panel--flush">
@@ -64,6 +73,7 @@
               <p class="player-gear__product">{{ player.mouse }}</p>
             </div>
             <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'mouse'}) }}">
+              <input type="hidden" name="_token" value="{{ csrf_token('player_add_' ~ player.id) }}">
               <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
                 <span class="pixel-btn__text">AJOUTER AU PANIER</span>
               </button>
@@ -76,6 +86,7 @@
               <p class="player-gear__product">{{ player.keyboard }}</p>
             </div>
             <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'keyboard'}) }}">
+              <input type="hidden" name="_token" value="{{ csrf_token('player_add_' ~ player.id) }}">
               <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
                 <span class="pixel-btn__text">AJOUTER AU PANIER</span>
               </button>
@@ -88,6 +99,7 @@
               <p class="player-gear__product">{{ player.headset }}</p>
             </div>
             <form method="post" action="{{ path('player_add_product', {id: player.id, type: 'headset'}) }}">
+              <input type="hidden" name="_token" value="{{ csrf_token('player_add_' ~ player.id) }}">
               <button type="submit" class="pixel-btn is-cta" style="padding:0.5rem 0.9rem;">
                 <span class="pixel-btn__text">AJOUTER AU PANIER</span>
               </button>
@@ -97,6 +109,7 @@
         </div>
         <div class="p-5 pt-0">
           <form method="post" action="{{ path('player_add_config', {id: player.id}) }}" style="display:flex; justify-content:center;">
+            <input type="hidden" name="_token" value="{{ csrf_token('player_add_config_' ~ player.id) }}">
             <button type="submit" class="pixel-btn is-cta" style="width:100%; justify-content:center; text-align:center;">
               <span class="pixel-btn__text" style="text-align:center;">AJOUTER TOUTE LA CONFIG AU PANIER</span>
             </button>
