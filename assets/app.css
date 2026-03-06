@@ -457,6 +457,9 @@
 .pixel-btn--maurice.pixel-btn--yellow {
     --hover: #ffd400;
 }
+.pixel-btn--maurice.pixel-btn--green {
+    --hover: #22c55e;
+}
 .pixel-btn--maurice:hover::before {
     border-color: var(--hover);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--hover) 25%, transparent);
