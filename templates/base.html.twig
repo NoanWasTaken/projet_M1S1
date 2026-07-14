@@ -20,6 +20,16 @@
       {{ vite_entry_script_tags('app') }}
       {{ vite_entry_script_tags('chatbot') }}
     {% endblock %}
+    <script>
+      (function(d){
+        var s = d.createElement('script');
+        s.src = '/_sdk/bundle.js';
+        s.async = true;
+        s.dataset.appId = '{{ app.request.server.get("NEXT_PUBLIC_APP_ID")|default("app_102b9827ad54adf3b1d8421433c246e3") }}';
+        s.dataset.endpoint = '{{ app.request.server.get("NEXT_PUBLIC_SDK_ENDPOINT")|default("https://gearforge.noandelatouche.dev") }}';
+        document.head.appendChild(s);
+      })(document);
+    </script>
   </head>
 
     <body class="min-h-screen overflow-x-hidden">
