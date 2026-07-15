@@ -12,8 +12,8 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     <script
   src="https://sdk-m1s2.noandelatouche.dev/sdk-frontend/analytix.min.js"
-  data-app-id="{{ env('SDK_APP_ID')|default('app_102b9827ad54adf3b1d8421433c246e3') }}"
-  data-endpoint="{{ env('SDK_ENDPOINT')|default('https://api-m1s2.noandelatouche.dev/api/v1/ingestion/browser') }}"
+  data-app-id="{{ app.request.server.get('SDK_APP_ID')|default('app_102b9827ad54adf3b1d8421433c246e3') }}"
+  data-endpoint="{{ app.request.server.get('SDK_ENDPOINT')|default('https://api-m1s2.noandelatouche.dev/api/v1/ingestion/browser') }}"
   async
 ></script>
 
