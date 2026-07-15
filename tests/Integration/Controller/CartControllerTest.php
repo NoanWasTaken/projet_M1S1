@@ -3,14 +3,16 @@
 namespace App\Tests\Integration\Controller;
 
 use App\Entity\User;
+use App\Tests\Integration\DatabaseSetupTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CartControllerTest extends WebTestCase
 {
+    use DatabaseSetupTrait;
+
     private KernelBrowser $client;
     private EntityManagerInterface $entityManager;
 
@@ -19,10 +21,7 @@ class CartControllerTest extends WebTestCase
         $this->client = static::createClient();
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        $schemaTool = new SchemaTool($this->entityManager);
-        $classes = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $schemaTool->dropSchema($classes);
-        $schemaTool->createSchema($classes);
+        $this->setUpDatabase();
     }
 
     protected function tearDown(): void
