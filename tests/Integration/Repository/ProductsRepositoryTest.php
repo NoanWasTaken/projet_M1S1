@@ -4,12 +4,14 @@ namespace App\Tests\Integration\Repository;
 
 use App\Entity\Products;
 use App\Repository\ProductsRepository;
+use App\Tests\Integration\DatabaseSetupTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductsRepositoryTest extends KernelTestCase
 {
+    use DatabaseSetupTrait;
+
     private EntityManagerInterface $entityManager;
     private ProductsRepository $repository;
 
@@ -19,10 +21,7 @@ class ProductsRepositoryTest extends KernelTestCase
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->repository = $this->entityManager->getRepository(Products::class);
 
-        $schemaTool = new SchemaTool($this->entityManager);
-        $classes = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $schemaTool->dropSchema($classes);
-        $schemaTool->createSchema($classes);
+        $this->setUpDatabase();
     }
 
     protected function tearDown(): void

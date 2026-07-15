@@ -5,13 +5,15 @@ namespace App\Tests\Integration\Repository;
 use App\Entity\Cart;
 use App\Entity\User;
 use App\Repository\CartRepository;
+use App\Tests\Integration\DatabaseSetupTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CartRepositoryTest extends KernelTestCase
 {
+    use DatabaseSetupTrait;
+
     private EntityManagerInterface $entityManager;
     private CartRepository $repository;
 
@@ -21,10 +23,7 @@ class CartRepositoryTest extends KernelTestCase
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->repository = $this->entityManager->getRepository(Cart::class);
 
-        $schemaTool = new SchemaTool($this->entityManager);
-        $classes = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $schemaTool->dropSchema($classes);
-        $schemaTool->createSchema($classes);
+        $this->setUpDatabase();
     }
 
     protected function tearDown(): void
